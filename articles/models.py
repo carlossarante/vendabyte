@@ -5,22 +5,34 @@ from users.models import User
 
 
 
-class Brands(models.Model):
+class Brand(models.Model):
 	brand = models.CharField(max_length=255)
 
-class BrandModels(models.Model):
-	brand = models.ForeignKey(Brands)
+class BrandModel(models.Model):
+	brand = models.ForeignKey(Brand)
 	model_name = models.CharField(max_length=255)
 
-
-class Articles(models.Model):
+class Article(models.Model):
 	user = models.ForeignKey(User)
-	price = models.DecimalField()
+	price = models.DecimalField(decimal_places=2,max_digits=7)
 	specs = models.TextField()
 	date_posted = models.DateTimeField(default=timezone.now)
 	selled = models.BooleanField(default=False)
 
-class ArticlePictures(models.Model):
-	article = models.ForeignKey(Articles)
+class ArticlePicture(models.Model):
+	article = models.ForeignKey(Article)
 	art_img = models.ImageField(upload_to='article_pictures')
 	cover = models.BooleanField(default=False)
+
+class Comment(models.Model):
+	article = models.ForeignKey(Article)
+	user = models.ForeignKey(User)
+	comment = models.TextField()
+
+class Like(object):
+	article = models.ForeignKey(Article)
+	user = models.ForeignKey(User)
+		
+class Interested(models.Model):
+	article = models.ForeignKey(Article)
+	user = models.ForeignKey(User)

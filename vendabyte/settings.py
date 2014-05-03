@@ -36,6 +36,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'south',
+    'users',
+    'geographics',
+    'articles',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,8 +62,12 @@ WSGI_APPLICATION = 'vendabyte.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'vendabyte',
+        'USER':'root',
+        'PASSWORD': 'vendeme',  
+        'HOST': '',
+        'PORT':3306,
     }
 }
 
@@ -75,8 +84,36 @@ USE_L10N = True
 
 USE_TZ = True
 
+TEMPLATE_DIRS = (
+    os.path.abspath('vendabyte/templates'),
+    os.path.abspath('users/templates'),
+    os.path.abspath('articles/templates'),
+    os.path.abspath('geographics/templates'),
+    )
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.abspath('media')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
+#STATIC_
+
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.abspath('static')
+STATICFILES_DIRS = (
+    os.path.abspath('users/static'),
+    os.path.abspath('geographics/static'),
+    os.path.abspath('articles/static'),
+)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'c:/Projects/Python/vendabyte/vendabyte/cache',
+    }
+}
+
+
+AUTH_USER_MODEL = 'users.User'
