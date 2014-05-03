@@ -18,6 +18,7 @@ class Article(models.Model):
 	specs = models.TextField()
 	date_posted = models.DateTimeField(default=timezone.now)
 	selled = models.BooleanField(default=False)
+	is_date_expired = models.BooleanField(default = False)
 
 class ArticlePicture(models.Model):
 	article = models.ForeignKey(Article)
@@ -29,9 +30,12 @@ class Comment(models.Model):
 	user = models.ForeignKey(User)
 	comment = models.TextField()
 
-class Like(object):
+class Like(models.Model):
 	article = models.ForeignKey(Article)
 	user = models.ForeignKey(User)
+
+	def __unicode__(self):
+		return ('%s %s',self.article,self.user)
 		
 class Interested(models.Model):
 	article = models.ForeignKey(Article)

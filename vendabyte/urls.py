@@ -6,8 +6,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'vendabyte.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-    #url(r'^api/',include(router.urls)),
+    url(r'^articles/', include('articles.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^users/',include('users.urls')),
 )
