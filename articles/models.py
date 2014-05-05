@@ -6,9 +6,14 @@ from users.models import User
 class Brand(models.Model):
 	brand = models.CharField(max_length=255)
 
+	def __unicode__(self):
+		return self.brand
+
 class BrandModel(models.Model):
 	brand = models.ForeignKey(Brand)
 	model_name = models.CharField(max_length=255)
+	def __unicode__(self):
+		return self.model_name
 
 class Article(models.Model):
 	model = models.ForeignKey(BrandModel)

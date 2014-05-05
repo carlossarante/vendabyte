@@ -17,7 +17,7 @@ def getSession(request):
 def getNewUploadedArticles(request,group=1):
 	uploads = Article.objects.all().order_by('date_posted')
 	articles = Paginator(uploads, group) 
-	return render(request,'user-articulos.html',{'articles':articles.object_list}) #Variable articles es la que contiene los articulos
+	return render(request,'user-articulos.html',{'article':articles.object_list}) #Variable articles es la que contiene los articulos
 
 def getMostPopularArticles(request):
 	most_liked = Like.objects.all().annotate(like_count=Count('article')).order_by('-like_count')[:10]
