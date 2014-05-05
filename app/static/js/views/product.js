@@ -9,7 +9,7 @@ Vendabyte.Views.Product = Backbone.View.extend({
 		'click .add-cart.absolute.icon-plus' : 'addCart'
 	},
 
-	template : //Handlebars.compile($("#product-template").html()),
+	template : Handlebars.compile($("#product-template").html()),
 
 	initialize : function () {
 		this.listenTo(this.model, "change", this.render, this);

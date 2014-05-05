@@ -66,10 +66,56 @@
 				</li>		
 			</section>	
 			<section class="products">
-				holalalalal
-
-				{% block articles %} {% endblock %}
-				
+				<article class="product">
+					<div class="user inline-block">
+						<img src="../static/img/persona.jpg" alt="Usuario" class="user-pict block">
+						<a href="" class="follow block">Seguir</a>	
+					</div>					
+					<div class="art-cont inline-block">
+						<span class="user-name block">Ramiro Fernandez</span>
+						<span class="product-name inline-block">Android Phone</span>
+						<p class="description inline-block">Pa rapido</p>
+						<div class="art-desc relative">
+							<figure class="art-pict">
+								<img src="../static/img/ima2.jpg" alt="Vendabyte" class="">
+							</figure>
+							<span class="precio absolute">RD$15,000.00</span>
+							<span class="add-cart absolute icon-plus"></span>	
+							<div class="actions">
+								<span class="interest">Me interesa</span>	
+								<span class="action icon-heart"></span>	
+								<span class="action icon-bubble"></span>	
+								<span class="action icon-share"></span>		
+							</div>
+						</div>
+						<div class="comment-cont">
+							<article class="comment">
+								<div class="user inline-block">
+									<img src="../static/img/persona.jpg" alt="Vendabyte" class="user-pict">
+								</div>
+								<div class="inline-block">
+									<a class="person" href="{{user-url}}" title="{{user}}">{{user}}</a>
+									<span class="fecha">12/8/2014</span>
+									<p class="opinion">
+										Rehabilitated? well, now let me see. you know, I don't have any idea whata that menas. I now issue.
+									</p>
+								</div>
+							</article>
+							<article class="comment">
+								<div class="user inline-block">
+									<img src="../static/img/persona.jpg" alt="Vendabyte" class="user-pict">
+								</div>
+								<div class="inline-block">
+									<span class="person">Ramiro Fernandez</span>
+									<span class="fecha">12/8/2014</span>
+									<p class="opinion">
+										Rehabilitated? well, now let me see. you know, I don't have any idea whata that menas. I now issue.
+									</p>
+								</div>
+							</article>
+						</div>
+					</div>	
+				</article>
 			</section>
 		</section>
 		<section class="load-sect relative">
@@ -143,6 +189,45 @@
 			</ul>
 		</section>				
 	</section>
+
+	 <script id="product-template" type="text/x-handlebars-template">
+			<div class="user inline-block">
+				<img src="{{avatar}}" alt="Usuario" class="user-pict block">
+				<a href="" class="follow block">Seguir</a>	
+			</div>					
+			<section class="art-cont inline-block">
+				<span class="user-name block">{{user}}</span>
+				<span class="product-name inline-block">{{product}}</span>
+				<p class="description inline-block">{{description}}</p>
+				<section class="art-desc relative">
+					<figure class="art-pict">
+						<img src="{{cover}}" alt="Vendabyte" class="">
+					</figure>
+					<span class="precio absolute">RD${{precio}}</span>
+					<span class="add-cart absolute icon-plus"></span>	
+					<div class="actions">
+						<span class="interest">Me interesa</span>	
+						<span class="action icon-heart"></span>	
+						<span class="action icon-bubble"></span>	
+						<span class="action icon-share"></span>		
+					</div>
+				</section>
+				<section class="comment-cont">					
+				</section>
+			</section>	
+  	</script>
+  	 <script id="comment-template" type="text/x-handlebars-template">
+			<div class="user inline-block">
+				<img src="{{avatar}}" alt="Vendabyte" class="user-pict">
+			</div>
+			<div class="inline-block">
+				<a class="person" href="{{user-url}}" title="{{user}}">{{user}}</a>
+				<span class="fecha">{{date}}</span>
+				<p class="opinion">
+					{{comment}}
+				</p>
+			</div>
+  	</script>
 
 
 	<script src="../static/lib/jquery.js" type="text/javascript"></script>

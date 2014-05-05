@@ -25,7 +25,7 @@ Vendabyte.Router = Backbone.Router.extend({
 		});
 		this.products = new Vendabyte.Collections.Products();
 		this.productsView = new Vendabyte.Views.ProductList({ collection : this.products });
-		//this.productsView.render();
+		this.productsView.render();
 		this.products.add(this.product2);
 		this.products.add(this.product1);
 

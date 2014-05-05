@@ -1,0 +1,1 @@
+Vendabyte.Collections.Products = Backbone.Collection.extend({ model : Vendabyte.Models.Product });
