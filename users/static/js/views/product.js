@@ -33,10 +33,10 @@ Vendabyte.Views.Product = Backbone.View.extend({
             "user" : "Ramiro Fernandez",
             "date" : "26/5/2014"
         });
-        this.comments = new Vendabyte.Collections.Comments();
-        this.commentsView = new Vendabyte.Views.CommentList({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
-        this.comments.add(this.comment1); 
-        this.comments.add(this.comment2);    
+        //this.comments = new Vendabyte.Collections.Comments();
+        //this.commentsView = new Vendabyte.Views.CommentList({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
+        //this.comments.add(this.comment1); 
+        //this.comments.add(this.comment2);    
         //this.commentsView.render();
 		return this;
 	},
