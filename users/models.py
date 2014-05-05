@@ -18,17 +18,16 @@ class User(AbstractBaseUser):
 	email = models.EmailField()
 	photo = models.ImageField(upload_to='users',blank=True)
 	cover = models.ImageField(upload_to='cover',blank=True)
-	city = models.ForeignKey(City,blank=True)
+	city = models.ForeignKey(City,default=1)
 	rating = models.DecimalField(default = 0.0,decimal_places=1,max_digits=2)
 	medals = models.ManyToManyField(Badgets,related_name='medals',blank=True)
 	following = models.ManyToManyField('self', related_name='follows', symmetrical=False,blank=True)
-	
 	objects = UserManager()
 	USERNAME_FIELD='username'
 	REQUIRED_FIELDS=['first_name','last_name','birthday','email',]
 	is_active = models.BooleanField(default=False)
 	is_admin = models.BooleanField(default=False)
-
+	is_superuser = models.BooleanField(default=False)
 	def __unicode__(self):
 		return (('%s %s') % (self.first_name,self.last_name))
 	def get_full_name(self):
