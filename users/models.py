@@ -28,6 +28,7 @@ class User(AbstractBaseUser):
 	is_active = models.BooleanField(default=False)
 	is_admin = models.BooleanField(default=False)
 	is_superuser = models.BooleanField(default=False)
+	
 	def __unicode__(self):
 		return (('%s %s') % (self.first_name,self.last_name))
 	def get_full_name(self):
