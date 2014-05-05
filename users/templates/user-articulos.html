@@ -28,7 +28,7 @@
 				{% for comment in entry.comment_set.all %}
 				<article class="comment">
 					<div class="user inline-block">
-						<img src="{{comment.photo|0}}" alt="Vendabyte" class="user-pict">
+						<img src="{{comment.photo.0}}" alt="Vendabyte" class="user-pict">
 					</div>
 					<div class="inline-block">
 						<a class="person" href="/users/{{comment.user.username}}" title="{{comment.user}}">{{comment.user}}</a>
