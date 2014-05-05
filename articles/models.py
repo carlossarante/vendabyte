@@ -2,7 +2,6 @@ from django.db import models
 from django.utils import timezone
 from users.models import User
 
-
 class Brand(models.Model):
 	brand = models.CharField(max_length=255)
 

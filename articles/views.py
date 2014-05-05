@@ -2,10 +2,17 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
+from rest_framework import viewsets
 from articles.models import Article,Interested,Like
 
 #articles/new/ Renderiza los últimos posts usando la página articleblock.html en la variable articles, seguido del grupo a renderizar. 
 #Default: /articles/new/1 
+
+
+class ArticleViewSet(viewsets.ModelViewSet):
+	model = Article
+	
+
 
 def getNewUploadedArticles(request,group=1):
 	uploads = Article.objects.all().order_by('date_posted')
