@@ -1,8 +1,6 @@
 from django.db import models
 from django.utils import timezone
 from users.models import User
-# Create your models here.
-
 
 
 class Brand(models.Model):
@@ -13,12 +11,17 @@ class BrandModel(models.Model):
 	model_name = models.CharField(max_length=255)
 
 class Article(models.Model):
+	model = models.ForeignKey(BrandModel)
 	user = models.ForeignKey(User)
+	short_description = models.CharField(max_length=140)
 	price = models.DecimalField(decimal_places=2,max_digits=7)
 	specs = models.TextField()
 	date_posted = models.DateTimeField(default=timezone.now)
 	selled = models.BooleanField(default=False)
 	is_date_expired = models.BooleanField(default = False)
+
+	def __unicode__(self):
+		return (('%s by %s') % (self.model.model_name,self.user.username))
 
 class ArticlePicture(models.Model):
 	article = models.ForeignKey(Article)
@@ -27,6 +30,7 @@ class ArticlePicture(models.Model):
 
 class Comment(models.Model):
 	article = models.ForeignKey(Article)
+	date_posted = models.DateTimeField(default=timezone.now)
 	user = models.ForeignKey(User)
 	comment = models.TextField()
 

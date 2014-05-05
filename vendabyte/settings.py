@@ -60,17 +60,31 @@ WSGI_APPLICATION = 'vendabyte.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
+
+#Base de datos en desarrollo
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'vendabyte.sqllite3',
+    }
+}
+
+
+
+'''
+Esta es la base de datos que usamos en production.
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'vendabyte',
+        'NAME': 'vendabyte
         'USER':'root',
         'PASSWORD': 'vendeme',  
         'HOST': '',
         'PORT':3306,
     }
 }
-
+'''
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 

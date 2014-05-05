@@ -9,7 +9,7 @@ from articles.models import Article,Interested,Like
 
 def getNewUploadedArticles(request,group=1):
 	uploads = Article.objects.all().order_by('date_posted')
-	articles = Paginator(articles, group) 
+	articles = Paginator(uploads, group) 
 	return render(request,'articleblock.html',{'articles':articles.object_list}) #Variable articles es la que contiene los articulos
 
 def getMostPopularArticles(request):
@@ -27,7 +27,7 @@ def getInterestingArticles(request):
 	return render(request,'articleblock.html',{'articles':articles})
 
 def getMyArticles(request):
-	articles = Article.objects.get(user=request.user)
+	articles = Article.objects.filter(user=request.user)
 	return render(request,'articleblock.html',{'articles':article})
 
 
