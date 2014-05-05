@@ -1,3 +1,8 @@
+var Backbone = require('backbone'),
+	Router = require('./routers/router'),
+	$ = require('jquery');
+	Backbone.$ = $;
+
 $(function(){
-  Vendabyte.app = new Vendabyte.Router();
+  Backbone.app = new Router();
 });

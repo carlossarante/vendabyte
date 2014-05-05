@@ -1,4 +1,11 @@
-Vendabyte.Views.Product = Backbone.View.extend({
+var Backbone 	= require('backbone'),
+	Handlebars 	= require('handlebars'),
+	$ 			= require('jquery'),
+	Comment = require('../models/comment'),
+	Comments = require('../collections/comments'),
+	CommentsView = require('../views/comments');
+
+module.exports = Backbone.View.extend({
 	tagName : 'article',
 	className : 'product',
 
@@ -9,7 +16,7 @@ Vendabyte.Views.Product = Backbone.View.extend({
 		'click .add-cart.absolute.icon-plus' : 'addCart'
 	},
 
-	template : //Handlebars.compile($("#product-template").html()),
+	template : Handlebars.compile($("#product-template").html()),
 
 	initialize : function () {
 		this.listenTo(this.model, "change", this.render, this);
@@ -21,20 +28,20 @@ Vendabyte.Views.Product = Backbone.View.extend({
 		var html = this.template(product);
 		this.$el.html(html);
 
-		this.comment1 = new Vendabyte.Models.Comment({
+		this.comment1 = new Comment({
             "avatar" : "../static/img/persona1.png",
             "comment" : "Este es el mejor celular que he tendio chico",
             "user" : "Carlos Sarante",
             "date" : "25/5/2014"
         });
-        this.comment2 = new Vendabyte.Models.Comment({
+        this.comment2 = new Comment({
             "avatar" : "../static/img/persona.jpg",
             "comment" : "Puede ser posible",
             "user" : "Ramiro Fernandez",
             "date" : "26/5/2014"
         });
-        this.comments = new Vendabyte.Collections.Comments();
-        this.commentsView = new Vendabyte.Views.CommentList({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
+        this.comments = new Comments();
+        this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         this.comments.add(this.comment1); 
         this.comments.add(this.comment2);    
         //this.commentsView.render();
@@ -51,7 +58,7 @@ Vendabyte.Views.Product = Backbone.View.extend({
 
 	comment : function(){
 		alert("Se utilizara para comentar");
-		this.comment3 = new Vendabyte.Models.Comment({
+		this.comment3 = new Comment({
             "avatar" : "img/persona1.jpg",
             "comment" : "Este es el mejor celular que he tendio chico",
             "user" : "Osiris Perez",
@@ -66,6 +73,6 @@ Vendabyte.Views.Product = Backbone.View.extend({
 	},
 
 	navigate : function (){
-		Vendabyte.app.navigate("product/"+ this.model.get("name"),{trigger : true})
+		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
 	}
 });

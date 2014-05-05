@@ -1,1 +1,4 @@
-Vendabyte.Collections.Comments = Backbone.Collection.extend({ model : Vendabyte.Models.Comment});
+var Backbone = require('backbone'),
+	Comment	= require('../models/comment');
+
+module.exports = Backbone.Collection.extend({ model : Comment});

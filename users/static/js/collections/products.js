@@ -1,1 +1,7 @@
-Vendabyte.Collections.Products = Backbone.Collection.extend({ model : Vendabyte.Models.Product });
+var Backbone = require('backbone'),
+	Product	= require('../models/product');
+
+
+module.exports = Backbone.Collection.extend({ 
+	model : Product 
+});

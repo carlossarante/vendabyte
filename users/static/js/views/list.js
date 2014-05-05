@@ -1,4 +1,9 @@
-Vendabyte.Views.List = Backbone.View.extend({
+var Backbone  = require('backbone'),
+  //Handlebars  = require('handlebars'),
+  $       = require('jquery'),
+  ProductView = require('../views/product');
+
+module.exports = Backbone.View.extend({
   el: $(".products"),
 
   initialize: function () {
@@ -12,7 +17,7 @@ Vendabyte.Views.List = Backbone.View.extend({
   },
 
   addOne: function (product) {
-    var productView = new Vendabyte.Views.Product({ model: product });
+    var productView = new ProductView({ model: product });
     this.$el.append(productView.render().el);
   },
 
