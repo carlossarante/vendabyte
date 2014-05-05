@@ -23,11 +23,11 @@ Vendabyte.Router = Backbone.Router.extend({
 		    "description" : "Muy vacano",
 		    "user" : "Ramiro Fernandez"
 		});
-		//this.products = new Vendabyte.Collections.Products();
-		//this.productsView = new Vendabyte.Views.ProductList({ collection : this.products });
+		this.products = new Vendabyte.Collections.Products();
+		this.productsView = new Vendabyte.Views.ProductList({ collection : this.products });
 		//this.productsView.render();
-		//this.products.add(this.product2);
-		//this.products.add(this.product1);
+		this.products.add(this.product2);
+		this.products.add(this.product1);
 
 
 		
