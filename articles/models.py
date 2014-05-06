@@ -2,11 +2,16 @@ from django.db import models
 from django.utils import timezone
 from users.models import User
 
+class Device(models.Model):
+	device_detail = models.CharField(max_length=30)
+	def __unicode__(self):
+		return self.device_detail
+
 class Brand(models.Model):
 	brand = models.CharField(max_length=255)
-
+	device = models.ForeignKey(Device)
 	def __unicode__(self):
-		return self.brand
+		return ('%s (%s)') % (self.brand,self.device.device_detail)
 
 class BrandModel(models.Model):
 	brand = models.ForeignKey(Brand)
