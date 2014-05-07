@@ -12,6 +12,7 @@ gris-medio = rgb(148,158,147)
 gris-oscuro = rgb(66,68,65)
 mamei = rgb(255,206,0)
 crema = rgb(249,234,216)
+opaco = rgba(255,255,255,0.3)
 
 body 
 	background gris-claro
@@ -26,9 +27,10 @@ a
 	width 100%
 	height 45px
 	background verde-claro
+	font-size 0rem
+	text-align center
 	
 	.logo-cont
-		left 15%
 		display inline-block
 		
 		.logo 
@@ -43,14 +45,67 @@ a
 		box-shadow 0px 0px 5px black
 		font-size 1.2rem
 	.search
-		background-color blue
-		color white
+		background-color opaco
+		border 0
+		padding 5px
+		border-radius 0 3px 3px 0		
 		font-size 1.2rem
 		width 400px
 		display inline-block
+		text-align center
+		vertical-align top
+		color white
+		margin-top 5px
+		margin-right 20px
+		&:focus
+			outline red none 1px
+	.notif-bar
+		vertical-align top
+		.icon-bell
+			line-height 45px
+			font-size 1.7rem
+			display inline-block
+			vertical-align top
+			color white
+			padding 0 10px
+			border-right 1px solid opaco
+			border-left 1px solid opaco
+			position relative
+			.notifications
+				border-radius 50%
+				background-color red
+				position absolute
+				color white
+				font-size 0.7rem
+				padding 2px
+				line-height 1rem
+		.user-name
+			display inline-block
+			font-size 1.2rem
+			color white
+			line-height 45px
+			vertical-align top
+			padding 0 3px
+			border-right 1px solid opaco
+		.user-pict
+			display inline-block
+			width 35px
+			height 35px
+			padding 2px
+			vertical-align top
+			margin 3px 10px 0 10px
+		.icon-cog
+			line-height 45px
+			font-size 1.7rem
+			display inline-block
+			vertical-align top
+			color white
+			padding 0 10px
+			border-right 1px solid opaco
+			border-left 1px solid opaco
 
 .portada-cont
-	width 100%
+	max-width 1280px
 	height 210px
 	z-index 3
 
@@ -76,7 +131,6 @@ a
 	text-align center
 	
 	.badgets-cont
-		display inline-block
 		width 96%
 		margin 30 0 20 0
 		padding 0
@@ -105,7 +159,6 @@ a
 
 
 	.options-menu
-		display inline-block
 		width 96%
 		margin 0
 		padding 0
@@ -147,6 +200,15 @@ a
 				top 15px
 				font-weight bold
 				transition all 0.3s
+		.active
+			background-color verde-claro
+			box-shadow 0px 0px 0px gris-medio
+			color white
+			.icon
+				background-color white
+				color verde-claro
+			.option 
+				color white
 .user-cont
 	width 96%
 	text-align right
@@ -217,11 +279,27 @@ a
 		text-align center
 		font-size 1.2rem
 
-	input
-		font-size 0.5rem;
-		color white
+	.load-button
+		position relative
+		display inline-block
+		background-color verde-claro
+		width 200px
+		height 30px
 		top -50px
-		cursor pointer
+		color white
+		line-height 30px			
+		overflow hidden
+		input
+			font-size 0.5rem;
+			width 100%
+			color white
+			top -20px
+			left 0px
+			bottom 0px
+			position absolute
+			opacity 0
+			padding 0
+			cursor pointer
 .offers-sect
 	top 0
 	right 0
@@ -461,4 +539,7 @@ a
 
 .absolute
 	position absolute
+
+.none
+	display none
  
