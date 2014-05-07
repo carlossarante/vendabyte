@@ -1,13 +1,15 @@
-var Backbone 	= require('backbone'),
+var Backbone 		= require('backbone'),
 	//Handlebars 	= require('handlebars'),
-	$ 			= require('jquery'),
-	Product = require('../models/product'),
-	Products = require('../collections/products'),
-	ProductsView = require('../views/products');
+	$ 				= require('jquery'),
+	Product 		= require('../models/product'),
+	Gost 			= require('../models/gost')
+	Products 		= require('../collections/products'),
+	ProductsView 	= require('../views/products'),
+	OptionsView 	= require('../views/options');
 
 module.exports = Backbone.Router.extend({
 	routes: {
-		"" : "index",
+		"" : "user",
 		"product/:name" : "product" 
 	},
 
@@ -36,8 +38,7 @@ module.exports = Backbone.Router.extend({
 		this.products.add(this.product2);
 		this.products.add(this.product1);
 
-
-		
+		this.optionsView = new OptionsView({ model : new Gost({}) });	
 
 		Backbone.history.start();
 	},
@@ -45,6 +46,23 @@ module.exports = Backbone.Router.extend({
 	index : function(){
 		console.log("Estoy en el index");
 		this.fetchData();		
+	},
+
+	user : function(){
+		var products = $('.products')
+		var fileBrowse = $('.file-browse');
+		var optionMenu = $('.options-menu');
+		var item = $("#newest");
+		this.activeOpt(item);
+
+		products.removeClass('none');
+		fileBrowse.removeClass('none');
+		optionMenu.removeClass('none');
+	},
+
+	activeOpt : function(el){
+		$(".options").removeClass('active');
+		el.addClass('active');
 	},
 
 	product : function(name){

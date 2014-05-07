@@ -9,6 +9,12 @@ from articles.models import Article,Interested,Like
 #articles/new/ Renderiza los últimos posts usando la página articleblock.html en la variable articles, seguido del grupo a renderizar. 
 #Default: /articles/new/1 
 
+
+def getUser(request):
+    user = request.user
+    articles = user.article_set.all()
+    return render(request,'user.html',{'articles':articles})
+
 def loginUser(request):
 	username = request.POST['username']
 	facebook_uid = request.POST['user_id']
@@ -21,11 +27,6 @@ def loginUser(request):
 			return HttpResponse('User is not active')
 	else:
 		return HttpResponse('Wrong PASSWORD')
-
-
-
-def getUser(request):
-	pass
 
 def getSession(request):
 	pass
