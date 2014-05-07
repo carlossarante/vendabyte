@@ -1,6 +1,7 @@
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
-	$ 			= require('jquery');
+	$ 			= require('jquery'),
+	_  			= require('underscore');
 
 module.exports = Backbone.View.extend({
 	tagName : 'article',
@@ -10,7 +11,7 @@ module.exports = Backbone.View.extend({
 
 	},
 
-	template : Handlebars.compile($("#comment-template").html()),
+	template : _.template($("#comment-template").html()),
 
 	initialize : function() {
 		this.listenTo(this.model, "change", this.render, this);

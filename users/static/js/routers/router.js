@@ -18,17 +18,17 @@ module.exports = Backbone.Router.extend({
 		this.jsonData = {};
 		this.product1 = new Product({
 		    "product": "Iphone5",
-		    "cover": "../static/img/ima3.jpg",
+		    "cover": "{% static 'img/ima3.jpg' %}",
 		    "precio": "35,000",
-		    "avatar" : "../static/img/persona1.png",
+		    "avatar" : "{% static 'img/persona1.png' %}",
 		    "description" : "Muy vacano",
 		    "user" : "Carlos Sarante"
 		});
 		this.product2 = new Product({
 		    "product": "Iphone5",
-		    "cover": "../static/img/ima3.jpg",
+		    "cover": "{% static 'img/ima3.jpg' %}",
 		    "precio": "35,000",
-		    "avatar" : "../static/img/persona1.png",
+		    "avatar" : "{% static 'img/persona1.png' %}",
 		    "description" : "Muy vacano",
 		    "user" : "Ramiro Fernandez"
 		});

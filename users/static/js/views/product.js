@@ -1,9 +1,11 @@
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
+	_  			= require('underscore'),
 	Comment = require('../models/comment'),
 	Comments = require('../collections/comments'),
 	CommentsView = require('../views/comments');
+
 
 module.exports = Backbone.View.extend({
 	tagName : 'article',
@@ -16,7 +18,7 @@ module.exports = Backbone.View.extend({
 		'click .add-cart.absolute.icon-plus' : 'addCart'
 	},
 
-	template : Handlebars.compile($("#product-template").html()),
+	template : _.template($("#product-template").html()),
 
 	initialize : function () {
 		this.listenTo(this.model, "change", this.render, this);
