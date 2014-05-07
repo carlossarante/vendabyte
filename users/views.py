@@ -1,13 +1,18 @@
 # -*- encoding: utf-8 -*-
-from django.core import serializers
+from rest_framework import viewsets
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, HttpResponseRedirect,HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
-from articles.models import Article,Interested,Like
-
+from .models import User
 #articles/new/ Renderiza los últimos posts usando la página articleblock.html en la variable articles, seguido del grupo a renderizar. 
 #Default: /articles/new/1 
+
+def getCurrentUserArticles(request):
+	user = request.user
+	articles = user.article_set.all()
+	return render(request,'user.html', {'articles':articles})
+
 
 def loginUser(request):
 	username = request.POST['username']
