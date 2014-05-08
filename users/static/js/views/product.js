@@ -1,11 +1,10 @@
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
-	_  			= require('underscore'),
+	_ 			= require('underscore'),
 	Comment = require('../models/comment'),
 	Comments = require('../collections/comments'),
 	CommentsView = require('../views/comments');
-
 
 module.exports = Backbone.View.extend({
 	tagName : 'article',

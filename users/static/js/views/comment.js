@@ -1,7 +1,7 @@
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
-	$ 			= require('jquery'),
-	_  			= require('underscore');
+	_ 			= require('underscore'),
+	$ 			= require('jquery');
 
 module.exports = Backbone.View.extend({
 	tagName : 'article',

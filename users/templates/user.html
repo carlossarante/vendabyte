@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head
+<head>
 	{% load staticfiles %}
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,18 +9,26 @@
 </head>
 <body>
 	<header class="header relative">		
-		<figure class="logo-cont relative">
+		<figure class="logo-cont">
 			<img src="{% static 'img/logo.jpg'%}" alt="Vendabyte" class="logo">
 		</figure>
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
-		<div class="log-in">Iniciar Seción</div>
+		<!--<div class="log-in">Iniciar Seción</div>-->
+		<div class="notif-bar inline-block">
+			<span class="icon-bell"><span class="notifications">2</span></span>
+			<span class="user-name">Ramiro Fernandez</span>
+			<img src="../static/img/persona.jpg" alt="Usuario" class="user-pict inline block">
+			<span class="icon-cog"></span>
+		</div>
+		
+
 	</header><!-- /header -->
-	<figure class="portada-cont relative">
+	<figure class="portada-cont relative none">
 			<img src="{% static 'img/portada.png'%}" alt="Vendabyte" class="portada">
 		</figure>
 	<section class="wrapper relative">		
 		<section class="offers-sect absolute">			
-			<section class="followers-sect">
+			<section class="followers-sect none">
 				<li class="follower-cont inline-block relative">
 					<div class="inline-block">
 						<img src="{% static 'img/persona.jpg'%}" alt="Usuario" class="user-pict block">
@@ -66,20 +74,20 @@
 					</div>
 				</li>		
 			</section>	
-			<section class="products">
+			<section class="products none">
 				{% block articles %} {% endblock %}
 				
 			</section>
 		</section>
 		<section class="load-sect relative">
-			<div class="user-cont inline-block relative">
+			<div class="user-cont inline-block relative none">
 				<div class="inline-block">
 					<img src="{% static 'img/persona.jpg'%}" alt="Usuario" class="user-pict block">					
 				</div>					
 				<div class="inline-block">
 					<span class="user-name block">Ramiro Fernandez</span>
 					<span class="icon-star"></span>
-					<span class="icon-star"></span>bv
+					<span class="icon-star"></span>
 					<span class="icon-star"></span>
 					<span class="icon-star"></span>
 					<span class="icon-star"></span>	
@@ -94,14 +102,16 @@
 					</div>
 				</div>
 			</div>		
-			<div class="file-browse caja">
+			<div class="file-browse caja none">
 				<div class="deco"></div>
 				<span class="">Arrastra las fotos de tu articulo aqui</span>
 				<br/>
-				<input type="file" value="Submit" class="button relative">
-
+				<div class="load-button">
+					<input type="file" value="Submit" class="button relative">
+					Buscar el Archivo
+				</div>
 			</div>
-			<ul class="badgets-cont relative">
+			<ul class="badgets-cont inline-block relative none">
 				<span class="badget-tittle">Mis Badgets</span>
 				<li class="badget">iconos</li>
 				<li class="badget">iconos</li>
@@ -114,35 +124,35 @@
 				<li class="badget">iconos</li>
 
 			</ul>
-			<ul class="options-menu">
-				<li class="options inline-block">
+			<ul class="options-menu inline-block none">
+				<li id="newest" class="options inline-block">
 					<div class="icon">Iconos</div>
 					<span class="option">Nuevo</span>
 				</li>
-				<li class="options inline-block">
+				<li id="following" class="options inline-block">
 					<div class="icon">Iconos</div>
 					<span class="option">Siguiendo</span>
 				</li>
-				<li class="options inline-block">
+				<li id="followers" class="options inline-block">
 					<div class="icon">Iconos</div>
 					<span class="option">Seguidores</span>
 				</li>
-				<li class="options inline-block">
+				<li id="popular" class="options inline-block">
 					<div class="icon">Iconos</div>
 					<span class="option">Popular</span>
 				</li>
-				<li class="options inline-block">
+				<li id="interesting" class="options inline-block">
 					<div class="icon">Iconos</div>
 					<span class="option">Me interesa</span>
 				</li>
-				<li class="options inline-block">
+				<li id="selling" class="options inline-block">
 					<div class="icon">Iconos</div>
 					<span class="option">Lo vendo</span>
 				</li>
 			</ul>
 		</section>				
 	</section>
-	
+
 	<script id="product-template" type="text/template">
 			<div class="user inline-block">
 				<img src="<%=avatar%>" alt="Usuario" class="user-pict block">
