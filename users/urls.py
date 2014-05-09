@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
+    url(r'^me/(?P<response>\json)/$', 'users.views.getCurrentUser'),
+    url(r'^me/$', 'users.views.getCurrentUser'),
     url(r'^me/articles/(?P<response>\json)/$', 'users.views.getCurrentUserArticles'), 
     url(r'^me/articles/$', 'users.views.getCurrentUserArticles'),
     url(r'^me/following/(?P<response>\json)/$', 'users.views.getCurrentUserFollows'),

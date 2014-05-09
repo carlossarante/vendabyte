@@ -9,7 +9,6 @@ class Badgets(models.Model):
 	medal_name = models.CharField(max_length=255)
 	medal_icon = models.ImageField(upload_to='badget_icons')
 
-
 class User(AbstractBaseUser):
 	first_name = models.CharField(max_length=255)
 	last_name = models.CharField(max_length=255)

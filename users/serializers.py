@@ -9,15 +9,15 @@ def serializeUser(queryset):
 			'username':user.username,
 			'first_name':user.first_name,
 			'last_name':user.last_name,
-			'birthday':user.birthday,
+			'birthday':('%s/%s/%s') % (user.birthday.year,user.birthday.month,user.birthday.day),
 			#'photo':user.photo.url,
 			#'cover':user.cover.url,
 			'city':user.city.city_name,
 			#'medals':serializeMedals(user.medals.all()),
-			'following': serializeFollowers(user.follows.all()),
+			#'following': serializeFollowers(user.follows.all()),
 		}	
 		data.append(array)
-	return json.dumps(user)
+	return json.dumps(data)
 
 def serializeFollowers(queryset):
 	data = []
@@ -25,7 +25,6 @@ def serializeFollowers(queryset):
 		f = {
 			'id': follower.id,
 			'username': follower.username,
-
 			'name': ('%s %s' % (follower.first_name,follower.last_name)),
 		}
 		data.append(f)
@@ -42,3 +41,7 @@ def serializeMedals(queryset):
 		}
 		data.append(data)
 	return json.dumps(data)
+
+
+
+
