@@ -14989,7 +14989,12 @@ var Backbone = require('backbone'),
 	Comment	= require('../models/comment');
 
 module.exports = Backbone.Collection.extend({ model : Comment});
-},{"../models/comment":24,"backbone":1}],22:[function(require,module,exports){
+},{"../models/comment":25,"backbone":1}],22:[function(require,module,exports){
+var Backbone = require('backbone'),
+	Comment	= require('../models/follower');
+
+module.exports = Backbone.Collection.extend({});
+},{"../models/follower":26,"backbone":1}],23:[function(require,module,exports){
 var Backbone = require('backbone'),
 	Product	= require('../models/product');
 
@@ -14997,7 +15002,7 @@ var Backbone = require('backbone'),
 module.exports = Backbone.Collection.extend({ 
 	model : Product 
 });
-},{"../models/product":26,"backbone":1}],23:[function(require,module,exports){
+},{"../models/product":28,"backbone":1}],24:[function(require,module,exports){
 var Backbone = require('backbone'),
 	Router = require('./routers/router'),
 	$ = require('jquery');
@@ -15006,65 +15011,72 @@ var Backbone = require('backbone'),
 $(function(){
   Backbone.app = new Router();
 });
-},{"./routers/router":27,"backbone":1,"jquery":19}],24:[function(require,module,exports){
+},{"./routers/router":29,"backbone":1,"jquery":19}],25:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({});
-},{"backbone":1}],25:[function(require,module,exports){
-var Backbone = require('backbone');
-
-module.exports = Backbone.Model.extend({});
-
 },{"backbone":1}],26:[function(require,module,exports){
+module.exports=require(25)
+},{"backbone":1}],27:[function(require,module,exports){
+var Backbone = require('backbone');
+
+module.exports = Backbone.Model.extend({});
+
+},{"backbone":1}],28:[function(require,module,exports){
 var Backbone = require('backbone'); 
 
 module.exports = Backbone.Model.extend({});
-},{"backbone":1}],27:[function(require,module,exports){
+},{"backbone":1}],29:[function(require,module,exports){
 var Backbone 		= require('backbone'),
 	//Handlebars 	= require('handlebars'),
 	$ 				= require('jquery'),
 	Product 		= require('../models/product'),
-	Gost 			= require('../models/gost')
+	Follower 		= require('../models/follower'),
+	Gost 			= require('../models/gost'),
 	Products 		= require('../collections/products'),
+	Followers 		= require('../collections/followers'),
 	ProductsView 	= require('../views/products'),
-	OptionsView 	= require('../views/options');
+	OptionsView 	= require('../views/options'),	
+	FollowersView 	= require('../views/followers');
 
 module.exports = Backbone.Router.extend({
 	routes: {
-		"" : "user",
-		"lonuevo" : "loNuevo",
-		"siguiendo" : "siguiendo",
-		"seguidores" : "seguidores",
-		"popular" : "popular",
-		"meinteresa" : "meInteresa",
-		"lovendo" : "loVendo",
+		"" 				: "user",
+		"lonuevo" 		: "loNuevo",
+		"siguiendo" 	: "siguiendo",
+		"seguidores" 	: "seguidores",
+		"popular" 		: "popular",
+		"meinteresa" 	: "meInteresa",
+		"lovendo" 		: "loVendo",
 		"product/:name" : "product" 
 	},
 
 	initialize : function(){
 		this.current = {};
 		this.jsonData = {};
-		this.product1 = new Product({
-		    "product": "Iphone5",
+		/*this.product1 = new Product({
+		    "model": "Iphone5",
 		    "cover": "../static/img/ima3.jpg",
-		    "precio": "35,000",
+		    "price": "35,000",
 		    "avatar" : "../static/img/persona1.png",
-		    "description" : "Muy vacano",
+		    "short_description" : "Muy vacano",
 		    "user" : "Carlos Sarante"
 		});
 		this.product2 = new Product({
-		    "product": "Iphone5",
+		    "model": "Iphone5",
 		    "cover": "../static/img/ima3.jpg",
-		    "precio": "35,000",
+		    "price": "35,000",
 		    "avatar" : "../static/img/persona1.png",
-		    "description" : "Muy vacano",
+		    "short_description" : "Muy vacano",
 		    "user" : "Ramiro Fernandez"
-		});
+		});*/
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
 		this.productsView.render();
-		this.products.add(this.product2);
-		this.products.add(this.product1);
+
+        this.followers = new Followers();
+        this.followersView = new FollowersView({ collection : this.followers});  
+        this.followersView.render();
 
 		this.optionsView = new OptionsView({ model : new Gost({}) });	
 
@@ -15073,7 +15085,7 @@ module.exports = Backbone.Router.extend({
 
 	index : function(){
 		console.log("Estoy en el index");
-		this.fetchData();		
+		//this.fetchData();		
 	},
 
 	loNuevo : function(){
@@ -15092,8 +15104,13 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');	
 
-		$.get( "/articles/brands/samsung/", function(data) {
-			 	console.log( data[0].models[0] );
+		$.get( "/articles/new/1", function(data) {
+			 	console.log( data );
+			 	Backbone.app.products.reset();
+			 	for (var x in data)
+			 	{
+			 		Backbone.app.products.add(new Product(data[x]));
+			 	}
 			})
 			.done(function() {
 				Backbone.app.productsView.render();
@@ -15117,6 +15134,20 @@ module.exports = Backbone.Router.extend({
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
 		followerSect.removeClass('none');
+
+		$.get( "/articles/new/1", function(data) {
+			 	console.log( data );
+			 	Backbone.app.followers.reset();
+			 	for (var x in data)
+			 	{
+			 		Backbone.app.followers.add(new Follower(data[x]));
+			 	}
+			})
+			.done(function() {
+				Backbone.app.followersView.render();
+			})
+			.fail(function() {
+			});
 	},
 
 	seguidores : function(){
@@ -15134,6 +15165,20 @@ module.exports = Backbone.Router.extend({
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
 		followerSect.removeClass('none');
+
+		$.get( "/articles/new/1", function(data) {
+			 	console.log( data );
+			 	Backbone.app.followers.reset();
+			 	for (var x in data)
+			 	{
+			 		Backbone.app.followers.add(new Follower(data[x]));
+			 	}
+			})
+			.done(function() {
+				Backbone.app.followersView.render();
+			})
+			.fail(function() {
+			});
 	},
 
 	popular : function(){
@@ -15151,6 +15196,20 @@ module.exports = Backbone.Router.extend({
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
 		followerSect.addClass('none');
+
+		$.get( "/articles/new/1", function(data) {
+			 	console.log( data );
+			 	Backbone.app.products.reset();
+			 	for (var x in data)
+			 	{
+			 		Backbone.app.products.add(new Product(data[x]));
+			 	}
+			})
+			.done(function() {
+				Backbone.app.productsView.render();
+			})
+			.fail(function() {
+			});
 	},
 
 	meInteresa : function(){
@@ -15169,6 +15228,20 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');
 
+		$.get( "/articles/new/1", function(data) {
+			 	console.log( data );
+			 	Backbone.app.products.reset();
+			 	for (var x in data)
+			 	{
+			 		Backbone.app.products.add(new Product(data[x]));
+			 	}
+			})
+			.done(function() {
+				Backbone.app.productsView.render();
+			})
+			.fail(function() {
+			});
+
 	},
 
 	loVendo : function(){
@@ -15186,6 +15259,20 @@ module.exports = Backbone.Router.extend({
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
 		followerSect.addClass('none');
+
+		$.get( "/articles/new/1", function(data) {
+			 	console.log( data );
+			 	Backbone.app.products.reset();
+			 	for (var x in data)
+			 	{
+			 		Backbone.app.products.add(new Product(data[x]));
+			 	}
+			})
+			.done(function() {
+				Backbone.app.productsView.render();
+			})
+			.fail(function() {
+			});
 	},
 
 	user : function(){
@@ -15198,6 +15285,8 @@ module.exports = Backbone.Router.extend({
 		products.removeClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
+
+		this.loNuevo();
 	},
 
 	activeOpt : function(el){
@@ -15205,28 +15294,16 @@ module.exports = Backbone.Router.extend({
 		el.addClass('active');
 	},
 
-	product : function(name){
-		console.log("Esto es un producto");
-	},
-
 	fetchData : function(){
 		var self = this;
 
 		return $.getJSON('data.json').then(function (data) {
-      	self.jsonData = data;      	
-      	console.log(data);
-      	self.products.add( new Product(self.jsonData));
-
-      	for (var name in data) {
-	        if (data.hasOwnProperty(name)) {
-	         // self.addAlbum(name, data[name]);
-	        }
-	    }
-	});
-		
-	}
+	      	self.jsonData = data;
+	      	self.products.add( new Product(self.jsonData));
+		});		
+	},
 });
-},{"../collections/products":22,"../models/gost":25,"../models/product":26,"../views/options":30,"../views/products":32,"backbone":1,"jquery":19}],28:[function(require,module,exports){
+},{"../collections/followers":22,"../collections/products":23,"../models/follower":26,"../models/gost":27,"../models/product":28,"../views/followers":33,"../views/options":34,"../views/products":36,"backbone":1,"jquery":19}],30:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	_ 			= require('underscore'),
@@ -15253,7 +15330,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	}
 });
-},{"backbone":1,"handlebars":18,"jquery":19,"underscore":20}],29:[function(require,module,exports){
+},{"backbone":1,"handlebars":18,"jquery":19,"underscore":20}],31:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	//Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -15282,7 +15359,89 @@ module.exports = Backbone.View.extend({
         this.collection.forEach(this.addOne,this);
     }
 });
-},{"../views/comment":28,"backbone":1,"jquery":19}],30:[function(require,module,exports){
+},{"../views/comment":30,"backbone":1,"jquery":19}],32:[function(require,module,exports){
+var Backbone 	= require('backbone'),
+	Handlebars 	= require('handlebars'),
+	$ 			= require('jquery'),
+	_ 			= require('underscore'),
+	Follower = require('../models/follower');
+	
+
+module.exports = Backbone.View.extend({
+	tagName : 'li',
+	className : 'follower-cont inline-block relative',
+
+	events : {
+		'click .action.icon-share' : 'share',
+		'click .action.icon-bubble' : 'comment',
+		'click .action.icon-heart' : 'love',
+		'click .add-cart.absolute.icon-plus' : 'addCart'
+	},
+
+	template : _.template($("#follower-template").html()),
+
+	initialize : function () {
+		this.listenTo(this.model, "change", this.render, this);		
+	},
+
+	render : function(){
+		var follower = this.model.toJSON();
+		var html = this.template(follower);
+		this.$el.html(html);
+
+		return this;
+	},
+
+	share : function(){
+		alert("Se utilizara para compartir");
+	},
+
+	addCart : function(){
+		alert("Se utilizara para añadir al carrito");
+	},
+
+	comment : function(){
+		alert("Se utilizara para comentar");
+	},
+
+	love : function(){
+		alert("Se utilizara para añadir a favoritos");
+	},
+
+	navigate : function (){
+		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
+	}
+});
+
+},{"../models/follower":26,"backbone":1,"handlebars":18,"jquery":19,"underscore":20}],33:[function(require,module,exports){
+var Backbone    = require('backbone'),
+    //Handlebars  = require('handlebars'),
+    $           = require('jquery'),
+    FollowerView = require('../views/follower');
+
+module.exports = Backbone.View.extend({
+      el: $(".followers-sect"),
+
+      initialize: function () {
+        this.listenTo(this.collection, "add", this.addOne, this);
+        this.listenTo(this.collection, "reset", this.render, this);
+      },
+
+      render: function () {
+        this.$el.empty();
+        this.addAll();
+      },
+
+      addOne: function (follower) {
+        var followerView = new FollowerView({ model : follower });
+        this.$el.append(followerView.render().el);
+      },
+
+      addAll: function () {
+        this.collection.forEach(this.addOne,this);
+      }
+});
+},{"../views/follower":32,"backbone":1,"jquery":19}],34:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -15347,7 +15506,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../collections/comments":21,"../models/comment":24,"../views/comments":29,"backbone":1,"handlebars":18,"jquery":19,"underscore":20}],31:[function(require,module,exports){
+},{"../collections/comments":21,"../models/comment":25,"../views/comments":31,"backbone":1,"handlebars":18,"jquery":19,"underscore":20}],35:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -15428,7 +15587,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../collections/comments":21,"../models/comment":24,"../views/comments":29,"backbone":1,"handlebars":18,"jquery":19,"underscore":20}],32:[function(require,module,exports){
+},{"../collections/comments":21,"../models/comment":25,"../views/comments":31,"backbone":1,"handlebars":18,"jquery":19,"underscore":20}],36:[function(require,module,exports){
 var Backbone    = require('backbone'),
     //Handlebars  = require('handlebars'),
     $           = require('jquery'),
@@ -15456,4 +15615,4 @@ module.exports = Backbone.View.extend({
         this.collection.forEach(this.addOne,this);
       }
 });
-},{"../views/product":31,"backbone":1,"jquery":19}]},{},[23])
+},{"../views/product":35,"backbone":1,"jquery":19}]},{},[24])
