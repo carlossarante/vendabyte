@@ -14,13 +14,18 @@ def serializeArticle(queryset):
 	for article in queryset:
 		array = {
 			'model': article.model.model_name,
-			'user': ('%s %s') % (article.user.first_name,article.user.last_name),
+			'user': {
+				'username':article.user.username,
+				'name':('%s %s') % (article.user.first_name,article.user.last_name),
+				'photo': ('/media/users/%s') % article.user.photo.name,
+			},
 			'short_description':article.short_description,
 			'price':decimal.Decimal(article.price),
 			'specs':article.specs,
 			'date_posted':('%s/%s/%s %s:%s') % (article.date_posted.year,article.date_posted.month,article.date_posted.day,article.date_posted.hour,article.date_posted.minute),
 			'is_selled':article.selled,
 			'is_date_expired':article.is_date_expired,
+			'comments':serializeComments(article.comment_set.all()),
 		}
 		data.append(array)
 	return json.dumps(data,cls=DecimalJSONEncoder)
@@ -67,6 +72,22 @@ def serializeDevice(queryset):
 			'id':device.id,
 			'device_detail': device.device_detail,
 			'brandset':serializeBrands(device.brand_set.all()),
+		}
+		data.append(array)
+	return data
+
+def serializeComments(queryset):
+	data = []
+	for comment in queryset:
+		array = {
+			'id':comment.id,
+			'device_detail': comment.comment,
+			'user': {
+				'username': comment.user.username,
+				'name':('%s %s') % (comment.user.first_name,comment.user.last_name),
+				'photo': ('/media/users/%s') % comment.user.photo.name,
+				'date_posted': ('%s/%s/%s %s:%s') % (comment.date_posted.year,comment.date_posted.month,comment.date_posted.day,comment.date_posted.hour,comment.date_posted.minute),
+			},
 		}
 		data.append(array)
 	return data

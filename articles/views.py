@@ -6,14 +6,15 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from articles.models import Article,Interested,Like,BrandModel,Brand,Device
 from articles.serializers import serializeArticle,serializeDevice,serializeBrands,serializeBrandModels
+
 #articles/new/ Renderiza los últimos posts usando la página articleblock.html en la variable articles, seguido del grupo a renderizar. 
 #Default: /articles/new/1 
 	
 #Devuelve informacion sobre todos los tipos de dispositivos.
 def getDevices(request,device=None):
 	if device is not None:
-		device = Device.objects.filter(device_detail__iexact=device)
-		data = device.values()
+		device = Device.objects.filter(device_detail__iexact=device) 
+		data = device.values() 
 	else:
 		device = Device.objects.all()
 		data = serializeDevice(device)
@@ -80,7 +81,6 @@ def getMyArticles(request,response='html'):
 	articles = Article.objects.filter(user=request.user)
 	if not (response == 'json'):
 		render(request,'articleblock.html',{'articles':article})
-	
 	else:
 		data = serializeArticle(articles)
 		return HttpResponse(data,mimetype='application/json')
