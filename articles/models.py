@@ -29,8 +29,16 @@ class Article(models.Model):
 	selled = models.BooleanField(default=False)
 	is_date_expired = models.BooleanField(default = False)
 
+
 	def __unicode__(self):
 		return (('%s by %s') % (self.model.model_name,self.user.username))
+	
+	def getLikeCount(self):
+		return self.like_set.all().count()
+
+	def getInterestedCount(self):
+		return self.interested_set.all().count()
+
 
 class ArticlePicture(models.Model):
 	article = models.ForeignKey(Article)
