@@ -59,3 +59,14 @@ def serializeBrandModels(queryset):
 		}
 		data.append(array)
 	return data
+
+def serializeDevice(queryset):
+	data = []
+	for device in queryset:
+		array = {
+			'id':device.id,
+			'device_detail': device.device_detail,
+			'brandset':serializeBrands(device.brand_set.all()),
+		}
+		data.append(array)
+	return data
