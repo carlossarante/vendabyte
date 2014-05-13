@@ -153,13 +153,43 @@
 		</section>				
 	</section>
 
+	<script id="notification-template" type="text/template">
+			<span class="icon-bell"><span class="notifications">2</span></span>
+			<span class="user-name"><%=username%></span>
+			<img src="../static/img/persona.jpg" alt="Usuario" class="user-pict inline block">
+			<span class="icon-cog"></span>
+  	</script>
+
+  	<script id="user-template" type="text/template">
+  			<div class="inline-block">
+					<img src="../static/img/persona.jpg" alt="Usuario" class="user-pict block">					
+				</div>					
+				<div class="inline-block">
+					<span class="user-name block"><%=username%></span>
+					<span class="icon-star"></span>
+					<span class="icon-star"></span>
+					<span class="icon-star"></span>
+					<span class="icon-star"></span>
+					<span class="icon-star"></span>	
+					<br/>
+					<div id="deco1"class="deco-count">
+						<span class="following-count">200</span>
+						<span class="following">Siguiendo</span>
+					</div>
+					<div class="deco-count">
+						<span class="followers-count">20</span>	
+						<span class="followers">Seguidores</span>
+					</div>
+				</div>
+  	</script>
+
 	<script id="product-template" type="text/template">
 			<div class="user inline-block">
-				<img src="../static/img/persona.jpg" alt="Usuario" class="user-pict block">
+				<img src="<%=user.photo%>" alt="<%=user.name%>" class="user-pict block">
 				<a href="" class="follow block">Seguir</a>	
 			</div>					
 			<section class="art-cont inline-block">
-				<span class="user-name block"><%=user%></span>
+				<span class="user-name block"><%=user.name%></span>
 				<span class="product-name inline-block"><%=model%></span>
 				<p class="description inline-block"><%=short_description%></p>
 				<section class="art-desc relative">

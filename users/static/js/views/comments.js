@@ -7,7 +7,6 @@ module.exports = Backbone.View.extend({
 	
 
 	initialize : function() {
-		console.log(this.el);
 		this.listenTo(this.collection, "add", this.addOne, this);
         this.listenTo(this.collection, "reset", this.render, this);
 	},

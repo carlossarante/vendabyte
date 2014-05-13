@@ -4,11 +4,15 @@ var Backbone 		= require('backbone'),
 	Product 		= require('../models/product'),
 	Follower 		= require('../models/follower'),
 	Gost 			= require('../models/gost'),
+	SessionModel 	= require('../models/sessionmodel'),
+	UserModel 		= require('../models/user'),	
 	Products 		= require('../collections/products'),
 	Followers 		= require('../collections/followers'),
 	ProductsView 	= require('../views/products'),
 	OptionsView 	= require('../views/options'),	
-	FollowersView 	= require('../views/followers');
+	FollowersView 	= require('../views/followers'),
+	UserProfileView = require('../views/userprofile'),
+	NotificationsView = require('../views/notificationbar');
 
 module.exports = Backbone.Router.extend({
 	routes: {
@@ -19,10 +23,13 @@ module.exports = Backbone.Router.extend({
 		"popular" 		: "popular",
 		"meinteresa" 	: "meInteresa",
 		"lovendo" 		: "loVendo",
+		"me" 			: "user",
 		"product/:name" : "product" 
 	},
 
 	initialize : function(){
+		this.activeSession = new SessionModel();
+      	console.log('authorized after create (should be false):', this.activeSession.isAuthorized());
 		this.current = {};
 		this.jsonData = {};
 		/*this.product1 = new Product({
@@ -41,6 +48,21 @@ module.exports = Backbone.Router.extend({
 		    "short_description" : "Muy vacano",
 		    "user" : "Ramiro Fernandez"
 		});*/
+		this.userModel = new UserModel();
+		this.userModel.set({"username" : "mao"});
+		$.get( "/users/me/json", function(data) {
+			 	for (var x in data)
+			 	{
+			 		console.log(data[x]);
+			 		Backbone.app.userModel.set(data[x]);
+			 		console.log(Backbone.app.userModel);
+			 	}
+			});
+		this.userProfileView = new UserProfileView({model: this.userModel});
+		this.userProfileView.render();
+		this.notificationsView = new NotificationsView({model : this.userModel});
+		this.notificationsView.render();
+
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
 		this.productsView.render();
@@ -51,7 +73,10 @@ module.exports = Backbone.Router.extend({
 
 		this.optionsView = new OptionsView({ model : new Gost({}) });	
 
-		Backbone.history.start();
+		Backbone.history.start({ 
+    		pushState: true, 
+    		root: '/users/me'
+		});
 	},
 
 	index : function(){
@@ -75,8 +100,7 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');	
 
-		$.get( "/articles/new/1", function(data) {
-			 	console.log( data );
+		$.get( "/users/me/articles/json", function(data) {
 			 	Backbone.app.products.reset();
 			 	for (var x in data)
 			 	{
@@ -106,8 +130,7 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.removeClass('none');
 
-		$.get( "/articles/new/1", function(data) {
-			 	console.log( data );
+		$.get( "/users/me/articles/json", function(data) {
 			 	Backbone.app.followers.reset();
 			 	for (var x in data)
 			 	{
@@ -137,8 +160,7 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.removeClass('none');
 
-		$.get( "/articles/new/1", function(data) {
-			 	console.log( data );
+		$.get( "/users/me/articles/json", function(data) {
 			 	Backbone.app.followers.reset();
 			 	for (var x in data)
 			 	{
@@ -168,8 +190,7 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');
 
-		$.get( "/articles/new/1", function(data) {
-			 	console.log( data );
+		$.get( "/users/me/articles/json", function(data) {
 			 	Backbone.app.products.reset();
 			 	for (var x in data)
 			 	{
@@ -199,8 +220,7 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');
 
-		$.get( "/articles/new/1", function(data) {
-			 	console.log( data );
+		$.get( "/users/me/articles/json", function(data) {
 			 	Backbone.app.products.reset();
 			 	for (var x in data)
 			 	{
@@ -231,8 +251,7 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');
 
-		$.get( "/articles/new/1", function(data) {
-			 	console.log( data );
+		$.get( "/users/me/articles/json", function(data) {
 			 	Backbone.app.products.reset();
 			 	for (var x in data)
 			 	{
