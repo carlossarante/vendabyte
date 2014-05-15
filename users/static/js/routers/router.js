@@ -49,19 +49,24 @@ module.exports = Backbone.Router.extend({
 		    "user" : "Ramiro Fernandez"
 		});*/
 		this.userModel = new UserModel();
+		this.userModel.urlRoot = "/users/me/json";
 		this.userModel.set({"username" : "mao"});
-		$.get( "/users/me/json", function(data) {
+		/*$.get( "/users/me/json", function(data) {
 			 	for (var x in data)
 			 	{
-			 		console.log(data[x]);
 			 		Backbone.app.userModel.set(data[x]);
-			 		console.log(Backbone.app.userModel);
 			 	}
-			});
+			});*/
 		this.userProfileView = new UserProfileView({model: this.userModel});
 		this.userProfileView.render();
 		this.notificationsView = new NotificationsView({model : this.userModel});
 		this.notificationsView.render();
+
+		this.userModel.fetch({ 
+			success: function(){
+       			console.log(Backbone.app.userModel);
+    		}
+    	});
 
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
@@ -100,18 +105,13 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');	
 
-		$.get( "/users/me/articles/json", function(data) {
-			 	Backbone.app.products.reset();
-			 	for (var x in data)
-			 	{
-			 		Backbone.app.products.add(new Product(data[x]));
-			 	}
-			})
-			.done(function() {
-				Backbone.app.productsView.render();
-			})
-			.fail(function() {
-			});
+		this.products.reset();
+		this.products.url = "./articles/json";
+		this.products.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
+    		}
+    	});
 	},
 
 	siguiendo : function(){
@@ -130,18 +130,13 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.removeClass('none');
 
-		$.get( "/users/me/articles/json", function(data) {
-			 	Backbone.app.followers.reset();
-			 	for (var x in data)
-			 	{
-			 		Backbone.app.followers.add(new Follower(data[x]));
-			 	}
-			})
-			.done(function() {
-				Backbone.app.followersView.render();
-			})
-			.fail(function() {
-			});
+		this.followers.reset();
+		this.followers.url = "./following/json";
+		this.followers.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.followers.length + ' personas a quienes sigues');
+    		}
+    	});
 	},
 
 	seguidores : function(){
@@ -160,18 +155,13 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.removeClass('none');
 
-		$.get( "/users/me/articles/json", function(data) {
-			 	Backbone.app.followers.reset();
-			 	for (var x in data)
-			 	{
-			 		Backbone.app.followers.add(new Follower(data[x]));
-			 	}
-			})
-			.done(function() {
-				Backbone.app.followersView.render();
-			})
-			.fail(function() {
-			});
+		this.followers.reset();
+		this.followers.url = "./followers/json";
+		this.followers.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.followers.length + ' seguidores');
+    		}
+    	});
 	},
 
 	popular : function(){
@@ -190,18 +180,13 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');
 
-		$.get( "/users/me/articles/json", function(data) {
-			 	Backbone.app.products.reset();
-			 	for (var x in data)
-			 	{
-			 		Backbone.app.products.add(new Product(data[x]));
-			 	}
-			})
-			.done(function() {
-				Backbone.app.productsView.render();
-			})
-			.fail(function() {
-			});
+		this.products.reset();
+		this.products.url = "./articles/json";
+		this.products.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
+    		}
+    	});
 	},
 
 	meInteresa : function(){
@@ -220,18 +205,13 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');
 
-		$.get( "/users/me/articles/json", function(data) {
-			 	Backbone.app.products.reset();
-			 	for (var x in data)
-			 	{
-			 		Backbone.app.products.add(new Product(data[x]));
-			 	}
-			})
-			.done(function() {
-				Backbone.app.productsView.render();
-			})
-			.fail(function() {
-			});
+		this.products.reset();
+		this.products.url = "./articles/json";
+		this.products.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
+    		}
+    	});
 
 	},
 
@@ -251,18 +231,13 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');
 
-		$.get( "/users/me/articles/json", function(data) {
-			 	Backbone.app.products.reset();
-			 	for (var x in data)
-			 	{
-			 		Backbone.app.products.add(new Product(data[x]));
-			 	}
-			})
-			.done(function() {
-				Backbone.app.productsView.render();
-			})
-			.fail(function() {
-			});
+		this.products.reset();
+		this.products.url = "./articles/json";
+		this.products.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
+    		}
+    	});
 	},
 
 	user : function(){

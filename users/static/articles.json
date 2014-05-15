@@ -1,0 +1,47 @@
+[
+	{
+		"model": "Galaxy S4",
+		 "is_date_expired": false,
+		 "specs": "jevisiomojaldj",
+		 "is_selled": false,
+		 "user": {"name": "Carlos Sarante", "username": "adminvendabyte", "photo": "/media/users/"},
+		 "date_posted": "2014/5/5 4:27",
+		 "short_description": "Epa que vacanao",
+		 "price": "1545684",
+		 "comments":[
+		 				{"comment":"que vacano tipo ", "name":"Alfredo Pichueta", "date":"12/08/2014", "photo":"/media/users"},
+		 				{"comment":"Es una exageracion de celular ", "name":"Pedro Nicacio", "date":"12/08/2014", "photo":"/media/users"},
+		 				{"comment":"Porque debo comprarlo ", "name":"Amaya Almonte", "date":"12/08/2014", "photo":"/media/users"},
+		 			]
+	},
+	{
+		"model": "Iphone 5",
+		 "is_date_expired": false,
+		 "specs": "jevisiomojaldj",
+		 "is_selled": false,
+		 "user": {"name": "Carlos Sarante", "username": "adminvendabyte", "photo": "/media/users/"},
+		 "date_posted": "2014/5/5 4:27",
+		 "short_description": "Muy bonito e interesante",
+		 "price": "14100",
+		 "comments": [
+		 				{"comment":"que vacano tipo ", "name":"Chiquinquira", "date":"12/08/2014", "photo":"/media/users"},
+		 				{"comment":"Es una exageracion de celular ", "name":"Nicolas Guillen", "date":"12/08/2014", "photo":"/media/users"},
+		 				{"comment":"Porque debo comprarlo ", "name":"Carlos Sarante", "date":"12/08/2014", "photo":"/media/users"},
+		 			]
+	},
+	{
+		"model": "Xperia Zl",
+		 "is_date_expired": false,
+		 "specs": "jevisiomojaldj",
+		 "is_selled": false,
+		 "user": {"name": "Osiris Perez", "username": "sylar2406", "photo": "/media/users/"},
+		 "date_posted": "2014/5/15 4:27",
+		 "short_description": "Resistente al agua y bien vacano",
+		 "price": "15515",
+		 "comments": [
+		 				{"comment":"que vacano tipo ", "name":"Isis Mabel", "date":"12/08/2014", "photo":"/media/users"},
+		 				{"comment":"Es una exageracion de celular ", "name":"Pedro Coplin", "date":"12/08/2014", "photo":"/media/users"},
+		 				{"comment":"Porque debo comprarlo ", "name":"Carlos Almonte", "date":"12/08/2014", "photo":"/media/users"},
+		 			]
+	}
+]
