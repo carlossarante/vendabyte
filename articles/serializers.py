@@ -1,93 +1,42 @@
 from rest_framework import serializers
 import json
 import decimal
+from .models import Article, ArticlePicture,Brand, BrandModel, Device,Like,Comment,Interested
+from users.models import User
 
-class DecimalJSONEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, decimal.Decimal):
-            return str(o)
-        return super(DecimalJSONEncoder, self).default(o)
+class ArticlePictureSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = ArticlePicture
+class ShortUserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model =User
+		fields = ('id','first_name','last_name','username','photo')
+class ArticleSerializer(serializers.ModelSerializer):
+	user = ShortUserSerializer()
+	class Meta:
+		model = Article
+		fields = ('model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set')
 
+class BrandSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Brand
 
-def serializeArticle(queryset):
-	data = []
-	for article in queryset:
-		array = {
-			'model': article.model.model_name,
-			'user': {
-				'username':article.user.username,
-				'name':('%s %s') % (article.user.first_name,article.user.last_name),
-				'photo': ('/media/users/%s') % article.user.photo.name,
-			},
-			'short_description':article.short_description,
-			'price':decimal.Decimal(article.price),
-			'specs':article.specs,
-			'date_posted':('%s/%s/%s %s:%s') % (article.date_posted.year,article.date_posted.month,article.date_posted.day,article.date_posted.hour,article.date_posted.minute),
-			'is_selled':article.selled,
-			'is_date_expired':article.is_date_expired,
-			'comments':serializeComments(article.comment_set.all()),
-		}
-		data.append(array)
-	return json.dumps(data,cls=DecimalJSONEncoder)
+class BrandModelSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = BrandModel
 
-def serializeDevices(queryset):
-	data = []
-	for device in queryset:
-		array = {
-				'id':device.id,
-				'device':device.device_detail,
-			}
-		data.append(array)
-	return json.dumps(data)
+class DeviceSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Device
 
-def serializeBrands(queryset,to_json=True):
-	data = []
-	for brand in queryset:
-		array = {
-			'id':brand.id,
-			'brand_detail':brand.brand,
-			'models': serializeBrandModels(brand.brandmodel_set.all()),
-		}
-		data.append(array)
-	if to_json: #convert to json?
-		return json.dumps(data)
-	return data
+class LikeSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Like
 
+class CommentSerializer(serializers.ModelSerializer):
+	class Meta:	
+		model = Comment
 
-def serializeBrandModels(queryset):
-	data = []
-	for model in queryset:
-		array = {
-			'id':model.id,
-			'model_detail': model.model_name,
-			'brand':model.brand.brand,
-		}
-		data.append(array)
-	return data
-
-def serializeDevice(queryset):
-	data = []
-	for device in queryset:
-		array = {
-			'id':device.id,
-			'device_detail': device.device_detail,
-			'brandset':serializeBrands(device.brand_set.all()),
-		}
-		data.append(array)
-	return data
-
-def serializeComments(queryset):
-	data = []
-	for comment in queryset:
-		array = {
-			'id':comment.id,
-			'device_detail': comment.comment,
-			'user': {
-				'username': comment.user.username,
-				'name':('%s %s') % (comment.user.first_name,comment.user.last_name),
-				'photo': ('/media/users/%s') % comment.user.photo.name,
-				'date_posted': ('%s/%s/%s %s:%s') % (comment.date_posted.year,comment.date_posted.month,comment.date_posted.day,comment.date_posted.hour,comment.date_posted.minute),
-			},
-		}
-		data.append(array)
-	return data
+class InterestingSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Interested

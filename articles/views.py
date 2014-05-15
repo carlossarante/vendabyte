@@ -1,15 +1,32 @@
 # -*- encoding: utf-8 -*-
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+
 from django.shortcuts import render, HttpResponse,HttpResponseRedirect
 from django.http import StreamingHttpResponse
 from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
+
 from articles.forms import ArticleForm
 from articles.models import Article,ArticlePicture,Interested,Like,BrandModel,Brand,Device
-from articles.serializers import serializeArticle,serializeDevice,serializeBrands,serializeBrandModels
+from articles.serializers import ArticleSerializer, BrandModelSerializer
 
 #articles/new/ Renderiza los últimos posts usando la página articleblock.html en la variable articles, seguido del grupo a renderizar. 
 #Default: /articles/new/1 
+
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+
+'''
 
 #Retorna la instancia de un objeto de dispositivo.
 def getDeviceInstance(device):
@@ -75,63 +92,57 @@ def getBrands(request,brand=None):
 		data = serializeBrands(brand)
 	return HttpResponse(data,mimetype='application/json')
 #Devuelve informacion sobre todas los modelos disponibles
-
+'''
 @login_required
 def getModels(request,model=None):
 	if model is not None:
 		model = BrandModel.objects.filter(model_name__iexact=model)
-		data = model.values()
 	else:
 		model = BrandModel.objects.all()
-		data = serializeBrandModels(model)
+		data = BrandModelSerializer(model)
 	return HttpResponse(data,content_type='application/json')
 
 
 #Devuelve los ultimos articulos subidos.
 @login_required
 def getNewUploadedArticles(request,group=1,response='html'):
-	uploads = Article.objects.all().order_by('date_posted')
-	articles = Paginator(uploads, group) 
+	articles = Article.objects.all().order_by('-date_posted') 
 	if not (response == 'json'):
 		return render(request,'articleblock.html',{'articles':articles.object_list})
 	else:
-		data = serializeArticle(articles.object_list)
-		return HttpResponse(data,mimetype='application/json')
-
+		data = ArticleSerializer(articles)
+		return JSONResponse(data.data)
 #Devuelve los mas populares (segun cantidad de likes), no ha sido testeado.
 @login_required
 def getMostPopularArticles(request,response='html'):
-	most_liked = Like.objects.all().annotate(like_count=Count('article')).order_by('-like_count')[:10]
-	articles = []
-	for ml in most_liked:
-		articles.append(ml.article)
+	articles = Like.objects.all().annotate(like_count=Count('article')).order_by('-like_count')[:10]
 	if not (response == 'json'):
 		return render(request,'articleblock.html',{'articles':articles})	
 	else:
-		data = serializeArticle(articles)
-		return HttpResponse(data,mimetype='application/json')
+		data = ArticleSerializer(articles)
+		return JSONResponse(data.data)
 
 #Devuelve los articulos más interesantes, segun cantidad de me_interesa.
+	
 @login_required
 def getInterestingArticles(request,response='html'):
 	interesting_articles = Interested.objects.filter(user=request.user)
-	articles = []
-	for ia in interesting_articles:
-		articles.append(interesting_articles.ia)
 	if not (response == 'json'):
-		render(request,'articleblock.html',{'articles':articles})
+		render(request,'articleblock.html',{'articles':interesting_articles})
 	else:
-		data = serializeArticle(articles)
-		return HttpResponse(data,mimetype='application/json')
-	
+		data = ArticleSerializer(interesting_articles)
+		return JSONResponse(data.data)
+
 #Devuelve los archivos subidos por el usuario.
 @login_required
 def getMyArticles(request,response='html'):
 	articles = Article.objects.filter(user=request.user)
-	if not (response == 'json'):
-		return render(request,'articleblock.html',{'articles':articles})
-	else:
-		data = serializeArticle(articles)
-		return HttpResponse(data,mimetype='application/json')
+	if request.method == 'GET':
+		if not (response == 'json'):
+			return render(request,'articleblock.html',{'articles':articles})
+		else:
+			data = ArticleSerializer(articles)
+			return JSONResponse(data.data)
+
 
 
