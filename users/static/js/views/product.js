@@ -31,7 +31,7 @@ module.exports = Backbone.View.extend({
 		var product = this.model.toJSON();
 		var html = this.template(product);
 		this.$el.html(html);
-		var comment =this.model.get("comments");
+		var comment =this.model.get("comment_set");
 		console.log("Funciona");
 		/*this.comment1 = new Comment({
             "avatar" : "../static/img/persona1.png",

@@ -64,7 +64,7 @@ module.exports = Backbone.Router.extend({
 
 		this.userModel.fetch({ 
 			success: function(){
-       			console.log(Backbone.app.userModel);
+       			console.log("Usuario: "+Backbone.app.userModel);
     		}
     	});
 

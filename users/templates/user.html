@@ -17,7 +17,7 @@
 		<div class="notif-bar inline-block">
 			<span class="icon-bell"><span class="notifications"></span></span>
 			<span class="user-name">Ramiro Fernandez</span>
-			<img src="../static/img/persona.jpg" alt="Usuario" class="user-pict inline block">
+			<img src="" alt="Usuario" class="user-pict inline block">
 			<span class="icon-cog"></span>
 		</div>
 		
@@ -101,13 +101,21 @@
 				</div>
 			</div>		
 			<div class="file-browse caja none">
-				<div class="deco"></div>
-				<span class="">Arrastra las fotos de tu articulo aqui</span>
-				<br/>
-				<div class="load-button">
-					<input type="file" value="Submit" class="button relative">
-					Buscar el Archivo
-				</div>
+				<div id= "deco" class="deco">
+					<span class="">Arrastra las fotos de tu articulo aqui</span>
+					<br/>
+					<div class="load-button">
+						<input type="file" id="files" value="Submit" class="button relative" multiple>
+						Buscar el Archivo
+					</div>
+				</div>				
+			</div>
+			<div class="upload-box">
+				<div id="file1" class="img-load"><img src="" alt="Vendabyte" class=""></div>
+				<div id="file2" class="img-load"><img src="" alt="Vendabyte" class=""></div>
+				<div id="file3" class="img-load"><img src="" alt="Vendabyte" class=""></div>
+				<div id="file4" class="img-load"><img src="" alt="Vendabyte" class=""></div>
+				<div id="file5" class="img-load"><img src="" alt="Vendabyte" class=""></div>
 			</div>
 			<ul class="badgets-cont inline-block relative none">
 				<span class="badget-tittle">Mis Badgets</span>
@@ -154,13 +162,13 @@
 	<script id="notification-template" type="text/template">
 			<span class="icon-bell"><span class="notifications">2</span></span>
 			<span class="user-name"><%=username%></span>
-			<img src="../static/img/persona.jpg" alt="Usuario" class="user-pict inline block">
+			<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict inline block">
 			<span class="icon-cog"></span>
   	</script>
 
   	<script id="user-template" type="text/template">
   			<div class="inline-block">
-					<img src="../static/img/persona.jpg" alt="Usuario" class="user-pict block">					
+					<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict block">					
 				</div>					
 				<div class="inline-block">
 					<span class="user-name block"><%=username%></span>

@@ -80,7 +80,7 @@ def getDevices(request,device=None):
 		device = Device.objects.all()
 		data = serializeDevice(device)
 	return HttpResponse(data,mimetype='application/json')
-
+'''
 #Devuelve informacion sobre todas las marcas disponibles
 @login_required
 def getBrands(request,brand=None):
@@ -92,7 +92,25 @@ def getBrands(request,brand=None):
 		data = serializeBrands(brand)
 	return HttpResponse(data,mimetype='application/json')
 #Devuelve informacion sobre todas los modelos disponibles
-'''
+
+@login_required
+def uploadArticle(request):
+	if request.method == 'POST':
+		form = ArticleForm(request.POST)
+		if form.is_valid():
+			article = Article.objects.create(
+				user = request.user,
+				model = getBrandModelInstance(form.clean_data['model']),
+				price = form.clean_data['price'],
+				specs = form.clean_data['specs'],
+			)
+			article.save()
+			getArticlePictures(request,article)
+			return HttpResponseRedirect('/articles/me')
+	else:
+		form = ArticleForm
+		return render(request,'articleform.html',{'form':form})
+
 @login_required
 def getModels(request,model=None):
 	if model is not None:
