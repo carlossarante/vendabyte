@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 from articles.forms import ArticleForm
 from articles.models import Article,ArticlePicture,Interested,Like,BrandModel,Brand,Device
-from articles.serializers import ArticleSerializer, BrandModelSerializer
+from articles.serializers import ArticleSerializer, BrandModelSerializer,BrandSerializer,DeviceSerializer
 
 #articles/new/ Renderiza los últimos posts usando la página articleblock.html en la variable articles, seguido del grupo a renderizar. 
 #Default: /articles/new/1 
@@ -24,9 +24,6 @@ class JSONResponse(HttpResponse):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
         super(JSONResponse, self).__init__(content, **kwargs)
-
-
-'''
 
 #Retorna la instancia de un objeto de dispositivo.
 def getDeviceInstance(device):
@@ -48,7 +45,6 @@ def setArticlePictures(request,article_instance):
 		article_picture.save()
 	return article
 
-
 @login_required
 def uploadArticle(request):
 	if request.method == 'POST':
@@ -66,41 +62,37 @@ def uploadArticle(request):
 	else:
 		form = ArticleForm
 		return render(request,'articleform.html',{'form':form})
-
-
-
 	
+
 #Devuelve informacion sobre todos los tipos de dispositivos.
 @login_required
 def getDevices(request,device=None):
 	if device is not None:
 		device = Device.objects.filter(device_detail__iexact=device) 
-		data = device.values() 
 	else:
 		device = Device.objects.all()
-		data = serializeDevice(device)
-	return HttpResponse(data,mimetype='application/json')
+	data = DeviceSerializer(device)
+	return JSONResponse(data.data)
 
 #Devuelve informacion sobre todas las marcas disponibles
 @login_required
 def getBrands(request,brand=None):
 	if brand is not None:
 		brand = Brand.objects.filter(brand__iexact=brand)
-		data = brand.values()
 	else:
 		brand = Brand.objects.all()
-		data = serializeBrands(brand)
-	return HttpResponse(data,mimetype='application/json')
+	data = BrandSerializer(brand)
+	return JSONResponse(data.data)
 #Devuelve informacion sobre todas los modelos disponibles
-'''
+
 @login_required
 def getModels(request,model=None):
 	if model is not None:
 		model = BrandModel.objects.filter(model_name__iexact=model)
 	else:
 		model = BrandModel.objects.all()
-		data = BrandModelSerializer(model)
-	return HttpResponse(data,content_type='application/json')
+	data = BrandModelSerializer(model)
+	return JSONResponse(data.data)
 
 
 #Devuelve los ultimos articulos subidos.

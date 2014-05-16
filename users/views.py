@@ -10,7 +10,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from django.db.models import Count
 from geographics.views import getCity
-from articles.serializers import serializeArticle
+#from articles.serializers import serializeArticle
 from .models import User
 from .serializers import serializeUser,serializeFollowers
 
@@ -70,7 +70,7 @@ def getCurrentUserArticles(request,response='html'):
 	user = request.user
 	articles = user.article_set.all()
 	if not (response == 'json'):
-		return render(request,'user.html', {'articles':articles,'user':request.user})
+		return render(request,'user.html', {'articles':articles})
 	else:
 		data = serializeArticle(articles)
 		return HttpResponse(data,mimetype='application/json')

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+SALT = '#DFSDF2ij3209d2398udaADASDAsdiajd9a8sd98232131982j98sd9we8jdelkaskda19819djw8wejcw9eddjwdwe9wjdw98ejdwed1932'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -26,6 +27,10 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+
+TEMPLATE_CONTEXT_PROCESSORS = TCP + ('django.core.context_processors.request',
+    'vendabyte.context_processors.getCurrentUser')
 
 # Application definition
 
@@ -121,13 +126,13 @@ STATICFILES_DIRS = (
     os.path.abspath('geographics/static'),
     os.path.abspath('articles/static'),
 )
-
+'''
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': 'c:/Projects/Python/vendabyte/vendabyte/cache',
     }
 }
-
+'''
 
 AUTH_USER_MODEL = 'users.User'
