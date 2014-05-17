@@ -16181,6 +16181,8 @@ $(function(){
 
   function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
+    
+    console.log(document.getElementById("fichero").files = files);
     console.log(files);
     FileReader.prototype.id = 0;
     // Loop through the FileList and render image files as thumbnails.

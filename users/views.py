@@ -11,6 +11,7 @@ from django.conf import settings
 from django.db.models import Count
 from geographics.views import getCity
 from articles.serializers import ArticleSerializer
+#from articles.serializers import serializeArticle
 from .models import User
 from .serializers import serializeUser,serializeFollowers
 
@@ -70,7 +71,7 @@ def getCurrentUserArticles(request,response='html'):
 	user = request.user
 	articles = user.article_set.all()
 	if not (response == 'json'):
-		return render(request,'user.html', {'articles':articles,'user':request.user})
+		return render(request,'user.html', {'articles':articles})
 	else:
 		data = ArticleSerializer(articles)
 		return HttpResponse([data.data],mimetype='application/json')

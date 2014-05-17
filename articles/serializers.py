@@ -11,6 +11,7 @@ class ShortUserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model =User
 		fields = ('id','first_name','last_name','username','photo')
+
 class ArticleSerializer(serializers.ModelSerializer):
 	user = ShortUserSerializer()
 	class Meta:
