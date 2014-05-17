@@ -1,8 +1,10 @@
 # -*- encoding: utf-8 -*-
 from rest_framework.renderers import JSONRenderer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
-
-from django.shortcuts import render, HttpResponse,HttpResponseRedirect
+	
+from django.shortcuts import render, HttpResponse,HttpResponseRedirect,get_object_or_404
 from django.http import StreamingHttpResponse
 from django.db.models import Count
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -10,71 +12,157 @@ from django.contrib.auth.decorators import login_required
 
 from articles.forms import ArticleForm
 from articles.models import Article,ArticlePicture,Interested,Like,BrandModel,Brand,Device
-from articles.serializers import ArticleSerializer, BrandModelSerializer,BrandSerializer,DeviceSerializer
+from articles.serializers import ArticleSerializer, BrandModelSerializer,BrandSerializer,DeviceSerializer,ArticlePictureSerializer,LikeSerializer,CommentSerializer,InterestingSerializer
 
 #articles/new/ Renderiza los últimos posts usando la página articleblock.html en la variable articles, seguido del grupo a renderizar. 
 #Default: /articles/new/1 
 
+#Recibe data y request; renderiza si se pide formato json.
 
-class JSONResponse(HttpResponse):
-    """
-    An HttpResponse that renders its content into JSON.
-    """
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
 
-#Retorna la instancia de un objeto de dispositivo.
-def getDeviceInstance(device):
-	instance = Device.objects.get(device_detail__iexact=device)
-	return device_instance
-#Retorna la instancia de un objecto de marca.
-def getBrandInstance(brand):
-	instance = Brand.objects.get(brand__iexact=brand)
-	return instance
-#Retorna la instancia de un objecto de modelo.
-def getBrandModelInstance(model):
-	instance = BrandModel.objects.get_or_create(model_name__iexact=model)
-	return instance
+def articleRenderizer(request,data):
+	if request.accepted_renderer.format == 'json':
+		serialized = ArticleSerializer(data)
+		return Response(serialized.data)
+	else:  
+		return render(request,'articleblock.html',{'articles':data})
 
-def setArticlePictures(request,article_instance):
-	article_picture_set = request.FILES.getlist(u'picture_set') #Mandar un arreglo de archivos con esta variable.
-	for picture in article_picture_set:
-		article_picture = ArticlesPicture(article=article_instance,art_img=picture)
-		article_picture.save()
-	return article
+def uploadArticleForm(request):
+	form = ArticleForm()
+	return render (request,'articleform.html',{'form':form})
 
+
+#Creacion, edicion, consulta y eliminacion de articulos.
+@api_view(['GET','POST','PUT','DELETE'])
 @login_required
-def uploadArticle(request):
+def articleDetail(request,pk=None):
+	article = get_object_or_404(Article,id=pk)
+	if request.method == 'DELETE':
+		article.delete()
+		return Response(status=status.HTTP_204_NO_CONTENT)
+	if request.method == 'GET':
+		return articleRenderizer(request,article)
+	elif request.method == 'POST':
+		article_uploaded = ArticleSerializer(data=request.DATA)
+		if article_uploaded.is_valid():
+			article_uploaded.save()
+			return Response(article_uploaded.data,status=status.HTTP_201_CREATED)
+		return Response(article_uploaded.errors,status=status.HTTP_400_BAD_REQUEST)
+	elif request.method == 'PUT':
+		article_uploaded = ArticleSerializer(Article, data=request.DATA)
+        if article_uploaded.is_valid():
+            article_uploaded.save()
+            return Response(article_uploaded.data)
+        return Response(article_uploaded.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST','GET'])
+@login_required
+def articlePictureManager(request,pk):
+	article = Article.objects.get(id=pk)
 	if request.method == 'POST':
-		form = ArticleForm(request.POST)
-		if form.is_valid():
-			article = Article.objects.create(
-				user = request.user,
-				model = getBrandModelInstance(form.clean_data['model']),
-				price = form.clean_data['price'],
-				specs = form.clean_data['specs'],
-			)
-			article.save()
-			getArticlePictures(request,article)
-			return HttpResponseRedirect('/articles/me')
-	else:
-		form = ArticleForm
-		return render(request,'articleform.html',{'form':form})
-	
+		article_uploaded = ArticleSerializer(data=request.DATA)
+		if article_uploaded.is_valid():
+			article_uploaded.save()
+			return Response(article_uploaded.data,status=status.HTTP_201_CREATED)	
+		return Response(article_uploaded.errors,status=status.HTTP_400_BAD_REQUEST)
+	elif request.method == 'GET':
+		article_pictures = article.articlepicture_set.all()
+		return Response(article_pictures.data)
+
+@api_view(['POST','GET'])
+@login_required
+def LikeManager(request,pk):
+	article = Article.objects.get(id=pk)
+	if request.method == 'POST':
+		like = LikeSerializer(data=request.DATA)
+		if like.is_valid():
+			like.save()
+			return Response(like.data,status=status.HTTP_201_CREATED)	
+		return Response(like.errors,status=status.HTTP_400_BAD_REQUEST)
+	elif request.method == 'GET':
+		likes = article.like_set.all()
+		article_likes = LikeSerializer(likes)
+		return Response(article_likes.data)
+
+
+@api_view(['POST','GET'])
+@login_required
+def CommentManager(request,pk):
+	article = Article.objects.get(id=pk)
+	if request.method == 'POST':
+		comment = CommentSerializer(data=request.DATA)
+		if comment.is_valid():
+			comment.save()
+			return Response(comment.data,status=status.HTTP_201_CREATED)	
+		return Response(comment.errors,status=status.HTTP_400_BAD_REQUEST)
+	elif request.method == 'GET':
+		comments = article.comment_set.all()
+		article_comments = CommentSerializer(comments)
+		return Response(article_comments.data)
+
+@api_view(['POST','GET'])
+@login_required
+def InterestingManager(request,pk):
+	article = Article.objects.get(id=pk)
+	if request.method == 'POST':
+		interested = InterestedSerializer(data=request.DATA)
+		if article_uploaded.is_valid():
+			article_uploaded.save()
+			return Response(article_uploaded.data,status=status.HTTP_201_CREATED)	
+		return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+	elif request.method == 'GET':
+		interesting_articles = article.interested_set.all()
+		article_interested = InterestingSerializer(interesting_articles)
+		return Response(article_interested.data)
+
+
+
+@api_view(['GET'])
+@login_required
+def articlePictureManager(request,pk):
+	article = Article.objects.get(id=pk)
+	if request.method == 'POST':
+		article_uploaded = LikeSerializer(data=request.DATA)
+		if article_uploaded.is_valid():
+			article_uploaded.save()
+			return Response(article_uploaded.data,status=status.HTTP_201_CREATED)	
+		return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+	elif request.method == 'GET':
+		article_pictures = article.articlepicture_set.all()
+		return Response(article_pictures.data)
+
+
+#Trabaja con listas.
+@api_view(['GET'])
+@login_required
+def articleList(request,group=1):
+	articles = Article.objects.all().order_by('-date_posted')
+	article_list = Paginator(articles,10)
+	articles = article_list.page(group).object_list
+	if request.method == 'GET':
+		if request.accepted_renderer.format == 'json':
+			serialized = ArticleSerializer(articles)
+			return Response(serialized.data)
+		else:  
+			return render(request,'articleblock.html',{'articles':articles})
+
+
+
 
 #Devuelve informacion sobre todos los tipos de dispositivos.
+@api_view(['GET'])
 @login_required
 def getDevices(request,device=None):
 	if device is not None:
-		device = Device.objects.filter(device_detail__iexact=device) 
+		device = Device.objects.filter(device_detail__iexact=device)
 	else:
 		device = Device.objects.all()
 	data = DeviceSerializer(device)
-	return JSONResponse(data.data)
+	return Response(data.data)
 
 #Devuelve informacion sobre todas las marcas disponibles
+@api_view(['GET'])
 @login_required
 def getBrands(request,brand=None):
 	if brand is not None:
@@ -82,59 +170,47 @@ def getBrands(request,brand=None):
 	else:
 		brand = Brand.objects.all()
 	data = BrandSerializer(brand)
-	return JSONResponse(data.data)
+	return Response(data.data)
 #Devuelve informacion sobre todas los modelos disponibles
 
+@api_view(['GET'])
 @login_required
-def getModels(request,model=None):
-	if model is not None:
-		model = BrandModel.objects.filter(model_name__iexact=model)
+def getModels(request,brand = None):
+	if brand is not None:
+		brand_selected = get_object_or_404(Brand,brand__iexact=brand)
+		models = brand_selected.brandmodel_set.all()
 	else:
-		model = BrandModel.objects.all()
-	data = BrandModelSerializer(model)
-	return JSONResponse(data.data)
+		models = BrandModel.objects.all()
+	data = BrandModelSerializer(models)
+	return Response(data.data)
+	
 
 
 #Devuelve los ultimos articulos subidos.
+@api_view(['GET'])
 @login_required
-def getNewUploadedArticles(request,group=1,response='html'):
+def getNewUploadedArticles(request,group=1):
 	articles = Article.objects.all().order_by('-date_posted') 
-	if not (response == 'json'):
-		return render(request,'articleblock.html',{'articles':articles.object_list})
-	else:
-		data = ArticleSerializer(articles)
-		return JSONResponse(data.data)
+	data = Paginator(articles,group).object_list
+	return articleRenderizer(request,data)
+
+	
 #Devuelve los mas populares (segun cantidad de likes), no ha sido testeado.
+@api_view(['GET'])
 @login_required
 def getMostPopularArticles(request,response='html'):
-	articles = Like.objects.all().annotate(like_count=Count('article')).order_by('-like_count')[:10]
-	if not (response == 'json'):
-		return render(request,'articleblock.html',{'articles':articles})	
-	else:
-		data = ArticleSerializer(articles)
-		return JSONResponse(data.data)
-
+	data = Like.objects.all().annotate(like_count=Count('article')).order_by('-like_count')[:10]
+	return articleRenderizer(request,data)
 #Devuelve los articulos más interesantes, segun cantidad de me_interesa.
 	
+@api_view(['GET'])
 @login_required
-def getInterestingArticles(request,response='html'):
+def getInterestingArticles(request,response='htl'):
 	interesting_articles = Interested.objects.filter(user=request.user)
-	if not (response == 'json'):
-		render(request,'articleblock.html',{'articles':interesting_articles})
-	else:
-		data = ArticleSerializer(interesting_articles)
-		return JSONResponse(data.data)
-
+	return articleRenderizer(request,data)
 #Devuelve los archivos subidos por el usuario.
+@api_view(['GET'])
 @login_required
 def getMyArticles(request,response='html'):
 	articles = Article.objects.filter(user=request.user)
-	if request.method == 'GET':
-		if not (response == 'json'):
-			return render(request,'articleblock.html',{'articles':articles})
-		else:
-			data = ArticleSerializer(articles)
-			return JSONResponse(data.data)
-
-
-
+	return articleRenderizer(request,articles)
