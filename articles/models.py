@@ -54,7 +54,7 @@ class Comment(models.Model):
 class Like(models.Model):
 	article = models.ForeignKey(Article)
 	user = models.ForeignKey(User)
-
+ 
 	def __unicode__(self):
 		return ('%s %s',self.article,self.user)
 		

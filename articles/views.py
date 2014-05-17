@@ -158,49 +158,10 @@ def getDevices(request,device=None):
 		device = Device.objects.filter(device_detail__iexact=device)
 	else:
 		device = Device.objects.all()
-<<<<<<< HEAD
 		data = serializeDevice(device)
 	return HttpResponse(data,mimetype='application/json')
-'''
-=======
-	data = DeviceSerializer(device)
-	return Response(data.data)
 
->>>>>>> 9a4e56d2120778c89a2b20df1a81a7cd0a13004e
-#Devuelve informacion sobre todas las marcas disponibles
 @api_view(['GET'])
-@login_required
-def getBrands(request,brand=None):
-	if brand is not None:
-		brand = Brand.objects.filter(brand__iexact=brand)
-	else:
-		brand = Brand.objects.all()
-	data = BrandSerializer(brand)
-	return Response(data.data)
-#Devuelve informacion sobre todas los modelos disponibles
-
-<<<<<<< HEAD
-@login_required
-def uploadArticle(request):
-	if request.method == 'POST':
-		form = ArticleForm(request.POST)
-		if form.is_valid():
-			article = Article.objects.create(
-				user = request.user,
-				model = getBrandModelInstance(form.clean_data['model']),
-				price = form.clean_data['price'],
-				specs = form.clean_data['specs'],
-			)
-			article.save()
-			getArticlePictures(request,article)
-			return HttpResponseRedirect('/articles/me')
-	else:
-		form = ArticleForm
-		return render(request,'articleform.html',{'form':form})
-
-=======
-@api_view(['GET'])
->>>>>>> 9a4e56d2120778c89a2b20df1a81a7cd0a13004e
 @login_required
 def getModels(request,brand = None):
 	if brand is not None:
@@ -241,3 +202,46 @@ def getInterestingArticles(request,response='htl'):
 def getMyArticles(request,response='html'):
 	articles = Article.objects.filter(user=request.user)
 	return articleRenderizer(request,articles)
+
+
+@api_view(['GET'])
+@login_required
+def getBrands(request,brand=None):
+	if brand is not None:
+		brand = Brand.objects.filter(brand__iexact=brand)
+	else:
+		brand = Brand.objects.all()
+	data = BrandSerializer(brand)
+	return Response(data.data)
+#Devuelve informacion sobre todas los modelos disponibles
+
+
+'''
+=======
+	data = DeviceSerializer(device)
+	return Response(data.data)
+
+>>>>>>> 9a4e56d2120778c89a2b20df1a81a7cd0a13004e
+#Devuelve informacion sobre todas las marcas disponibles
+
+<<<<<<< HEAD
+@login_required
+def uploadArticle(request):
+	if request.method == 'POST':
+		form = ArticleForm(request.POST)
+		if form.is_valid():
+			article = Article.objects.create(
+				user = request.user,
+				model = getBrandModelInstance(form.clean_data['model']),
+				price = form.clean_data['price'],
+				specs = form.clean_data['specs'],
+			)
+			article.save()
+			getArticlePictures(request,article)
+			return HttpResponseRedirect('/articles/me')
+	else:
+		form = ArticleForm
+		return render(request,'articleform.html',{'form':form})
+
+=======
+'''
