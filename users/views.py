@@ -55,7 +55,7 @@ def loginUser(request,response='html'):
 
 
 #Retorna el usuario que está authenticado.
-@login_required #Necesita login para realizarse, sino dará una respuesta de redirección a la página principal para loguearse. 
+#@login_required #Necesita login para realizarse, sino dará una respuesta de redirección a la página principal para loguearse. 
 def getCurrentUser(request,response='html'):
 	user = request.user
 	if not (response == 'json'):
