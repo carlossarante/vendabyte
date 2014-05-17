@@ -1,199 +1,102 @@
 <!DOCTYPE html>
 <html>
 <head>
-	{% load staticfiles %}
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Vendabyte</title>
-	<link rel="stylesheet" href="{% static 'css/user.css'%}">
+<title>Facebook Login JavaScript Example</title>
+<meta charset="UTF-8">
 </head>
 <body>
-	<header class="header relative">		
-		<figure class="logo-cont">
-			<img src="{% static 'img/logo.jpg'%}" alt="Vendabyte" class="logo">
-		</figure>
-		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
-		<!--<div class="log-in">Iniciar Seción</div>-->
-		<div class="notif-bar inline-block">
-			<span class="icon-bell"><span class="notifications">2</span></span>
-			<span class="user-name">Ramiro Fernandez</span>
-			<img src="../static/img/persona.jpg" alt="Usuario" class="user-pict inline block">
-			<span class="icon-cog"></span>
-		</div>
-		
+<script>
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into Facebook.';
+    }
+  }
 
-	</header><!-- /header -->
-	<figure class="portada-cont relative none">
-			<img src="{% static 'img/portada.png'%}" alt="Vendabyte" class="portada">
-		</figure>
-	<section class="wrapper relative">		
-		<section class="offers-sect absolute">			
-			<section class="followers-sect none">
-				<li class="follower-cont inline-block relative">
-					<div class="inline-block">
-						<img src="{% static 'img/persona.jpg'%}" alt="Usuario" class="user-pict block">
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>	
-					</div>					
-					<div class="inline-block">
-						<span class="user-name">Ramiro Fernandez</span>
-						<div class="deco-count">
-							<span class="following-count">200</span>
-							<span class="following">Siguiendo</span>
-						</div>
-						<div class="deco-count">
-							<span class="followers-count">20</span>	
-							<span class="followers">Seguidores</span>
-						</div>						
-						<div class="follow-user">Seguir</div>
-					</div>
-				</li>		
-				<li class="follower-cont inline-block relative">
-					<div class="inline-block">
-						<img src="{% static 'img/persona.jpg'%}" alt="Usuario" class="user-pict block">
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>	
-					</div>					
-					<div class="inline-block">
-						<span class="user-name">Ramiro Fernandez</span>
-						<div class="deco-count">
-							<span class="following-count">200</span>
-							<span class="following">Siguiendo</span>
-						</div>
-						<div class="deco-count">
-							<span class="followers-count">20</span>	
-							<span class="followers">Seguidores</span>
-						</div>						
-						<div class="follow-user">Seguir</div>
-					</div>
-				</li>		
-			</section>	
-			<section class="products none">
-				{% block articles %} {% endblock %}
-				
-			</section>
-		</section>
-		<section class="load-sect relative">
-			<div class="user-cont inline-block relative none">
-				<div class="inline-block">
-					<img src="{% static 'img/persona.jpg'%}" alt="Usuario" class="user-pict block">					
-				</div>					
-				<div class="inline-block">
-					<span class="user-name block">Ramiro Fernandez</span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>	
-					<br/>
-					<div id="deco1"class="deco-count">
-						<span class="following-count">200</span>
-						<span class="following">Siguiendo</span>
-					</div>
-					<div class="deco-count">
-						<span class="followers-count">20</span>	
-						<span class="followers">Seguidores</span>
-					</div>
-				</div>
-			</div>		
-			<div class="file-browse caja none">
-				<div class="deco"></div>
-				<span class="">Arrastra las fotos de tu articulo aqui</span>
-				<br/>
-				<div class="load-button">
-					<input type="file" value="Submit" class="button relative">
-					Buscar el Archivo
-				</div>
-			</div>
-			<ul class="badgets-cont inline-block relative none">
-				<span class="badget-tittle">Mis Badgets</span>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
 
-			</ul>
-			<ul class="options-menu inline-block none">
-				<li id="newest" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Nuevo</span>
-				</li>
-				<li id="following" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Siguiendo</span>
-				</li>
-				<li id="followers" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Seguidores</span>
-				</li>
-				<li id="popular" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Popular</span>
-				</li>
-				<li id="interesting" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Me interesa</span>
-				</li>
-				<li id="selling" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Lo vendo</span>
-				</li>
-			</ul>
-		</section>				
-	</section>
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '212602532249853',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.0' // use version 2.0
+  });
 
-	<script id="product-template" type="text/template">
-			<div class="user inline-block">
-				<img src="<%=avatar%>" alt="Usuario" class="user-pict block">
-				<a href="" class="follow block">Seguir</a>	
-			</div>					
-			<section class="art-cont inline-block">
-				<span class="user-name block"><%=user%></span>
-				<span class="product-name inline-block"><%=product%></span>
-				<p class="description inline-block"><%=description%></p>
-				<section class="art-desc relative">
-					<figure class="art-pict">
-						<img src="<%=cover%>" alt="Vendabyte" class="">
-					</figure>
-					<span class="precio absolute">RD$<%=precio%></span>
-					<span class="add-cart absolute icon-plus"></span>	
-					<div class="actions">
-						<span class="interest">Me interesa</span>	
-						<span class="action icon-heart"></span>	
-						<span class="action icon-bubble"></span>	
-						<span class="action icon-share"></span>		
-					</div>
-				</section>
-				<section class="comment-cont">					
-				</section>
-			</section>	
-  	</script>
-  	 <script id="comment-template" type="text/template">
-			<div class="user inline-block">
-				<img src="<%=avatar%>" alt="Vendabyte" class="user-pict">
-			</div>
-			<div class="inline-block">
-				<a class="person" href="<%=user%>" title="<%=user%>"><%=user%></a>
-				<span class="fecha"><%=date%></span>
-				<p class="opinion">
-					<%=comment%>
-				</p>
-			</div>
-  	</script>
+  // Now that we've initialized the JavaScript SDK, we call 
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
 
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
 
-	<script src="{% static 'lib/modernizr-2.6.2-respond-1.1.0.min.js'%}" type="text/javascript"></script>
-	<script src="{% static 'js/app.js'%}" type="text/javascript"></script>
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Good to see you, ' + response.name + '.');
+      document.getElementById('status').innerHTML = 'Good to see you, ' +
+        response.name;
+    });
+  }
+</script>
+
+<!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
+
+<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+</fb:login-button>
+
+<div id="status">
+</div>
+
 </body>
 </html>

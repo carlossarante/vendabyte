@@ -2,56 +2,91 @@ var Backbone 		= require('backbone'),
 	//Handlebars 	= require('handlebars'),
 	$ 				= require('jquery'),
 	Product 		= require('../models/product'),
-	Gost 			= require('../models/gost')
+	Follower 		= require('../models/follower'),
+	Gost 			= require('../models/gost'),
+	SessionModel 	= require('../models/sessionmodel'),
+	UserModel 		= require('../models/user'),	
 	Products 		= require('../collections/products'),
+	Followers 		= require('../collections/followers'),
 	ProductsView 	= require('../views/products'),
-	OptionsView 	= require('../views/options');
+	OptionsView 	= require('../views/options'),	
+	FollowersView 	= require('../views/followers'),
+	UserProfileView = require('../views/userprofile'),
+	NotificationsView = require('../views/notificationbar');
 
 module.exports = Backbone.Router.extend({
 	routes: {
-		"" : "user",
-		"lonuevo" : "loNuevo",
-		"siguiendo" : "siguiendo",
-		"seguidores" : "seguidores",
-		"popular" : "popular",
-		"meinteresa" : "meInteresa",
-		"lovendo" : "loVendo",
+		"" 				: "user",
+		"lonuevo" 		: "loNuevo",
+		"siguiendo" 	: "siguiendo",
+		"seguidores" 	: "seguidores",
+		"popular" 		: "popular",
+		"meinteresa" 	: "meInteresa",
+		"lovendo" 		: "loVendo",
+		"me" 			: "user",
 		"product/:name" : "product" 
 	},
 
 	initialize : function(){
+		this.activeSession = new SessionModel();
+      	console.log('authorized after create (should be false):', this.activeSession.isAuthorized());
 		this.current = {};
 		this.jsonData = {};
-		this.product1 = new Product({
-		    "product": "Iphone5",
+		/*this.product1 = new Product({
+		    "model": "Iphone5",
 		    "cover": "../static/img/ima3.jpg",
-		    "precio": "35,000",
+		    "price": "35,000",
 		    "avatar" : "../static/img/persona1.png",
-		    "description" : "Muy vacano",
+		    "short_description" : "Muy vacano",
 		    "user" : "Carlos Sarante"
 		});
 		this.product2 = new Product({
-		    "product": "Iphone5",
+		    "model": "Iphone5",
 		    "cover": "../static/img/ima3.jpg",
-		    "precio": "35,000",
+		    "price": "35,000",
 		    "avatar" : "../static/img/persona1.png",
-		    "description" : "Muy vacano",
+		    "short_description" : "Muy vacano",
 		    "user" : "Ramiro Fernandez"
-		});
+		});*/
+		this.userModel = new UserModel();
+		this.userModel.urlRoot = "/users/me/json";
+		this.userModel.set({"username" : "mao"});
+		/*$.get( "/users/me/json", function(data) {
+			 	for (var x in data)
+			 	{
+			 		Backbone.app.userModel.set(data[x]);
+			 	}
+			});*/
+		this.userProfileView = new UserProfileView({model: this.userModel});
+		this.userProfileView.render();
+		this.notificationsView = new NotificationsView({model : this.userModel});
+		this.notificationsView.render();
+
+		this.userModel.fetch({ 
+			success: function(){
+       			console.log("Usuario: "+Backbone.app.userModel);
+    		}
+    	});
+
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
 		this.productsView.render();
-		this.products.add(this.product2);
-		this.products.add(this.product1);
+
+        this.followers = new Followers();
+        this.followersView = new FollowersView({ collection : this.followers});  
+        this.followersView.render();
 
 		this.optionsView = new OptionsView({ model : new Gost({}) });	
 
-		Backbone.history.start();
+		Backbone.history.start({ 
+    		pushState: true, 
+    		root: '/users/me'
+		});
 	},
 
 	index : function(){
 		console.log("Estoy en el index");
-		this.fetchData();		
+		//this.fetchData();		
 	},
 
 	loNuevo : function(){
@@ -70,14 +105,13 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');	
 
-		$.get( "/articles/brands/samsung/", function(data) {
-			 	console.log( data[0].models[0] );
-			})
-			.done(function() {
-				Backbone.app.productsView.render();
-			})
-			.fail(function() {
-			});
+		this.products.reset();
+		this.products.url = "./articles/json";
+		this.products.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
+    		}
+    	});
 	},
 
 	siguiendo : function(){
@@ -95,6 +129,14 @@ module.exports = Backbone.Router.extend({
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
 		followerSect.removeClass('none');
+
+		this.followers.reset();
+		this.followers.url = "./following/json";
+		this.followers.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.followers.length + ' personas a quienes sigues');
+    		}
+    	});
 	},
 
 	seguidores : function(){
@@ -112,6 +154,14 @@ module.exports = Backbone.Router.extend({
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
 		followerSect.removeClass('none');
+
+		this.followers.reset();
+		this.followers.url = "./followers/json";
+		this.followers.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.followers.length + ' seguidores');
+    		}
+    	});
 	},
 
 	popular : function(){
@@ -129,6 +179,14 @@ module.exports = Backbone.Router.extend({
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
 		followerSect.addClass('none');
+
+		this.products.reset();
+		this.products.url = "./articles/json";
+		this.products.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
+    		}
+    	});
 	},
 
 	meInteresa : function(){
@@ -147,6 +205,14 @@ module.exports = Backbone.Router.extend({
 		badgets.addClass('none');
 		followerSect.addClass('none');
 
+		this.products.reset();
+		this.products.url = "./articles/json";
+		this.products.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
+    		}
+    	});
+
 	},
 
 	loVendo : function(){
@@ -164,6 +230,14 @@ module.exports = Backbone.Router.extend({
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
 		followerSect.addClass('none');
+
+		this.products.reset();
+		this.products.url = "./articles/json";
+		this.products.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
+    		}
+    	});
 	},
 
 	user : function(){
@@ -176,6 +250,8 @@ module.exports = Backbone.Router.extend({
 		products.removeClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
+
+		this.loNuevo();
 	},
 
 	activeOpt : function(el){
@@ -183,24 +259,12 @@ module.exports = Backbone.Router.extend({
 		el.addClass('active');
 	},
 
-	product : function(name){
-		console.log("Esto es un producto");
-	},
-
 	fetchData : function(){
 		var self = this;
 
 		return $.getJSON('data.json').then(function (data) {
-      	self.jsonData = data;      	
-      	console.log(data);
-      	self.products.add( new Product(self.jsonData));
-
-      	for (var name in data) {
-	        if (data.hasOwnProperty(name)) {
-	         // self.addAlbum(name, data[name]);
-	        }
-	    }
-	});
-		
-	}
+	      	self.jsonData = data;
+	      	self.products.add( new Product(self.jsonData));
+		});		
+	},
 });

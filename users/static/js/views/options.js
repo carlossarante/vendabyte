@@ -36,8 +36,7 @@ module.exports = Backbone.View.extend({
 	},
 
 	following : function(h){
-
-		Backbone.app.navigate("/siguiendo",{trigger : true});
+		Backbone.app.navigate("siguiendo",{trigger : true});
 		
 	},
 	followers : function(h){

@@ -3,5 +3,5 @@ var Backbone = require('backbone'),
 
 
 module.exports = Backbone.Collection.extend({ 
-	model : Product 
+	model : Product ,
 });
