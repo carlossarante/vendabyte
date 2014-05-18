@@ -1,6 +1,9 @@
+# -*- encoding: utf-8 -*-
+
 from django.db import models
 from django.utils import timezone
 from users.models import User
+from django.utils.encoding import smart_unicode
 
 class Device(models.Model):
 	device_detail = models.CharField(max_length=30)
@@ -31,7 +34,7 @@ class Article(models.Model):
 
 
 	def __unicode__(self):
-		return (('%s by %s') % (self.model.model_name,self.user.username))
+		return (('%s by %s') % (self.model.model_name,smart_unicode(self.user.username)))
 	
 	def getLikeCount(self):
 		return self.like_set.all().count()
@@ -56,7 +59,7 @@ class Like(models.Model):
 	user = models.ForeignKey(User)
  
 	def __unicode__(self):
-		return ('%s %s',self.article,self.user)
+		return (('%s %s')% (self.article,smart_unicode(self.user)))
 		
 class Interested(models.Model):
 	article = models.ForeignKey(Article)

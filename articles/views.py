@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 
 from articles.forms import ArticleForm
-from articles.models import Article,ArticlePicture,Interested,Like,BrandModel,Brand,Device
+from articles.models import Article,ArticlePicture,Interested,Like,BrandModel,Brand,Device,Comment,Like
 from articles.serializers import ArticleSerializer, BrandModelSerializer,BrandSerializer,DeviceSerializer,ArticlePictureSerializer,LikeSerializer,CommentSerializer,InterestingSerializer
 
 #articles/new/ Renderiza los últimos posts usando la página articleblock.html en la variable articles, seguido del grupo a renderizar. 
@@ -73,7 +73,7 @@ def articlePictureManager(request,pk):
 @api_view(['POST','GET'])
 @login_required
 def LikeManager(request,pk):
-	article = Article.objects.get(id=pk)
+	like = get_object_or_404(Like,id=pk)
 	if request.method == 'POST':
 		like = LikeSerializer(data=request.DATA)
 		if like.is_valid():
@@ -81,15 +81,14 @@ def LikeManager(request,pk):
 			return Response(like.data,status=status.HTTP_201_CREATED)	
 		return Response(like.errors,status=status.HTTP_400_BAD_REQUEST)
 	elif request.method == 'GET':
-		likes = article.like_set.all()
-		article_likes = LikeSerializer(likes)
+		article_likes = LikeSerializer(like)
 		return Response(article_likes.data)
 
 
 @api_view(['POST','GET'])
 @login_required
 def CommentManager(request,pk):
-	article = Article.objects.get(id=pk)
+	comment = get_object_or_404(Comment,id=pk)
 	if request.method == 'POST':
 		comment = CommentSerializer(data=request.DATA)
 		if comment.is_valid():
@@ -97,14 +96,13 @@ def CommentManager(request,pk):
 			return Response(comment.data,status=status.HTTP_201_CREATED)	
 		return Response(comment.errors,status=status.HTTP_400_BAD_REQUEST)
 	elif request.method == 'GET':
-		comments = article.comment_set.all()
-		article_comments = CommentSerializer(comments)
+		article_comments = CommentSerializer(comment)
 		return Response(article_comments.data)
 
 @api_view(['POST','GET'])
 @login_required
 def InterestingManager(request,pk):
-	article = Article.objects.get(id=pk)
+	interesting = get_object_or_404(Interested,id=pk)
 	if request.method == 'POST':
 		interested = InterestedSerializer(data=request.DATA)
 		if article_uploaded.is_valid():
@@ -112,8 +110,7 @@ def InterestingManager(request,pk):
 			return Response(article_uploaded.data,status=status.HTTP_201_CREATED)	
 		return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 	elif request.method == 'GET':
-		interesting_articles = article.interested_set.all()
-		article_interested = InterestingSerializer(interesting_articles)
+		article_interested = InterestingSerializer(interesting)
 		return Response(article_interested.data)
 
 
@@ -140,14 +137,7 @@ def articleList(request,group=1):
 	articles = Article.objects.all().order_by('-date_posted')
 	article_list = Paginator(articles,10)
 	articles = article_list.page(group).object_list
-	if request.method == 'GET':
-		if request.accepted_renderer.format == 'json':
-			serialized = ArticleSerializer(articles)
-			return Response(serialized.data)
-		else:  
-			return render(request,'articleblock.html',{'articles':articles})
-
-
+	return articleRenderizer(request,articles)
 
 
 #Devuelve informacion sobre todos los tipos de dispositivos.
@@ -155,12 +145,12 @@ def articleList(request,group=1):
 @login_required
 def getDevices(request,device=None):
 	if device is not None:
-		device = Device.objects.filter(device_detail__iexact=device)
+		device = Device.objects.get(device_detail=device)
+		data = BrandSerializer(device.brand_set.all())
 	else:
 		device = Device.objects.all()
-		data = serializeDevice(device)
-	return HttpResponse(data,mimetype='application/json')
-
+		data = DeviceSerializer(device)
+	return Response(data.data)
 @api_view(['GET'])
 @login_required
 def getModels(request,brand = None):
@@ -186,20 +176,21 @@ def getNewUploadedArticles(request,group=1):
 #Devuelve los mas populares (segun cantidad de likes), no ha sido testeado.
 @api_view(['GET'])
 @login_required
-def getMostPopularArticles(request,response='html'):
-	data = Like.objects.all().annotate(like_count=Count('article')).order_by('-like_count')[:10]
+def getMostPopularArticles(request):
+	data = Article.objects.all().annotate(like_count=Count('like')).order_by('-like_count')[:10]
 	return articleRenderizer(request,data)
-#Devuelve los articulos más interesantes, segun cantidad de me_interesa.
-	
+#Devuelve los articulos más interesantes, segun cantidad de me_gusta.
+
 @api_view(['GET'])
 @login_required
-def getInterestingArticles(request,response='htl'):
+def getInterestingArticles(request):
 	interesting_articles = Interested.objects.filter(user=request.user)
-	return articleRenderizer(request,data)
+	return articleRenderizer(request,interesting_articles)
+
 #Devuelve los archivos subidos por el usuario.
 @api_view(['GET'])
 @login_required
-def getMyArticles(request,response='html'):
+def getMyArticles(request):
 	articles = Article.objects.filter(user=request.user)
 	return articleRenderizer(request,articles)
 
@@ -215,33 +206,3 @@ def getBrands(request,brand=None):
 	return Response(data.data)
 #Devuelve informacion sobre todas los modelos disponibles
 
-
-'''
-=======
-	data = DeviceSerializer(device)
-	return Response(data.data)
-
->>>>>>> 9a4e56d2120778c89a2b20df1a81a7cd0a13004e
-#Devuelve informacion sobre todas las marcas disponibles
-
-<<<<<<< HEAD
-@login_required
-def uploadArticle(request):
-	if request.method == 'POST':
-		form = ArticleForm(request.POST)
-		if form.is_valid():
-			article = Article.objects.create(
-				user = request.user,
-				model = getBrandModelInstance(form.clean_data['model']),
-				price = form.clean_data['price'],
-				specs = form.clean_data['specs'],
-			)
-			article.save()
-			getArticlePictures(request,article)
-			return HttpResponseRedirect('/articles/me')
-	else:
-		form = ArticleForm
-		return render(request,'articleform.html',{'form':form})
-
-=======
-'''
