@@ -3,6 +3,7 @@ from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_objec
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -56,7 +57,7 @@ def authenticateInsecure(fbid):
 	except User.DoesNotExist:
 		return None
 
-
+@csrf_exempt
 def loginUser(request,response='html'):
 	#username = request.POST['username']
 	facebook_uid = request.POST['facebook_uid']
