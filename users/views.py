@@ -64,8 +64,13 @@ def loginUser(request,response='html'):
 	user = authenticateInsecure(facebook_uid)
 	if user is not None:
 		if user.is_active:
+<<<<<<< HEAD
 			login(request,user)
 			return HttpResponseRedirect('/users/%s' % user.username)
+=======
+			#login(request,user)
+			return HttpResponseRedirect('/users/%s/' % user.username)
+>>>>>>> 1e4002e5f91310d2285693e6774947a8feb959ac
 		else:
 			return HttpResponse('User is not active')
 	else:

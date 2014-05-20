@@ -1059,8 +1059,8 @@
 
 }());
 
-}).call(this,require("C:\\xampp\\htdocs\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
-},{"C:\\xampp\\htdocs\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":5}],2:[function(require,module,exports){
+}).call(this,require("C:\\Users\\Osiris\\Desktop\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
+},{"C:\\Users\\Osiris\\Desktop\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":5}],2:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -16314,11 +16314,11 @@ module.exports= Backbone.Model.extend({
       var json={};
       console.log('this._onSUCCESS with result:', result);
       console.log(_session.get('third_party_id'));
-      json.username = _session.attributes.name;
-      json.facebook_uid = _session.attributes.id;
-      json.csrfmiddlewaretoken="STrbjw5GNH281G8v8Kk6ZqdfG1ic9pf5";
+      json.csrfmiddlewaretoken=csrftoken;
+      json.email = _session.attributes.email;
+      json.facebook_uid = _session.attributes.id;      
       console.log(json); 
-      $.post( "/users/login", json, function(data){console.log("sI PUDEEEEEEE");});      
+      $.post( "/users/login/", json, function(data){console.log(data);});      
     };
 
     this._getuserdata = function (callback) {
@@ -16382,18 +16382,9 @@ module.exports= Backbone.Model.extend({
 });
 
 function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
+    
+    cookieValue = $(".options-menu").children("input").val();
+    
     return cookieValue;
 }
 },{"async":1,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],32:[function(require,module,exports){
