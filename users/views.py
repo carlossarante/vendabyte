@@ -1,20 +1,32 @@
 # -*- encoding: utf-8 -*-
+from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
-from django.core.files import File
-from django.core.files.temp import NamedTemporaryFile
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, HttpResponseRedirect,HttpResponse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 from django.db.models import Count
-from geographics.views import getCity
-from articles.serializers import ArticleSerializer
-#from articles.serializers import serializeArticle
-from .models import User
-from .serializers import serializeUser,serializeFollowers
 
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from geographics.views import getCity
+
+from articles.serializers import ArticleSerializer
+
+from users.models import User
+from users.serializers import UserSerializer
+
+def getUserIndex(request):
+	return render(request,'user.html')
+
+def userRenderizer(request,data):
+	if request.accepted_renderer.format == 'json':
+		serialized = UserSerializer(data)
+		return Response(serialized.data)
+	else:  
+		return render(request,'user.html',{'users':data})
 
 #Registra usuario mediante facebook. Funciona enviando un JSON a /users/create/ siguiendo los parametros especificados.
 
@@ -57,39 +69,44 @@ def loginUser(request,response='html'):
 
 #Retorna el usuario que está authenticado.
 #@login_required #Necesita login para realizarse, sino dará una respuesta de redirección a la página principal para loguearse. 
-def getCurrentUser(request,response='html'):
-	user = request.user
-	if not (response == 'json'):
-		return render(request,'user.html', {'user':request.user})
-	else:
-		data = serializeUser([user,])
-		return HttpResponse(data,mimetype='application/json')
-
-
+@api_view(['GET'])
 @login_required
-def getCurrentUserArticles(request,response='html'):
-	user = request.user
-	articles = user.article_set.all()
-	if not (response == 'json'):
-		return render(request,'user.html', {'articles':articles})
-	else:
-		data = ArticleSerializer(articles)
-		return HttpResponse([data.data],mimetype='application/json')
-
-@login_required
-def getCurrentUserFollows(request,response='html'):
+def getCurrentUserFollows(request):
 	following = request.user.follows.all()
-	if not (response == 'json'):
-		return render(request,'user.html', {'following':following,'user':request.user}) #list.html seria el template que lista los usuarios.
-	else:
-		data = serializeFollowers(following)
-		return HttpResponse(data,mimetype='application/json')
-
+	return userRenderizer(request,following)
+@api_view(['GET'])
 @login_required
-def getCurrentUserFollowers(request,response='html'):
+def getCurrentUserFollowers(request):
 	followers = User.objects.filter(follows=request.user)
-	if not (response == 'json'):
-		return render(request,'user.html', {'followers':followers,'user':request.user}) #list.html seria el template que lista los usuarios.
+	return userRenderizer(request,followers)
+
+@api_view(['GET','POST','DELETE','PUT'])
+def userManager(request,pk=None,username=None):
+	if username is not None:
+		user = get_object_or_404(User,username=username)
+	elif pk is not None:
+		user=get_object_or_404(User,id=pk)
 	else:
-		data = serializeFollowers(followers)
-		return HttpResponse(data,mimetype='application/json')
+		user = request.User
+	
+	if request.method == 'POST':
+		user = UserSerializer(data=request.DATA)
+		if comment.is_valid():
+			comment.save()
+			return Response(comment.data,status=status.HTTP_201_CREATED)	
+		return Response(article_uploaded.errors,status=status.HTTP_400_BAD_REQUEST)
+	
+	elif request.method == 'GET':
+		return userRenderizer(request,user)
+	
+	elif request.method == 'DELETE':
+		return Response(status=status.HTTP_204_NO_CONTENT)
+	
+	elif request.method == 'PUT':
+		updated_user = UserSerializer(user,data=request.DATA)
+		if updated_user.is_valid():
+			updated_user.save()
+			return Response(comment.data,status=status.HTTP_201_CREATED)	
+		return Response(article_uploaded.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
