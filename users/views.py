@@ -65,12 +65,12 @@ def loginUser(request,response='html'):
 	if user is not None:
 		if user.is_active:
 			login(request,user)
-			HttpResponseRedirect('/users/%s' % user.username)
+			return HttpResponseRedirect('/users/%s' % user.username)
 		else:
 			return HttpResponse('User is not active')
 	else:
 		try: 
-			User.objects.get(username=username)
+			#User.objects.get(username=username)
 			return HttpResponse('Wrong Password')
 		except User.DoesNotExist:
 			return HttpResponse('User Does not Exist')	
