@@ -50,10 +50,10 @@ def articleDetail(request,pk=None):
 		return Response(article_uploaded.errors,status=status.HTTP_400_BAD_REQUEST)
 	elif request.method == 'PUT':
 		article_uploaded = ArticleSerializer(Article, data=request.DATA)
-        if article_uploaded.is_valid():
-            article_uploaded.save()
-            return Response(article_uploaded.data)
-        return Response(article_uploaded.errors, status=status.HTTP_400_BAD_REQUEST)
+		if article_uploaded.is_valid():
+			article_uploaded.save()
+			return Response(article_uploaded.data)
+		return Response(article_uploaded.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST','GET'])
@@ -158,15 +158,12 @@ def getDevices(request,device=None):
 		device = Device.objects.filter(device_detail__iexact=device)
 	else:
 		device = Device.objects.all()
-<<<<<<< HEAD
 		data = serializeDevice(device)
-	return HttpResponse(data,mimetype='application/json')
-'''
-=======
+		return HttpResponse(data,mimetype='application/json')
+
 	data = DeviceSerializer(device)
 	return Response(data.data)
 
->>>>>>> 9a4e56d2120778c89a2b20df1a81a7cd0a13004e
 #Devuelve informacion sobre todas las marcas disponibles
 @api_view(['GET'])
 @login_required
@@ -179,7 +176,6 @@ def getBrands(request,brand=None):
 	return Response(data.data)
 #Devuelve informacion sobre todas los modelos disponibles
 
-<<<<<<< HEAD
 @login_required
 def uploadArticle(request):
 	if request.method == 'POST':
@@ -198,9 +194,7 @@ def uploadArticle(request):
 		form = ArticleForm
 		return render(request,'articleform.html',{'form':form})
 
-=======
 @api_view(['GET'])
->>>>>>> 9a4e56d2120778c89a2b20df1a81a7cd0a13004e
 @login_required
 def getModels(request,brand = None):
 	if brand is not None:

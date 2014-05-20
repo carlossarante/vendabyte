@@ -44,15 +44,18 @@ module.exports = Backbone.View.extend({
 		
 	},
 	popular : function(h){
-		Backbone.app.navigate("popular",{trigger : true});
+		console.log(Backbone.app.activeSession.isAuthorized());
+		//Backbone.app.navigate("popular",{trigger : true});
 		
 	},
 	interesting : function(h){
-		Backbone.app.navigate("meinteresa",{trigger : true});
+		Backbone.app.activeSession.logout();
+		//Backbone.app.navigate("meinteresa",{trigger : true});
 		
 	},
 	selling : function(h){
-		Backbone.app.navigate("lovendo",{trigger : true});
+		Backbone.app.activeSession.login();
+		//Backbone.app.navigate("lovendo",{trigger : true});
 		
 	},
 
