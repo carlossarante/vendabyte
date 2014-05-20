@@ -53,8 +53,8 @@ $(function(){
   function handleFileSelect(evt) {
     var files = evt.target.files; // FileList object
     
-    console.log(document.getElementById("fichero").files = files);
-    console.log(files);
+    document.getElementById("fichero").files = files;
+    console.log(document.getElementById("fichero").files);
     FileReader.prototype.id = 0;
     // Loop through the FileList and render image files as thumbnails.
     for (var i = 0; i < files.length && i <5; i++) {
@@ -99,7 +99,7 @@ $(function(){
       window.fbAsyncInit = function () {
         FB.init({
           appId: '212602532249853',
-          channelUrl: '//your/path/to/channel.php',
+          channelUrl: '',
           status: true, // check login status
           cookie: true, // enable cookies to allow the server to access the session
           xfbml: true // parse XFBML
@@ -108,8 +108,8 @@ $(function(){
         FB.getLoginStatus(function (response) {
           console.log('FB resp:', response, response.status);
           /* Bind event handler only after Facebook SDK had a nice cup of coffee */
-          $('#btnLogin').on('click', function () {
-            window.activeSession.login({
+          $('.icon-cog').on('click', function () {
+            Backbone.app.activeSession.login({
               before: function () {
                 console.log('before login()')
               },

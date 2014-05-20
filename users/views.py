@@ -72,12 +72,12 @@ def loginUser(request,response='html'):
 @api_view(['GET'])
 @login_required
 def getCurrentUserFollows(request):
-	following = request.user.follows.all()
+	following = User.objects.filter(follows=request.user)
 	return userRenderizer(request,following)
 @api_view(['GET'])
 @login_required
 def getCurrentUserFollowers(request):
-	followers = User.objects.filter(follows=request.user)
+	followers = request.user.follows.all()
 	return userRenderizer(request,followers)
 
 @api_view(['GET','POST','DELETE','PUT'])

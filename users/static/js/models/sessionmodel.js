@@ -2,7 +2,7 @@ var Backbone  = require('backbone'),
   Handlebars  = require('handlebars'),
   $           = require('jquery'),
   _           = require('underscore'),
-  Async       = require('async');
+  async       = require('async');
 
 module.exports= Backbone.Model.extend({
   defaults: {
@@ -20,13 +20,15 @@ module.exports= Backbone.Model.extend({
 
   logout: function () {
     /* destroy session */
-    window.activeSession.id = "";
-    window.activeSession.clear();
+    Backbone.app.activeSession.id = "";
+    Backbone.app.activeSession.clear();
+    FB.logout();
     console.log('logout done!');
   },
 
   login: function (opts) {
     console.log('#########\n login called.\n###########');
+    //console.log(opts);
 
     /* run optional passed user func */
     opts.before && opts.before();
@@ -38,9 +40,17 @@ module.exports= Backbone.Model.extend({
     this._onERROR = function () {
       console.log('this._onERROR with result:', result);
     };
+    
     this._onSUCCESS = function (result) {
+      var csrftoken = getCookie('csrftoken');
+      var json={};
       console.log('this._onSUCCESS with result:', result);
       console.log(_session.get('third_party_id'));
+      json.username = _session.attributes.name;
+      json.facebook_uid = _session.attributes.id;
+      json.csrfmiddlewaretoken="STrbjw5GNH281G8v8Kk6ZqdfG1ic9pf5";
+      console.log(json); 
+      $.post( "/users/login", json, function(data){console.log("sI PUDEEEEEEE");});      
     };
 
     this._getuserdata = function (callback) {
@@ -78,6 +88,8 @@ module.exports= Backbone.Model.extend({
     }
 
     FB.login(function (response) {
+      console.log("vive vive")
+      console.log(response);
       if (response.authResponse) {
         console.log('Fetching authResponse information.... ');
 
@@ -100,3 +112,19 @@ module.exports= Backbone.Model.extend({
   }
 
 });
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

@@ -50,10 +50,10 @@ def articleDetail(request,pk=None):
 		return Response(article_uploaded.errors,status=status.HTTP_400_BAD_REQUEST)
 	elif request.method == 'PUT':
 		article_uploaded = ArticleSerializer(Article, data=request.DATA)
-        if article_uploaded.is_valid():
-            article_uploaded.save()
-            return Response(article_uploaded.data)
-        return Response(article_uploaded.errors, status=status.HTTP_400_BAD_REQUEST)
+		if article_uploaded.is_valid():
+			article_uploaded.save()
+			return Response(article_uploaded.data)
+		return Response(article_uploaded.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST','GET'])
@@ -149,8 +149,47 @@ def getDevices(request,device=None):
 		data = BrandSerializer(device.brand_set.all())
 	else:
 		device = Device.objects.all()
+<<<<<<< HEAD
+		data = serializeDevice(device)
+		return HttpResponse(data,mimetype='application/json')
+
+	data = DeviceSerializer(device)
+	return Response(data.data)
+
+#Devuelve informacion sobre todas las marcas disponibles
+@api_view(['GET'])
+@login_required
+def getBrands(request,brand=None):
+	if brand is not None:
+		brand = Brand.objects.filter(brand__iexact=brand)
+	else:
+		brand = Brand.objects.all()
+	data = BrandSerializer(brand)
+	return Response(data.data)
+#Devuelve informacion sobre todas los modelos disponibles
+
+@login_required
+def uploadArticle(request):
+	if request.method == 'POST':
+		form = ArticleForm(request.POST)
+		if form.is_valid():
+			article = Article.objects.create(
+				user = request.user,
+				model = getBrandModelInstance(form.clean_data['model']),
+				price = form.clean_data['price'],
+				specs = form.clean_data['specs'],
+			)
+			article.save()
+			getArticlePictures(request,article)
+			return HttpResponseRedirect('/articles/me')
+	else:
+		form = ArticleForm
+		return render(request,'articleform.html',{'form':form})
+
+=======
 		data = DeviceSerializer(device)
 	return Response(data.data)
+>>>>>>> 61bcbe4a5a66f5188bcc9ea68a01bd515c73822b
 @api_view(['GET'])
 @login_required
 def getModels(request,brand = None):
@@ -192,6 +231,9 @@ def getInterestingArticles(request):
 @login_required
 def getMyArticles(request):
 	articles = Article.objects.filter(user=request.user)
+<<<<<<< HEAD
+	return articleRenderizer(request,articles)
+=======
 	return articleRenderizer(request,articles)
 
 
@@ -206,3 +248,4 @@ def getBrands(request,brand=None):
 	return Response(data.data)
 #Devuelve informacion sobre todas los modelos disponibles
 
+>>>>>>> 61bcbe4a5a66f5188bcc9ea68a01bd515c73822b
