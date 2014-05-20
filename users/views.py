@@ -42,17 +42,25 @@ def registerUser(request):
 			)
 		u.facebook_uid = request.POST['facebook_uid'] #El id de facebook se le asigna al usuario, esto es para el login.
 		u.set_password('%s%s%s' % (u.id,u.facebook_uid,settings.SALT)) #La clave se crea con SALT, el id de facebook y el id creado.
-		u.photo = getPicture(request['photo']) #photo sería la URL que apunta a su foto de facebook.
-		u.cover = getPicture(request.POST['cover']) #cover sería la url del cover.
+		#u.photo = getPicture(request['photo']) #photo sería la URL que apunta a su foto de facebook.
+		#u.cover = getPicture(request.POST['cover']) #cover sería la url del cover.
 		u.save() #Finalmente, logueamos el usuario.
 		return loginUser(request,'html') #Si todo sale bien, entonces redirige a la página del usuario creado, usando loginUser()
 	except ValueError:	 #Retorna el error.
 		return HttpResponse('Error creating the user')
 
+def authenticateInsecure(fbid):
+	try:
+		user = User.objects.get(facebook_uid=fbid)
+		return user
+	except User.DoesNotExist:
+		return None
+
+
 def loginUser(request,response='html'):
-	username = request.POST['username']
+	#username = request.POST['username']
 	facebook_uid = request.POST['facebook_uid']
-	user = authenticate(username=username,facebook_uid=facebook_uid)
+	user = authenticateInsecure(facebook_uid=facebook_uid)
 	if user is not None:
 		if user.is_active:
 			login(request,user)

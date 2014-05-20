@@ -149,7 +149,6 @@ def getDevices(request,device=None):
 		data = BrandSerializer(device.brand_set.all())
 	else:
 		device = Device.objects.all()
-<<<<<<< HEAD
 		data = serializeDevice(device)
 		return HttpResponse(data,mimetype='application/json')
 
@@ -186,10 +185,6 @@ def uploadArticle(request):
 		form = ArticleForm
 		return render(request,'articleform.html',{'form':form})
 
-=======
-		data = DeviceSerializer(device)
-	return Response(data.data)
->>>>>>> 61bcbe4a5a66f5188bcc9ea68a01bd515c73822b
 @api_view(['GET'])
 @login_required
 def getModels(request,brand = None):
@@ -231,9 +226,7 @@ def getInterestingArticles(request):
 @login_required
 def getMyArticles(request):
 	articles = Article.objects.filter(user=request.user)
-<<<<<<< HEAD
 	return articleRenderizer(request,articles)
-=======
 	return articleRenderizer(request,articles)
 
 
@@ -248,4 +241,3 @@ def getBrands(request,brand=None):
 	return Response(data.data)
 #Devuelve informacion sobre todas los modelos disponibles
 
->>>>>>> 61bcbe4a5a66f5188bcc9ea68a01bd515c73822b
