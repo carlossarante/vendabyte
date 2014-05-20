@@ -61,7 +61,7 @@ def authenticateInsecure(fbid):
 def loginUser(request,response='html'):
 	#username = request.POST['username']
 	facebook_uid = request.POST['facebook_uid']
-	user = authenticateInsecure(facebook_uid=facebook_uid)
+	user = authenticateInsecure(facebook_uid)
 	if user is not None:
 		if user.is_active:
 			login(request,user)
