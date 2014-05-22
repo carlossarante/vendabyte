@@ -29,6 +29,9 @@ class User(AbstractBaseUser):
 	is_superuser = models.BooleanField(default=False)
 	facebook_uid= models.PositiveIntegerField(blank=True)
 	
+	def get_absolute_url(self):
+		return ('/users/%s/') % self.username
+
 	def __unicode__(self):
 		return (('%s %s') % (self.first_name,self.last_name))
 	def get_full_name(self):

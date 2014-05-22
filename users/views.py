@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404
+from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404,redirect
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -59,18 +59,14 @@ def authenticateInsecure(fbid):
 
 @csrf_exempt
 def loginUser(request,response='html'):
-	#username = request.POST['username']
-	facebook_uid = request.POST['facebook_uid']
-	user = authenticateInsecure(facebook_uid)
-	if user is not None:
-		if user.is_active:
-<<<<<<< HEAD
-			login(request,user)
-			return HttpResponseRedirect('/users/%s' % user.username)
-=======
-			#login(request,user)
-			return HttpResponseRedirect('/users/%s/' % user.username)
->>>>>>> 1e4002e5f91310d2285693e6774947a8feb959ac
+	if request.method == 'POST': 
+		email = request.POST['email']
+		facebook_uid = request.POST['facebook_uid']
+		user = authenticate(email=email,facebook_uid=facebook_uid)
+		if user is not None:
+			if user.is_active:
+				login(request,user)
+				return redirect(user)
 		else:
 			return HttpResponse('User is not active')
 	else:
