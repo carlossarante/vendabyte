@@ -46,11 +46,17 @@ module.exports= Backbone.Model.extend({
       var json={};
       console.log('this._onSUCCESS with result:', result);
       console.log(_session.get('third_party_id'));
+<<<<<<< HEAD
       json.email = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;
       json.csrfmiddlewaretoken="STrbjw5GNH281G8v8Kk6ZqdfG1ic9pf5";
+=======
+      json.csrfmiddlewaretoken=csrftoken;
+      json.email = _session.attributes.email;
+      json.facebook_uid = _session.attributes.id;      
+>>>>>>> 7080cd80d81f9d881c074bc9dd4d2428c1566f23
       console.log(json); 
-      $.post( "/users/login", json, function(data){console.log("sI PUDEEEEEEE");});      
+      $.post( "/users/login/", json, function(data){console.log(data);});      
     };
 
     this._getuserdata = function (callback) {
@@ -114,17 +120,8 @@ module.exports= Backbone.Model.extend({
 });
 
 function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
+    
+    cookieValue = $(".options-menu").children("input").val();
+    
     return cookieValue;
 }

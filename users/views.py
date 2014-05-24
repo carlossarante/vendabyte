@@ -1,8 +1,9 @@
 # -*- encoding: utf-8 -*-
-from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404
+from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404,redirect
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -42,26 +43,35 @@ def registerUser(request):
 			)
 		u.facebook_uid = request.POST['facebook_uid'] #El id de facebook se le asigna al usuario, esto es para el login.
 		u.set_password('%s%s%s' % (u.id,u.facebook_uid,settings.SALT)) #La clave se crea con SALT, el id de facebook y el id creado.
-		u.photo = getPicture(request['photo']) #photo sería la URL que apunta a su foto de facebook.
-		u.cover = getPicture(request.POST['cover']) #cover sería la url del cover.
+		#u.photo = getPicture(request['photo']) #photo sería la URL que apunta a su foto de facebook.
+		#u.cover = getPicture(request.POST['cover']) #cover sería la url del cover.
 		u.save() #Finalmente, logueamos el usuario.
 		return loginUser(request,'html') #Si todo sale bien, entonces redirige a la página del usuario creado, usando loginUser()
 	except ValueError:	 #Retorna el error.
 		return HttpResponse('Error creating the user')
 
+def authenticateInsecure(fbid):
+	try:
+		user = User.objects.get(facebook_uid=fbid)
+		return user
+	except User.DoesNotExist:
+		return None
+
+@csrf_exempt
 def loginUser(request,response='html'):
-	username = request.POST['username']
-	facebook_uid = request.POST['facebook_uid']
-	user = authenticate(username=username,facebook_uid=facebook_uid)
-	if user is not None:
-		if user.is_active:
-			login(request,user)
-			HttpResponseRedirect('/users/%s' % user.username)
+	if request.method == 'POST': 
+		email = request.POST['email']
+		facebook_uid = request.POST['facebook_uid']
+		user = authenticate(email=email,facebook_uid=facebook_uid)
+		if user is not None:
+			if user.is_active:
+				login(request,user)
+				return redirect(user)
 		else:
 			return HttpResponse('User is not active')
 	else:
 		try: 
-			User.objects.get(username=username)
+			#User.objects.get(username=username)
 			return HttpResponse('Wrong Password')
 		except User.DoesNotExist:
 			return HttpResponse('User Does not Exist')	
@@ -72,12 +82,12 @@ def loginUser(request,response='html'):
 @api_view(['GET'])
 @login_required
 def getCurrentUserFollows(request):
-	following = request.user.follows.all()
+	following = User.objects.filter(follows=request.user)
 	return userRenderizer(request,following)
 @api_view(['GET'])
 @login_required
 def getCurrentUserFollowers(request):
-	followers = User.objects.filter(follows=request.user)
+	followers = request.user.follows.all()
 	return userRenderizer(request,followers)
 
 @api_view(['GET','POST','DELETE','PUT'])
