@@ -16308,13 +16308,13 @@ module.exports= Backbone.Model.extend({
     this._onERROR = function () {
       console.log('this._onERROR with result:', result);
     };
-    
+
     this._onSUCCESS = function (result) {
       var csrftoken = getCookie('csrftoken');
       var json={};
       console.log('this._onSUCCESS with result:', result);
       console.log(_session.get('third_party_id'));
-      json.username = _session.attributes.name;
+      json.username = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;
       json.csrfmiddlewaretoken="STrbjw5GNH281G8v8Kk6ZqdfG1ic9pf5";
       console.log(json); 
