@@ -12,11 +12,17 @@ class ShortUserSerializer(serializers.ModelSerializer):
 		model =User
 		fields = ('id','first_name','last_name','username','photo')
 
+
+class CommentSerializer(serializers.ModelSerializer):
+	class Meta:	
+		model = Comment
+
 class ArticleSerializer(serializers.ModelSerializer):
 	user = ShortUserSerializer()
+	comment_set = CommentSerializer()
 	class Meta:
 		model = Article
-		fields = ('model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set')
+		fields = ('id','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set')
 
 class BrandSerializer(serializers.ModelSerializer):
 	class Meta:
