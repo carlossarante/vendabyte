@@ -11,5 +11,6 @@ router.register('badgets',BadgetSet)
 
 
 urlpatterns = patterns('',
-    url(r'^', include(router.urls)),
+	url(r'^$', 'users.views.userIndex'), 
+    url(r'^api/', include(router.urls)),
 )   

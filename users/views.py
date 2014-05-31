@@ -16,6 +16,10 @@ from django.db.models import Count
 from users.models import User,Badgets,Contact
 from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
 
+
+def userIndex(request):
+	return render(request,'user.html')
+
 class UserSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer

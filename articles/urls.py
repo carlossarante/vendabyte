@@ -12,6 +12,7 @@ router.register('comment',CommentSet)
 router.register('models',BrandModelSet)
 
 urlpatterns = patterns('',
-    url(r'^', include(router.urls)),
+    url(r'^$', 'articles.views.articleIndex'),
+    url(r'^api/', include(router.urls)),
 )   
 

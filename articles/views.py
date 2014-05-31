@@ -1,12 +1,15 @@
 # -*- encoding: utf-8 -*-
 from rest_framework import viewsets
 
+from django.shortcuts import render
 
 from articles.forms import ArticleForm
 from articles.models import Article,ArticlePicture,Interested,Like,BrandModel,Brand,Device,Comment,Like
 from articles.serializers import ArticleSerializer, BrandModelSerializer,BrandSerializer,DeviceSerializer,ArticlePictureSerializer,LikeSerializer,CommentSerializer,InterestingSerializer
 
 
+def articleIndex(request):
+	return render(request,'articles.html')
 
 class ArticleSet(viewsets.ModelViewSet):
 	queryset = Article.objects.all()
