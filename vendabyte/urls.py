@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'vendabyte.views.home', name='home'),
     url(r'^articles/', include('articles.urls')),
+    url(r'^geographics/', include('geographics.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^users/',include('users.urls')),
 )

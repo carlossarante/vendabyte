@@ -1,17 +1,15 @@
 from django.conf.urls import patterns, include, url
-from articles.views import ArticleSet,CommentSet,BrandModelSet
 
+from geographics.views import CitySet,ProvinceSet
 from rest_framework.routers import DefaultRouter
 
 # Create a router and register our viewsets with it.
 
 router = DefaultRouter()
 
-router.register('article',ArticleSet)
-router.register('comment',CommentSet)
-router.register('models',BrandModelSet)
+router.register('cities',CitySet)
+router.register('provinces',ProvinceSet)
 
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
 )   
-
