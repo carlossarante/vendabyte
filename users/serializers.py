@@ -7,7 +7,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 	city = CitySerializer()
 	class Meta:
 		model = User
-		fields = ('first_name','last_name','birthday','username','photo','cover','city','rating','medals','following',)
+		fields = ('id','first_name','last_name','birthday','username','photo','cover','city','rating','medals','following',)
 
 
 class BadgetSerializer(serializers.HyperlinkedModelSerializer):

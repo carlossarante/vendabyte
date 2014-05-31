@@ -22,11 +22,15 @@ class ShortUserSerializer(serializers.ModelSerializer):
 		model =User
 		fields = ('id','first_name','last_name','username','photo')
 
+class BrandModelSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = BrandModel
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 	user = ShortUserSerializer()
 	comment_set = CommentSerializer()
+	model = BrandModelSerializer()
 	class Meta:
 		model = Article
 		fields = ('id','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set')
@@ -36,9 +40,6 @@ class BrandSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Brand
 
-class BrandModelSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = BrandModel
 
 class DeviceSerializer(serializers.ModelSerializer):
 	class Meta:
