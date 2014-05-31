@@ -23,6 +23,7 @@ SECRET_KEY = '1u_oe&^1uyz+6qi)9z37be58%k7+3r$9bzi^gj1+$6r_b&-#ke'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -65,6 +66,10 @@ WSGI_APPLICATION = 'vendabyte.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
+AUTHENTICATION_BACKENDS = (
+    'vendabyte.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 #Base de datos en desarrollo
 DATABASES = {

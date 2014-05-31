@@ -1,11 +1,16 @@
 from django.shortcuts import render
+
+from rest_framework import viewsets
+
 from .models import Province,City
+from .serializers import CitySerializer,ProvinceSerializer
 
 
-def getCity(city,province):
-	city, is_created = City.objects.get_or_create(city_name__iexact=city,province=getProvince(province))
-	return p
+class ProvinceSet(viewsets.ModelViewSet):
+	queryset = Province.objects.all()
+	serializer_class = ProvinceSerializer
 
-def Province(province):
-	province, is_created = Province.objects.get_or_create(province_name__iexact=province)
-	return p
+
+class CitySet(viewsets.ModelViewSet):
+	queryset = City.objects.all()
+	serializer_class = CitySerializer

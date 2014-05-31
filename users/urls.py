@@ -1,10 +1,15 @@
+from rest_framework.routers import DefaultRouter
 from django.conf.urls import patterns, include, url
 
+from users.views import UserSet,ContactSet,BadgetSet
+
+router = DefaultRouter()
+
+router.register('user',UserSet)
+router.register('contact',ContactSet)
+router.register('badgets',BadgetSet)
+
+
 urlpatterns = patterns('',
-    url(r'^me/following/$', 'users.views.getCurrentUserFollows'),
-    url(r'^me/followers/$', 'users.views.getCurrentUserFollowers'),
-    url(r'^me/$', 'users.views.getUserIndex'),
-    url(r'^login/$', 'users.views.loginUser'),
-    url(r'^(?P<username>[a-z0-9_-]{3,50})/$', 'users.views.userManager'),
-    url(r'^(?P<pk>\d+)/$', 'users.views.userManager'),
-)
+    url(r'^', include(router.urls)),
+)   

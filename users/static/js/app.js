@@ -16314,15 +16314,12 @@ module.exports= Backbone.Model.extend({
       var json={};
       console.log('this._onSUCCESS with result:', result);
       console.log(_session.get('third_party_id'));
-<<<<<<< HEAD
       json.username = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;
       json.csrfmiddlewaretoken="STrbjw5GNH281G8v8Kk6ZqdfG1ic9pf5";
-=======
       json.csrfmiddlewaretoken=csrftoken;
       json.email = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;      
->>>>>>> 7080cd80d81f9d881c074bc9dd4d2428c1566f23
       console.log(json); 
       $.post( "/users/login/", json, function(data){console.log(data);});      
     };
