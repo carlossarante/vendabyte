@@ -1,10 +1,11 @@
 var Backbone = require('backbone'),
-	Router = require('./routers/router'),
-	$ = require('jquery');
-	Backbone.$ = $;
+	  Router = require('./routers/router'),
+	  $ = require('jquery');
+	  Backbone.$ = $;
 
 $(function(){
   Backbone.app = new Router();
+  window.vendabyte = Backbone.app;
 });
 
   function handleFileDropped(evt) {
@@ -36,8 +37,8 @@ $(function(){
 
       //Read in the image file as a data URL.
       reader.readAsDataURL(f);
+    }
   }
-}
 
   function handleDragOver(evt) {
     evt.stopPropagation();
@@ -51,37 +52,42 @@ $(function(){
   dropZone.addEventListener('drop', handleFileDropped, false);
 
   function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-    
-    document.getElementById("fichero").files = files;
-    console.log(document.getElementById("fichero").files);
-    FileReader.prototype.id = 0;
-    // Loop through the FileList and render image files as thumbnails.
-    for (var i = 0; i < files.length && i <5; i++) {
-      var f = files[i];
-      // Only process image files.
-      if (!f.type.match('image.*')) {
-        continue;
-      }      
-      var reader = new FileReader();
-      reader.id = i+1;
-      console.log(reader);
+    filesIn = evt.target.files; // FileList object
+    //$.post( "/users/login/", filesIn[0], function(data){console.log(data);});
+    reader = new FileReader(); //FileReader object
 
-      // Closure to capture the file information.
-      reader.onload = function (e){
-        console.log("estos si es loco  " + files.length);
-        $("#file"+e.target.id).children('img').attr({
-            src: ''+e.target.result,
-        });
-      }
+    if (!filesIn[0].type.match('image.*')) {
+        alert("Solo se permiten archivos de imagen");
+        return;
+      } 
 
-      //Read in the image file as a data URL.
-      reader.readAsDataURL(f);
+    if(filesIn.cont <5)
+    {
+
+      //$(".upload-box").prepend('<input id="file'+ (filesIn.cont+1) +'" type="file" class="block">');
+      //input = document.getElementById('file'+(filesIn.cont + 1));
+      //input.files = filesIn;
+      formData.append('file'+(filesIn.cont +1),filesIn);
+      FileList.prototype.cont += 1;
     }
+    else{
+      alert("Solo puede elegir 5 fotos");
+    }     
+
+    reader.onload = function (e){
+      console.log(reader.result);
+      $("#thumbnail"+filesIn.cont).children('img').attr({
+          src: ''+e.target.result,
+      });
+    }
+
+    reader.readAsDataURL(formData.get("file"+(filesIn.cont +1)));    
   }
-
+  FileReader.prototype.id = 0;
+  FileList.prototype.cont = 0;
+  var formData = new FormData();
+  window.formData = formData;
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
 
 (function (d) {
         var js, id = 'facebook-jssdk',
@@ -108,7 +114,7 @@ $(function(){
         FB.getLoginStatus(function (response) {
           console.log('FB resp:', response, response.status);
           /* Bind event handler only after Facebook SDK had a nice cup of coffee */
-          $('.icon-cog').on('click', function () {
+         /*$('.icon-cog').on('click', function () {
             Backbone.app.activeSession.login({
               before: function () {
                 console.log('before login()')
@@ -117,7 +123,6 @@ $(function(){
                 console.log('after login()')
               }
             });
-          });
+          });*/
         });
-
       };

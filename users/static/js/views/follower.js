@@ -10,10 +10,6 @@ module.exports = Backbone.View.extend({
 	className : 'follower-cont inline-block relative',
 
 	events : {
-		'click .action.icon-share' : 'share',
-		'click .action.icon-bubble' : 'comment',
-		'click .action.icon-heart' : 'love',
-		'click .add-cart.absolute.icon-plus' : 'addCart'
 	},
 
 	template : _.template($("#follower-template").html()),
@@ -28,22 +24,6 @@ module.exports = Backbone.View.extend({
 		this.$el.html(html);
 
 		return this;
-	},
-
-	share : function(){
-		alert("Se utilizara para compartir");
-	},
-
-	addCart : function(){
-		alert("Se utilizara para añadir al carrito");
-	},
-
-	comment : function(){
-		alert("Se utilizara para comentar");
-	},
-
-	love : function(){
-		alert("Se utilizara para añadir a favoritos");
 	},
 
 	navigate : function (){

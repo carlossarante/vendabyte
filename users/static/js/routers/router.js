@@ -32,41 +32,19 @@ module.exports = Backbone.Router.extend({
       	console.log('authorized after create (should be false):', this.activeSession.isAuthorized());
 		this.current = {};
 		this.jsonData = {};
-		/*this.product1 = new Product({
-		    "model": "Iphone5",
-		    "cover": "../static/img/ima3.jpg",
-		    "price": "35,000",
-		    "avatar" : "../static/img/persona1.png",
-		    "short_description" : "Muy vacano",
-		    "user" : "Carlos Sarante"
-		});
-		this.product2 = new Product({
-		    "model": "Iphone5",
-		    "cover": "../static/img/ima3.jpg",
-		    "price": "35,000",
-		    "avatar" : "../static/img/persona1.png",
-		    "short_description" : "Muy vacano",
-		    "user" : "Ramiro Fernandez"
-		});*/
-		this.userModel = new UserModel();
-		this.userModel.urlRoot = "/users/me/json";
-		this.userModel.set({"username" : "mao"});
-		/*$.get( "/users/me/json", function(data) {
-			 	for (var x in data)
-			 	{
-			 		Backbone.app.userModel.set(data[x]);
-			 	}
-			});*/
-		this.userProfileView = new UserProfileView({model: this.userModel});
-		this.userProfileView.render();
-		this.notificationsView = new NotificationsView({model : this.userModel});
-		this.notificationsView.render();
 
-		this.userModel.fetch({ 
+
+		this.userModel = new UserModel();
+		//this.userModel.urlRoot = "/users/me/json";
+		this.userProfileView = new UserProfileView({model: this.userModel});
+		this.notificationsView = new NotificationsView({model : this.userModel});
+		//this.userModel.set({"username" : "mao"});
+
+		/*this.userModel.fetch({ 
 			success: function(){
        			console.log("Usuario: "+Backbone.app.userModel);
     		}
-    	});
+    	});*/
 
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
@@ -106,7 +84,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "./articles/json";
+		this.products.url = "/articles/list/popular/?format=json";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -131,7 +109,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.removeClass('none');
 
 		this.followers.reset();
-		this.followers.url = "./following/json";
+		this.followers.url = "./following/?format=json";
 		this.followers.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.followers.length + ' personas a quienes sigues');
@@ -181,7 +159,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "./articles/json";
+		this.products.url = "articles/list/popular/?format=json";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -267,4 +245,28 @@ module.exports = Backbone.Router.extend({
 	      	self.products.add( new Product(self.jsonData));
 		});		
 	},
+
+	csrftoken : function(name){
+	    var cookieValue = null;
+	    if (document.cookie && document.cookie != '') {
+	        var cookies = document.cookie.split(';');
+	        for (var i = 0; i < cookies.length; i++) {
+	            var cookie = jQuery.trim(cookies[i]);
+	            // Does this cookie string begin with the name we want?
+	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                break;
+	            }
+	        }
+	    }
+	    return cookieValue;
+	},
+
+
+	/*function() {
+    
+	    cookieValue = $(".options-menu").children("input").val();
+	    
+	    return cookieValue;
+	},*/
 });

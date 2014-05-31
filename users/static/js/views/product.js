@@ -46,6 +46,7 @@ module.exports = Backbone.View.extend({
             "date" : "26/5/2014"
         });*/
         this.comments = new Comments();
+        this.comments.url = "/articles/comment/1/";
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
@@ -69,46 +70,24 @@ module.exports = Backbone.View.extend({
 		}
 		else{
 			this.$el.children('section').children('.comment-box').css('display', 'none');
-		}
-
-		
+		}		
 	},
 	
 	addComment : function(){
-		var ar1,ar2,x;
+		var x;
 
-		console.log(Backbone.app.products);
-		/*this.comment3 = new Comment({
-            "id": 3,
-            "user": {
-            	"photo": "/media/users/",
-            	"name": "Marcos Perez",
-            	"username": "marcustetra",
-            	"date_posted": "2014/5/13 16:9"
-            },
-            "device_detail": "Epa que jevy"
-        });*/        
         x = {
             //"id": 3,
-            "user": {
-            	"photo": "/media/users/",
-            	"name": Backbone.app.userModel.get("username"),
-            	"username": "marcustetra",
-            	"date_posted": "2014/5/13 16:9"
-            },
-            "device_detail": this.$el.children('section').children('.comment-box').children('.comment-text').val()
+            "user": 1,
+            "comment": this.$el.children('section').children('.comment-box').children('.comment-text').val(),
+        	"date_posted":"25/04/2014",
+        	"article": this.model.id,
+        	"csrfmiddlewaretoken": Backbone.app.csrftoken('csrftoken'),
         };
-        ar2= [];
-        ar2.push(x);
-        ar1 = this.model.get("comments").concat(ar2);
-        console.log(ar1);
-       
-   		this.model.set({comments:ar1});
-        this.render;
-
-        //this.comments.add(this.comment3);
-        //this.model.set({"comments":this.comments.models});
-        //this.model
+        this.comments.add(new Comment(x));
+        this.comment=_.last(this.comments.models);
+        this.comment.unset("date_posted",{silent:"true"});
+        this.comment.save();
 	},
 	
 	notComment : function(){

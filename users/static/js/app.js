@@ -1059,8 +1059,8 @@
 
 }());
 
-}).call(this,require("C:\\Users\\Osiris\\Desktop\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
-},{"C:\\Users\\Osiris\\Desktop\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":5}],2:[function(require,module,exports){
+}).call(this,require("C:\\xampp\\htdocs\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
+},{"C:\\xampp\\htdocs\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":5}],2:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -16128,12 +16128,13 @@ module.exports = Backbone.Collection.extend({
 });
 },{"../models/product":30,"backbone":2}],26:[function(require,module,exports){
 var Backbone = require('backbone'),
-	Router = require('./routers/router'),
-	$ = require('jquery');
-	Backbone.$ = $;
+	  Router = require('./routers/router'),
+	  $ = require('jquery');
+	  Backbone.$ = $;
 
 $(function(){
   Backbone.app = new Router();
+  window.vendabyte = Backbone.app;
 });
 
   function handleFileDropped(evt) {
@@ -16165,8 +16166,8 @@ $(function(){
 
       //Read in the image file as a data URL.
       reader.readAsDataURL(f);
+    }
   }
-}
 
   function handleDragOver(evt) {
     evt.stopPropagation();
@@ -16180,37 +16181,42 @@ $(function(){
   dropZone.addEventListener('drop', handleFileDropped, false);
 
   function handleFileSelect(evt) {
-    var files = evt.target.files; // FileList object
-    
-    document.getElementById("fichero").files = files;
-    console.log(document.getElementById("fichero").files);
-    FileReader.prototype.id = 0;
-    // Loop through the FileList and render image files as thumbnails.
-    for (var i = 0; i < files.length && i <5; i++) {
-      var f = files[i];
-      // Only process image files.
-      if (!f.type.match('image.*')) {
-        continue;
-      }      
-      var reader = new FileReader();
-      reader.id = i+1;
-      console.log(reader);
+    filesIn = evt.target.files; // FileList object
+    //$.post( "/users/login/", filesIn[0], function(data){console.log(data);});
+    reader = new FileReader(); //FileReader object
 
-      // Closure to capture the file information.
-      reader.onload = function (e){
-        console.log("estos si es loco  " + files.length);
-        $("#file"+e.target.id).children('img').attr({
-            src: ''+e.target.result,
-        });
-      }
+    if (!filesIn[0].type.match('image.*')) {
+        alert("Solo se permiten archivos de imagen");
+        return;
+      } 
 
-      //Read in the image file as a data URL.
-      reader.readAsDataURL(f);
+    if(filesIn.cont <5)
+    {
+
+      //$(".upload-box").prepend('<input id="file'+ (filesIn.cont+1) +'" type="file" class="block">');
+      //input = document.getElementById('file'+(filesIn.cont + 1));
+      //input.files = filesIn;
+      formData.append('file'+(filesIn.cont +1),filesIn);
+      FileList.prototype.cont += 1;
     }
+    else{
+      alert("Solo puede elegir 5 fotos");
+    }     
+
+    reader.onload = function (e){
+      console.log(reader.result);
+      $("#thumbnail"+filesIn.cont).children('img').attr({
+          src: ''+e.target.result,
+      });
+    }
+
+    reader.readAsDataURL(formData.get("file"+(filesIn.cont +1)));    
   }
-
+  FileReader.prototype.id = 0;
+  FileList.prototype.cont = 0;
+  var formData = new FormData();
+  window.formData = formData;
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
 
 (function (d) {
         var js, id = 'facebook-jssdk',
@@ -16237,7 +16243,7 @@ $(function(){
         FB.getLoginStatus(function (response) {
           console.log('FB resp:', response, response.status);
           /* Bind event handler only after Facebook SDK had a nice cup of coffee */
-          $('.icon-cog').on('click', function () {
+         /*$('.icon-cog').on('click', function () {
             Backbone.app.activeSession.login({
               before: function () {
                 console.log('before login()')
@@ -16246,9 +16252,8 @@ $(function(){
                 console.log('after login()')
               }
             });
-          });
+          });*/
         });
-
       };
 },{"./routers/router":33,"backbone":2,"jquery":21}],27:[function(require,module,exports){
 var Backbone = require('backbone');
@@ -16310,21 +16315,17 @@ module.exports= Backbone.Model.extend({
     };
 
     this._onSUCCESS = function (result) {
-      var csrftoken = getCookie('csrftoken');
+      var csrftoken = Backbone.app.csrftoken('csrftoken');
       var json={};
       console.log('this._onSUCCESS with result:', result);
       console.log(_session.get('third_party_id'));
-<<<<<<< HEAD
-      json.username = _session.attributes.email;
+      json.email = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;
-      json.csrfmiddlewaretoken="STrbjw5GNH281G8v8Kk6ZqdfG1ic9pf5";
-=======
       json.csrfmiddlewaretoken=csrftoken;
       json.email = _session.attributes.email;
-      json.facebook_uid = _session.attributes.id;      
->>>>>>> 7080cd80d81f9d881c074bc9dd4d2428c1566f23
+      json.facebook_uid = _session.attributes.id;
       console.log(json); 
-      $.post( "/users/login/", json, function(data){console.log(data);});      
+      $.post( "/users/login/", json, function(data){console.log("respuesta POST:",data);});      
     };
 
     this._getuserdata = function (callback) {
@@ -16387,12 +16388,7 @@ module.exports= Backbone.Model.extend({
 
 });
 
-function getCookie(name) {
-    
-    cookieValue = $(".options-menu").children("input").val();
-    
-    return cookieValue;
-}
+
 },{"async":1,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],32:[function(require,module,exports){
 module.exports=require(30)
 },{"backbone":2}],33:[function(require,module,exports){
@@ -16430,41 +16426,19 @@ module.exports = Backbone.Router.extend({
       	console.log('authorized after create (should be false):', this.activeSession.isAuthorized());
 		this.current = {};
 		this.jsonData = {};
-		/*this.product1 = new Product({
-		    "model": "Iphone5",
-		    "cover": "../static/img/ima3.jpg",
-		    "price": "35,000",
-		    "avatar" : "../static/img/persona1.png",
-		    "short_description" : "Muy vacano",
-		    "user" : "Carlos Sarante"
-		});
-		this.product2 = new Product({
-		    "model": "Iphone5",
-		    "cover": "../static/img/ima3.jpg",
-		    "price": "35,000",
-		    "avatar" : "../static/img/persona1.png",
-		    "short_description" : "Muy vacano",
-		    "user" : "Ramiro Fernandez"
-		});*/
-		this.userModel = new UserModel();
-		this.userModel.urlRoot = "/users/me/json";
-		this.userModel.set({"username" : "mao"});
-		/*$.get( "/users/me/json", function(data) {
-			 	for (var x in data)
-			 	{
-			 		Backbone.app.userModel.set(data[x]);
-			 	}
-			});*/
-		this.userProfileView = new UserProfileView({model: this.userModel});
-		this.userProfileView.render();
-		this.notificationsView = new NotificationsView({model : this.userModel});
-		this.notificationsView.render();
 
-		this.userModel.fetch({ 
+
+		this.userModel = new UserModel();
+		//this.userModel.urlRoot = "/users/me/json";
+		this.userProfileView = new UserProfileView({model: this.userModel});
+		this.notificationsView = new NotificationsView({model : this.userModel});
+		//this.userModel.set({"username" : "mao"});
+
+		/*this.userModel.fetch({ 
 			success: function(){
        			console.log("Usuario: "+Backbone.app.userModel);
     		}
-    	});
+    	});*/
 
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
@@ -16504,7 +16478,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "./articles/json";
+		this.products.url = "/articles/list/popular/?format=json";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -16529,7 +16503,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.removeClass('none');
 
 		this.followers.reset();
-		this.followers.url = "./following/json";
+		this.followers.url = "./following/?format=json";
 		this.followers.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.followers.length + ' personas a quienes sigues');
@@ -16579,7 +16553,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "./articles/json";
+		this.products.url = "articles/list/popular/?format=json";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -16665,6 +16639,30 @@ module.exports = Backbone.Router.extend({
 	      	self.products.add( new Product(self.jsonData));
 		});		
 	},
+
+	csrftoken : function(name){
+	    var cookieValue = null;
+	    if (document.cookie && document.cookie != '') {
+	        var cookies = document.cookie.split(';');
+	        for (var i = 0; i < cookies.length; i++) {
+	            var cookie = jQuery.trim(cookies[i]);
+	            // Does this cookie string begin with the name we want?
+	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                break;
+	            }
+	        }
+	    }
+	    return cookieValue;
+	},
+
+
+	/*function() {
+    
+	    cookieValue = $(".options-menu").children("input").val();
+	    
+	    return cookieValue;
+	},*/
 });
 },{"../collections/followers":24,"../collections/products":25,"../models/follower":28,"../models/gost":29,"../models/product":30,"../models/sessionmodel":31,"../models/user":32,"../views/followers":37,"../views/notificationbar":38,"../views/options":39,"../views/products":41,"../views/userprofile":42,"backbone":2,"jquery":21}],34:[function(require,module,exports){
 var Backbone 	= require('backbone'),
@@ -16734,10 +16732,6 @@ module.exports = Backbone.View.extend({
 	className : 'follower-cont inline-block relative',
 
 	events : {
-		'click .action.icon-share' : 'share',
-		'click .action.icon-bubble' : 'comment',
-		'click .action.icon-heart' : 'love',
-		'click .add-cart.absolute.icon-plus' : 'addCart'
 	},
 
 	template : _.template($("#follower-template").html()),
@@ -16752,22 +16746,6 @@ module.exports = Backbone.View.extend({
 		this.$el.html(html);
 
 		return this;
-	},
-
-	share : function(){
-		alert("Se utilizara para compartir");
-	},
-
-	addCart : function(){
-		alert("Se utilizara para añadir al carrito");
-	},
-
-	comment : function(){
-		alert("Se utilizara para comentar");
-	},
-
-	love : function(){
-		alert("Se utilizara para añadir a favoritos");
 	},
 
 	navigate : function (){
@@ -16809,9 +16787,10 @@ var Backbone 	= require('backbone'),
 	_ 			= require('underscore');
 
 module.exports = Backbone.View.extend({
-	el : $('.notif-bar'),
+	el : $('.header'),
 
 	events : {
+		"click .icon-bell":"notification",
 	},
 
 	template : _.template($("#notification-template").html()),
@@ -16824,8 +16803,23 @@ module.exports = Backbone.View.extend({
 		var product = this.model.toJSON();
 		var html = this.template(product);
 		this.$el.html(html);
-
+		console.log("Notification render///////////////////");
 		return this;
+	},
+
+	notification : function(){
+		console.log("Click Notification icon-bell");
+	},
+
+	login : function(){
+		Backbone.app.activeSession.login({
+			before: function () {
+				console.log('before login()')
+			},
+			after: function () {
+				console.log('after login()')
+      		}
+        });
 	},
 
 	navigate : function (){
@@ -16949,6 +16943,7 @@ module.exports = Backbone.View.extend({
             "date" : "26/5/2014"
         });*/
         this.comments = new Comments();
+        this.comments.url = "/articles/comment/1/";
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
@@ -16972,46 +16967,24 @@ module.exports = Backbone.View.extend({
 		}
 		else{
 			this.$el.children('section').children('.comment-box').css('display', 'none');
-		}
-
-		
+		}		
 	},
 	
 	addComment : function(){
-		var ar1,ar2,x;
+		var x;
 
-		console.log(Backbone.app.products);
-		/*this.comment3 = new Comment({
-            "id": 3,
-            "user": {
-            	"photo": "/media/users/",
-            	"name": "Marcos Perez",
-            	"username": "marcustetra",
-            	"date_posted": "2014/5/13 16:9"
-            },
-            "device_detail": "Epa que jevy"
-        });*/        
         x = {
             //"id": 3,
-            "user": {
-            	"photo": "/media/users/",
-            	"name": Backbone.app.userModel.get("username"),
-            	"username": "marcustetra",
-            	"date_posted": "2014/5/13 16:9"
-            },
-            "device_detail": this.$el.children('section').children('.comment-box').children('.comment-text').val()
+            "user": 1,
+            "comment": this.$el.children('section').children('.comment-box').children('.comment-text').val(),
+        	"date_posted":"25/04/2014",
+        	"article": this.model.id,
+        	"csrfmiddlewaretoken": Backbone.app.csrftoken('csrftoken'),
         };
-        ar2= [];
-        ar2.push(x);
-        ar1 = this.model.get("comments").concat(ar2);
-        console.log(ar1);
-       
-   		this.model.set({comments:ar1});
-        this.render;
-
-        //this.comments.add(this.comment3);
-        //this.model.set({"comments":this.comments.models});
-        //this.model
+        this.comments.add(new Comment(x));
+        this.comment=_.last(this.comments.models);
+        this.comment.unset("date_posted",{silent:"true"});
+        this.comment.save();
 	},
 	
 	notComment : function(){

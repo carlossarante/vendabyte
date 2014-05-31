@@ -3,9 +3,10 @@ var Backbone 	= require('backbone'),
 	_ 			= require('underscore');
 
 module.exports = Backbone.View.extend({
-	el : $('.notif-bar'),
+	el : $('.header'),
 
 	events : {
+		"click .icon-bell":"notification",
 	},
 
 	template : _.template($("#notification-template").html()),
@@ -18,8 +19,23 @@ module.exports = Backbone.View.extend({
 		var product = this.model.toJSON();
 		var html = this.template(product);
 		this.$el.html(html);
-
+		console.log("Notification render///////////////////");
 		return this;
+	},
+
+	notification : function(){
+		console.log("Click Notification icon-bell");
+	},
+
+	login : function(){
+		Backbone.app.activeSession.login({
+			before: function () {
+				console.log('before login()')
+			},
+			after: function () {
+				console.log('after login()')
+      		}
+        });
 	},
 
 	navigate : function (){
