@@ -5,7 +5,10 @@ from .models import Article, ArticlePicture,Brand, BrandModel, Device,Like,Comme
 from users.serializers import UserSerializer
 from users.models import User
 
-
+class DeviceSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Device
+		fields = ('url','id','device_detail')
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
 	user = UserSerializer()
@@ -13,37 +16,40 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 		model = Comment
 		fields = ('url','date_posted','user','comment','article')
 
-class ArticlePictureSerializer(serializers.ModelSerializer):
+class ArticlePictureSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = ArticlePicture
 
-class ShortUserSerializer(serializers.ModelSerializer):
+class ShortUserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model =User
-		fields = ('id','first_name','last_name','username','photo')
+		fields = ('url','id','first_name','last_name','username','photo')
 
-class BrandModelSerializer(serializers.ModelSerializer):
+
+class BrandSerializer(serializers.HyperlinkedModelSerializer):
+	device = DeviceSerializer()
+	class Meta:
+		model = Brand
+		fields = ('id','device','brand')
+
+
+class BrandModelSerializer(serializers.HyperlinkedModelSerializer):
+	brand = BrandSerializer()
 	class Meta:
 		model = BrandModel
+		fields = ('url','brand','model_name')
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
-	user = ShortUserSerializer()
-	comment_set = CommentSerializer()
-	model = BrandModelSerializer()
+	#user = ShortUserSerializer()
+	#comment_set = CommentSerializer()
+	#model = BrandModelSerializer()
 	class Meta:
 		model = Article
 		fields = ('id','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set')
 
 
-class BrandSerializer(serializers.HyperlinkedModelSerializer):
-	class Meta:
-		model = Brand
 
-
-class DeviceSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Device
 
 class LikeSerializer(serializers.ModelSerializer):
 	class Meta:

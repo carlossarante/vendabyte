@@ -30,6 +30,14 @@ class CommentSet(viewsets.ModelViewSet):
 	queryset = Comment.objects.all()
 	serializer_class = CommentSerializer
 
-class BrandModelSet(viewsets.ReadOnlyModelViewSet):
+class BrandModelSet(viewsets.ModelViewSet):
 	queryset = BrandModel.objects.all()
 	serializer_class = BrandModelSerializer
+
+class BrandSet(viewsets.ModelViewSet):
+	queryset = Brand.objects.all()
+	serializer_class = BrandSerializer
+
+class DeviceSet(viewsets.ModelViewSet):
+	queryset = Device.objects.all()
+	serializer_class = DeviceSerializer

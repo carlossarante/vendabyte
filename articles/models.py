@@ -50,7 +50,7 @@ class ArticlePicture(models.Model):
 
 class Comment(models.Model):
 	article = models.ForeignKey(Article)
-	date_posted = models.DateTimeField(default=timezone.now)
+	date_posted = models.DateTimeField(default=timezone.now())
 	user = models.ForeignKey(User)
 	comment = models.TextField()
 
