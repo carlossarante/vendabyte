@@ -202,8 +202,8 @@
 				<a href="" class="follow block">Seguir</a>	
 			</div>					
 			<section class="art-cont inline-block">
-				<span class="user-name block"><%=user.name%></span>
-				<span class="product-name inline-block"><%=model%></span>
+				<span class="user-name block"><%=user.first_name%> <%=user.last_name%></span>
+				<span class="product-name inline-block"><%=model.model_name%></span>
 				<p class="description inline-block"><%=short_description%></p>
 				<section class="art-desc relative">
 					<figure class="art-pict">
@@ -232,7 +232,7 @@
 				<img src="/media/users/persona.jpg" alt="<%=user%>" class="user-pict">
 			</div>
 			<div class="inline-block">
-				<a class="person" href="<%=user.url%>" title="<%=user%>"><%=user%></a>
+				<a class="person" href="<%=user.url%>" title="<%=user.first_name%> <%=user.last_name%>"><%=user.first_name%> <%=user.last_name%></a>
 				<span class="fecha"><%=date_posted%></span>
 				<p class="opinion">
 					<%=comment%>
@@ -264,10 +264,9 @@
   	
 
 
-	<script src="{% static 'lib/modernizr-2.6.2-respond-1.1.0.min.js'%}" type="text/javascript"></script>
+	<script src="{% static 'lib/modernizr-2.6.2-respond-1.1.0.min.js'%}" type="text/javascript"></script>	
+	<!--<script src="{% static 'lib/jquery.js'%}"></script>-->
 	<script src="{% static 'js/app.js'%}" type="text/javascript"></script>
-	  <script src="{% static 'lib/jquery.js'%}"></script>
-	  <script src="{% static 'lib/intercooler-0.3.2.min.js'%}"></script>
 
 </body>
 </html>

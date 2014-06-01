@@ -46,7 +46,7 @@ module.exports = Backbone.View.extend({
             "date" : "26/5/2014"
         });*/
         this.comments = new Comments();
-        this.comments.url = "/articles/comment/1/";
+        this.comments.url = "/articles/api/comment/";
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {

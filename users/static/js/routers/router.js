@@ -16,14 +16,14 @@ var Backbone 		= require('backbone'),
 
 module.exports = Backbone.Router.extend({
 	routes: {
-		"" 				: "user",
+		"users/"		: "user",
 		"lonuevo" 		: "loNuevo",
 		"siguiendo" 	: "siguiendo",
 		"seguidores" 	: "seguidores",
 		"popular" 		: "popular",
 		"meinteresa" 	: "meInteresa",
 		"lovendo" 		: "loVendo",
-		"me" 			: "user",
+		//"me" 			: "user",
 		"product/:name" : "product" 
 	},
 
@@ -32,7 +32,7 @@ module.exports = Backbone.Router.extend({
       	console.log('authorized after create (should be false):', this.activeSession.isAuthorized());
 		this.current = {};
 		this.jsonData = {};
-
+		console.log("si lo hago");
 
 		this.userModel = new UserModel();
 		//this.userModel.urlRoot = "/users/me/json";
@@ -84,7 +84,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/articles/list/popular/?format=json";
+		this.products.url = "/articles/api/article/?format=json";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -230,6 +230,7 @@ module.exports = Backbone.Router.extend({
 		optionMenu.removeClass('none');
 
 		this.loNuevo();
+		console.log("ENTRE A USERS JJSJJSJSJSJJ");
 	},
 
 	activeOpt : function(el){

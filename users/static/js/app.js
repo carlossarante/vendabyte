@@ -16324,12 +16324,6 @@ module.exports= Backbone.Model.extend({
       json.csrfmiddlewaretoken=csrftoken;
       json.email = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;
-      json.username = _session.attributes.email;
-      json.facebook_uid = _session.attributes.id;
-      json.csrfmiddlewaretoken="STrbjw5GNH281G8v8Kk6ZqdfG1ic9pf5";
-      json.csrfmiddlewaretoken=csrftoken;
-      json.email = _session.attributes.email;
-      json.facebook_uid = _session.attributes.id;      
       console.log(json); 
       $.post( "/users/login/", json, function(data){console.log("respuesta POST:",data);});      
     };
@@ -16416,14 +16410,14 @@ var Backbone 		= require('backbone'),
 
 module.exports = Backbone.Router.extend({
 	routes: {
-		"" 				: "user",
+		"users/"		: "user",
 		"lonuevo" 		: "loNuevo",
 		"siguiendo" 	: "siguiendo",
 		"seguidores" 	: "seguidores",
 		"popular" 		: "popular",
 		"meinteresa" 	: "meInteresa",
 		"lovendo" 		: "loVendo",
-		"me" 			: "user",
+		//"me" 			: "user",
 		"product/:name" : "product" 
 	},
 
@@ -16432,7 +16426,7 @@ module.exports = Backbone.Router.extend({
       	console.log('authorized after create (should be false):', this.activeSession.isAuthorized());
 		this.current = {};
 		this.jsonData = {};
-
+		console.log("si lo hago");
 
 		this.userModel = new UserModel();
 		//this.userModel.urlRoot = "/users/me/json";
@@ -16484,7 +16478,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/articles/list/popular/?format=json";
+		this.products.url = "/articles/api/article/?format=json";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -16630,6 +16624,7 @@ module.exports = Backbone.Router.extend({
 		optionMenu.removeClass('none');
 
 		this.loNuevo();
+		console.log("ENTRE A USERS JJSJJSJSJSJJ");
 	},
 
 	activeOpt : function(el){
@@ -16829,7 +16824,7 @@ module.exports = Backbone.View.extend({
 	},
 
 	navigate : function (){
-		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
+		Backbone.app.navigate("users/",{trigger : true})
 	}
 });
 
@@ -16949,7 +16944,7 @@ module.exports = Backbone.View.extend({
             "date" : "26/5/2014"
         });*/
         this.comments = new Comments();
-        this.comments.url = "/articles/comment/1/";
+        this.comments.url = "/articles/api/comment/";
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
