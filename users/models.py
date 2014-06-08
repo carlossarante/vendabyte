@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from geographics.models import Province,City
 from .managers import UserManager
-
+from django.conf import settings
 
 
 class Badgets(models.Model):
@@ -42,6 +42,10 @@ class User(AbstractBaseUser):
 		return True
 	def has_module_perms(self, app_label):
 		return True
+	def set_enc_password(self):
+		return self.set_password(('%s%s%s') % (self.id,self.facebook_uid,settings.SALT))
+
+
 	@property
 	def is_staff(self):
    		return self.is_admin
