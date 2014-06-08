@@ -20,8 +20,6 @@ from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
 def userIndex(request):
 	return render(request,'user.html')
 
-def loginFacebookUser(request):
-
 @csrf_exempt
 def loginFacebookUser(request,response='html'):
 	if request.method == 'POST': 
