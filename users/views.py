@@ -23,7 +23,7 @@ def userIndex(request):
 def loginFacebookUser(request):
 
 @csrf_exempt
-def loginUser(request,response='html'):
+def loginFacebookUser(request,response='html'):
 	if request.method == 'POST': 
 		email = request.POST['email']
 		facebook_uid = request.POST['facebook_uid']
