@@ -252,7 +252,7 @@ a
 				line-height normal
 					
 .caja
-	box-shadow 0 0 5px black
+	box-shadow 0 0 5px gris-medio
 	margin 20px 0px
 	width 96%
 	display inline-block
@@ -267,6 +267,15 @@ a
 		position relative
 		display block
 		border-style dashed
+
+		#dropIn
+			top 0
+			left 0
+			width 100%
+			height 100%
+			opacity 1
+			padding 0
+
 
 .file-browse
 	height 150px
@@ -304,21 +313,60 @@ a
 	height 300px
 	width 96%
 	background-color gris-claro
-	border 1px solid green
 	display inline-block
-	input
-		font-size 1rem
-	.img-load
-		display inline-block
-		width 16%
-		margin-right 3%
-		height auto
-		border 2px solid gris-medio
-		border-style dashed
-		&:last-child
-			margin-right 0
-		img
-			width 100%
+	box-shadow 0 0 5px gris-medio
+	.thumbnail-cont
+		width 100%
+		padding 5px 0
+		.img-load
+			display inline-block
+			width 16%
+			margin-right 3%
+			height auto
+			border 2px solid gris-medio
+			border-style dashed
+			&:nth-child(5)
+				margin-right 0
+			.thumb-fig
+				background-color white
+				padding 5%
+				img
+					width 100%
+	.rb-container
+		width 100%
+		background-color white
+		height 40px		
+		.rbDeco
+			font-size 1.1rem
+			position relative
+			text-align center
+			width 25%
+			height 100%
+			color gris-medio
+			line-height 40px
+			&:hover
+				background-color verde-claro
+				color white
+			.radioBtn
+				position absolute
+				top 0
+				left 0 
+				width 100%
+				height 100%
+				opacity 0.1
+
+	.select-cont
+		margin 30px auto
+		width 90%	
+
+		.brand-select
+			width 48%
+			margin-right 4%
+			font-size 1rem
+		.model-select
+			width 48%
+			font-size 1rem
+
 .offers-sect
 	top 0
 	right 0

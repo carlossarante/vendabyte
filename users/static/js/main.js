@@ -1,60 +1,37 @@
 var Backbone = require('backbone'),
-	  Router = require('./routers/router'),
-	  $ = require('jquery');
+    $ = require('jquery'),
+	  Router = require('./routers/router');
 	  Backbone.$ = $;
+
+    window.$ = $;
+    window.jQuery = $;
 
 $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
-});
 
-  function handleFileDropped(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-
-    var files = evt.dataTransfer.files; // FileList object.
-
-    // files is a FileList of File objects. List some properties.
-    FileReader.prototype.id = 0;
-    // Loop through the FileList and render image files as thumbnails.
-    for (var i = 0; i < files.length && i <5; i++) {
-      var f = files[i];
-      // Only process image files.
-      if (!f.type.match('image.*')) {
-        continue;
-      }      
-      var reader = new FileReader();
-      reader.id = i+1;
-      console.log(reader);
-
-      // Closure to capture the file information.
-      reader.onload = function (e){
-        console.log("estos si es loco  " + files.length);
-        $("#file"+e.target.id).children('img').attr({
-            src: ''+e.target.result,
-        });
-      }
-
-      //Read in the image file as a data URL.
-      reader.readAsDataURL(f);
+  var croppicContaineroutputOptions = {
+        uploadUrl:'/static/img_save_to_file.php',
+        //cropUrl:'img_crop_to_file.php', 
+        outputUrlId:'cropOutput',
+        modal:false,
+        loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> '
     }
-  }
 
-  function handleDragOver(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-  }
+  var cropContaineroutput = new Croppic('cropContaineroutput', croppicContaineroutputOptions);     
 
-  // Setup the dnd listeners.
-  var dropZone = document.getElementById('deco');
-  dropZone.addEventListener('dragover', handleDragOver, false);
-  dropZone.addEventListener('drop', handleFileDropped, false);
 
   function handleFileSelect(evt) {
-    filesIn = evt.target.files; // FileList object
+    var filesIn = evt.target.files; // FileList object
+    var el = $(this);
+    var inputId = el.attr('id');
+    loadBtn = $(".load-button");
+    dropArea= $("#deco");
+    console.log("Elemento que genera evento", el);
+    console.log("ARCHIVOS DENTRO DE EL : ", el.context.files);
     //$.post( "/users/login/", filesIn[0], function(data){console.log(data);});
     reader = new FileReader(); //FileReader object
+
 
     if (!filesIn[0].type.match('image.*')) {
         alert("Solo se permiten archivos de imagen");
@@ -63,31 +40,39 @@ $(function(){
 
     if(filesIn.cont <5)
     {
+      el.attr({
+        id : 'file'+(filesIn.cont+1),
+        class : "none"
+      });
+      $(".upload-box").prepend(el);
+      if(inputId === "selectIn"){
+        loadBtn.prepend('<input type="file" id="selectIn" value="Submit" class="button relative">');
+      }
+      else{
+        dropArea.prepend('<input type="file" id="dropIn" value="Submit" class="dropArea absolute">');
+      }      
+      document.getElementById(inputId).addEventListener('change', handleFileSelect, false);      
 
-      //$(".upload-box").prepend('<input id="file'+ (filesIn.cont+1) +'" type="file" class="block">');
-      //input = document.getElementById('file'+(filesIn.cont + 1));
-      //input.files = filesIn;
-      formData.append('file'+(filesIn.cont +1),filesIn);
       FileList.prototype.cont += 1;
     }
     else{
       alert("Solo puede elegir 5 fotos");
+      return;
     }     
 
     reader.onload = function (e){
       console.log(reader.result);
-      $("#thumbnail"+filesIn.cont).children('img').attr({
+      $("#thumbnail"+filesIn.cont).find('img').attr({
           src: ''+e.target.result,
       });
     }
 
-    reader.readAsDataURL(formData.get("file"+(filesIn.cont +1)));    
+    reader.readAsDataURL(filesIn[0]);
   }
   FileReader.prototype.id = 0;
   FileList.prototype.cont = 0;
-  var formData = new FormData();
-  window.formData = formData;
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+  document.getElementById('selectIn').addEventListener('change', handleFileSelect, false);
+  document.getElementById('dropIn').addEventListener('change', handleFileSelect, false);
 
 (function (d) {
         var js, id = 'facebook-jssdk',
@@ -126,3 +111,5 @@ $(function(){
           });*/
         });
       };
+});
+

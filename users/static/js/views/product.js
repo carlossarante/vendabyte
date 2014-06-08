@@ -17,7 +17,6 @@ module.exports = Backbone.View.extend({
 		'click .add-cart.absolute.icon-plus' : 'addCart',
 		'click .acept' : 'addComment',
 		'click .decline' : 'notComment',
-
 	},
 
 	template : _.template($("#product-template").html()),
@@ -28,29 +27,23 @@ module.exports = Backbone.View.extend({
 	},
 
 	render : function(){
+		var self = this;
 		var product = this.model.toJSON();
 		var html = this.template(product);
 		this.$el.html(html);
 		var comment =this.model.get("comment_set");
-		console.log("Funciona");
-		/*this.comment1 = new Comment({
-            "avatar" : "../static/img/persona1.png",
-            "comment" : "Este es el mejor celular que he tendio chico",
-            "user" : "Carlos Sarante",
-            "date" : "25/5/2014"
-        });
-        this.comment2 = new Comment({
-            "avatar" : "../static/img/persona.jpg",
-            "comment" : "Puede ser posible",
-            "user" : "Ramiro Fernandez",
-            "date" : "26/5/2014"
-        });*/
+		console.log("ESTO ES COMMEN SET  ", comment);
+		
         this.comments = new Comments();
         this.comments.url = "/articles/api/comment/";
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
-        	this.comments.add(new Comment(comment[x])); 
+        	$.get(comment[x], function(data) {
+        		comment[x] = data;
+        		console.log("COMMENTARIOS OBJECT : ", comment[x]);
+        		self.comments.add(new Comment(comment[x]));
+        	});        	 
         }          
         //this.commentsView.render();
 		return this;

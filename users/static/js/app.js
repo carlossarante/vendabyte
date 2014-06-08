@@ -16128,62 +16128,39 @@ module.exports = Backbone.Collection.extend({
 });
 },{"../models/product":30,"backbone":2}],26:[function(require,module,exports){
 var Backbone = require('backbone'),
-	  Router = require('./routers/router'),
-	  $ = require('jquery');
+    $ = require('jquery'),
+	  Router = require('./routers/router');
 	  Backbone.$ = $;
+
+    window.$ = $;
+    window.jQuery = $;
 
 $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
-});
 
-  function handleFileDropped(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-
-    var files = evt.dataTransfer.files; // FileList object.
-
-    // files is a FileList of File objects. List some properties.
-    FileReader.prototype.id = 0;
-    // Loop through the FileList and render image files as thumbnails.
-    for (var i = 0; i < files.length && i <5; i++) {
-      var f = files[i];
-      // Only process image files.
-      if (!f.type.match('image.*')) {
-        continue;
-      }      
-      var reader = new FileReader();
-      reader.id = i+1;
-      console.log(reader);
-
-      // Closure to capture the file information.
-      reader.onload = function (e){
-        console.log("estos si es loco  " + files.length);
-        $("#file"+e.target.id).children('img').attr({
-            src: ''+e.target.result,
-        });
-      }
-
-      //Read in the image file as a data URL.
-      reader.readAsDataURL(f);
+  var croppicContaineroutputOptions = {
+        uploadUrl:'/static/img_save_to_file.php',
+        //cropUrl:'img_crop_to_file.php', 
+        outputUrlId:'cropOutput',
+        modal:false,
+        loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> '
     }
-  }
 
-  function handleDragOver(evt) {
-    evt.stopPropagation();
-    evt.preventDefault();
-    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-  }
+  var cropContaineroutput = new Croppic('cropContaineroutput', croppicContaineroutputOptions);     
 
-  // Setup the dnd listeners.
-  var dropZone = document.getElementById('deco');
-  dropZone.addEventListener('dragover', handleDragOver, false);
-  dropZone.addEventListener('drop', handleFileDropped, false);
 
   function handleFileSelect(evt) {
-    filesIn = evt.target.files; // FileList object
+    var filesIn = evt.target.files; // FileList object
+    var el = $(this);
+    var inputId = el.attr('id');
+    loadBtn = $(".load-button");
+    dropArea= $("#deco");
+    console.log("Elemento que genera evento", el);
+    console.log("ARCHIVOS DENTRO DE EL : ", el.context.files);
     //$.post( "/users/login/", filesIn[0], function(data){console.log(data);});
     reader = new FileReader(); //FileReader object
+
 
     if (!filesIn[0].type.match('image.*')) {
         alert("Solo se permiten archivos de imagen");
@@ -16192,31 +16169,39 @@ $(function(){
 
     if(filesIn.cont <5)
     {
+      el.attr({
+        id : 'file'+(filesIn.cont+1),
+        class : "none"
+      });
+      $(".upload-box").prepend(el);
+      if(inputId === "selectIn"){
+        loadBtn.prepend('<input type="file" id="selectIn" value="Submit" class="button relative">');
+      }
+      else{
+        dropArea.prepend('<input type="file" id="dropIn" value="Submit" class="dropArea absolute">');
+      }      
+      document.getElementById(inputId).addEventListener('change', handleFileSelect, false);      
 
-      //$(".upload-box").prepend('<input id="file'+ (filesIn.cont+1) +'" type="file" class="block">');
-      //input = document.getElementById('file'+(filesIn.cont + 1));
-      //input.files = filesIn;
-      formData.append('file'+(filesIn.cont +1),filesIn);
       FileList.prototype.cont += 1;
     }
     else{
       alert("Solo puede elegir 5 fotos");
+      return;
     }     
 
     reader.onload = function (e){
       console.log(reader.result);
-      $("#thumbnail"+filesIn.cont).children('img').attr({
+      $("#thumbnail"+filesIn.cont).find('img').attr({
           src: ''+e.target.result,
       });
     }
 
-    reader.readAsDataURL(formData.get("file"+(filesIn.cont +1)));    
+    reader.readAsDataURL(filesIn[0]);
   }
   FileReader.prototype.id = 0;
   FileList.prototype.cont = 0;
-  var formData = new FormData();
-  window.formData = formData;
-  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+  document.getElementById('selectIn').addEventListener('change', handleFileSelect, false);
+  document.getElementById('dropIn').addEventListener('change', handleFileSelect, false);
 
 (function (d) {
         var js, id = 'facebook-jssdk',
@@ -16255,6 +16240,9 @@ $(function(){
           });*/
         });
       };
+});
+
+
 },{"./routers/router":33,"backbone":2,"jquery":21}],27:[function(require,module,exports){
 var Backbone = require('backbone');
 
@@ -16304,11 +16292,11 @@ module.exports= Backbone.Model.extend({
     //console.log(opts);
 
     /* run optional passed user func */
-    opts.before && opts.before();
+    //opts.before && opts.before();
 
     _session = this;
     this._onALWAYS = function () {
-      opts.after && opts.after();
+      //opts.after && opts.after();
     };
     this._onERROR = function () {
       console.log('this._onERROR with result:', result);
@@ -16478,7 +16466,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json";
+		this.products.url = "/articles/api/new/?format=json";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -16646,7 +16634,7 @@ module.exports = Backbone.Router.extend({
 	    if (document.cookie && document.cookie != '') {
 	        var cookies = document.cookie.split(';');
 	        for (var i = 0; i < cookies.length; i++) {
-	            var cookie = jQuery.trim(cookies[i]);
+	            var cookie = $.trim(cookies[i]);
 	            // Does this cookie string begin with the name we want?
 	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
 	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
@@ -16915,7 +16903,6 @@ module.exports = Backbone.View.extend({
 		'click .add-cart.absolute.icon-plus' : 'addCart',
 		'click .acept' : 'addComment',
 		'click .decline' : 'notComment',
-
 	},
 
 	template : _.template($("#product-template").html()),
@@ -16926,29 +16913,23 @@ module.exports = Backbone.View.extend({
 	},
 
 	render : function(){
+		var self = this;
 		var product = this.model.toJSON();
 		var html = this.template(product);
 		this.$el.html(html);
 		var comment =this.model.get("comment_set");
-		console.log("Funciona");
-		/*this.comment1 = new Comment({
-            "avatar" : "../static/img/persona1.png",
-            "comment" : "Este es el mejor celular que he tendio chico",
-            "user" : "Carlos Sarante",
-            "date" : "25/5/2014"
-        });
-        this.comment2 = new Comment({
-            "avatar" : "../static/img/persona.jpg",
-            "comment" : "Puede ser posible",
-            "user" : "Ramiro Fernandez",
-            "date" : "26/5/2014"
-        });*/
+		console.log("ESTO ES COMMEN SET  ", comment);
+		
         this.comments = new Comments();
         this.comments.url = "/articles/api/comment/";
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
-        	this.comments.add(new Comment(comment[x])); 
+        	$.get(comment[x], function(data) {
+        		comment[x] = data;
+        		console.log("COMMENTARIOS OBJECT : ", comment[x]);
+        		self.comments.add(new Comment(comment[x]));
+        	});        	 
         }          
         //this.commentsView.render();
 		return this;

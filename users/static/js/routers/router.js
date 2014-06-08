@@ -84,7 +84,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json";
+		this.products.url = "/articles/api/new/?format=json";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -252,7 +252,7 @@ module.exports = Backbone.Router.extend({
 	    if (document.cookie && document.cookie != '') {
 	        var cookies = document.cookie.split(';');
 	        for (var i = 0; i < cookies.length; i++) {
-	            var cookie = jQuery.trim(cookies[i]);
+	            var cookie = $.trim(cookies[i]);
 	            // Does this cookie string begin with the name we want?
 	            if (cookie.substring(0, name.length + 1) == (name + '=')) {
 	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));

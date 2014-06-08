@@ -31,11 +31,11 @@ module.exports= Backbone.Model.extend({
     //console.log(opts);
 
     /* run optional passed user func */
-    opts.before && opts.before();
+    //opts.before && opts.before();
 
     _session = this;
     this._onALWAYS = function () {
-      opts.after && opts.after();
+      //opts.after && opts.after();
     };
     this._onERROR = function () {
       console.log('this._onERROR with result:', result);
