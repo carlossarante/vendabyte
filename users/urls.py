@@ -12,5 +12,7 @@ router.register('badgets',BadgetSet)
 
 urlpatterns = patterns('',
 	url(r'^$', 'users.views.userIndex'), 
+	url(r'^login/$', 'users.views.loginFacebookUser'),
     url(r'^api/', include(router.urls)),
+
 )   

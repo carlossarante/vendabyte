@@ -20,6 +20,28 @@ from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
 def userIndex(request):
 	return render(request,'user.html')
 
+def loginFacebookUser(request):
+
+@csrf_exempt
+def loginUser(request,response='html'):
+	if request.method == 'POST': 
+		email = request.POST['email']
+		facebook_uid = request.POST['facebook_uid']
+		user = authenticate(email=email,facebook_uid=facebook_uid)
+		if user is not None:
+			if user.is_active:
+				login(request,user)
+				return redirect(user)
+ 			else:
+ 				return HttpResponse('User is not active')
+ 		else:
+ 			 	try: 
+ 					User.objects.get(username=username)
+ 					return HttpResponse('Wrong Password')
+ 				except User.DoesNotExist:
+					return HttpResponse('User Does not Exist')	
+
+
 class UserSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
@@ -30,3 +52,4 @@ class BadgetSet(viewsets.ReadOnlyModelViewSet):
 class ContactSet(viewsets.ModelViewSet):
 	queryset= Contact.objects.all()
 	serializer_class= ContactSerializer
+
