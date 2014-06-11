@@ -149,7 +149,14 @@
 					<div id="cropContaineroutput"></div>
 
 					<input type="text" id="cropOutput" style="width:100%; padding:0px; margin:20px auto; display:block; border: 1px solid #CCC;">
+				</div>
 
+				<ul id="filelist"></ul>
+				<br />
+				 
+				<div id="container">
+				    <a id="browse" href="javascript:;">[Browse...]</a>
+				    <a id="start-upload" href="javascript:;">[Start Upload]</a>
 				</div>
 				
 			</form>
@@ -306,7 +313,16 @@
 	<script src="/static/lib/modernizr-2.6.2-respond-1.1.0.min.js" type="text/javascript"></script>
 	<script src="/static/lib/jquery.js"></script>	
 	<script src="/static/lib/croppic.js"></script>
+	<script src="/static/lib/js/plupload.full.min.js" type="text/javascript"></script>
 	<script src="/static/js/app.js" type="text/javascript"></script>
 
+	<script type="text/javascript">
+		var uploader = new plupload.Uploader({
+		  browse_button: 'browse', // this can be an id of a DOM element or the DOM element itself
+		  url: 'upload.php'
+		});
+		 
+		uploader.init();
+	</script>
 </body>
 </html>
