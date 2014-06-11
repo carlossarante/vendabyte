@@ -41,21 +41,21 @@ class BrandModelSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
-	#user = ShortUserSerializer()
-	#comment_set = CommentSerializer()
+	date_posted = serializers.Field(source='date_posted')
+	comment_set = CommentSerializer(read_only=True)
+	articlepicture_set = ArticlePictureSerializer(read_only=True)
 	#model = BrandModelSerializer()
+	user = ShortUserSerializer(read_only=True)
 	class Meta:
 		model = Article
 		fields = ('id','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set')
+		#depth = 1	
 
-
-
-
-class LikeSerializer(serializers.ModelSerializer):
+class LikeSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Like
 
 
-class InterestingSerializer(serializers.ModelSerializer):
+class InterestingSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Interested
