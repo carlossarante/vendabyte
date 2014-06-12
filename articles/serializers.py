@@ -9,9 +9,10 @@ from django.utils import timezone
 class ShortUserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model =User
-		fields = ('id','first_name','last_name','username','photo')
+		fields = ('id','url','first_name','last_name','username','photo')
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
+	date_posted = serializers.Field(source='date_posted')
 	user = ShortUserSerializer(read_only=True)
 	class Meta:	
 		model = Comment
@@ -47,13 +48,17 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 	comment_set = CommentSerializer(read_only=True)
 	articlepicture_set = ArticlePictureSerializer(read_only=True)
 	user = ShortUserSerializer(read_only=True)
+	like_count = serializers.Field(source='getLikeCount')
+	interested_count = serializers.Field(source='getInterestedCount')
 	class Meta:
 		model = Article
-		fields = ('id','url','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set')
+		fields = ('id','url','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set','like_count','interested_count')
 
 class LikeSerializer(serializers.HyperlinkedModelSerializer):
+	user = ShortUserSerializer(read_only=True)
 	class Meta:
 		model = Like
+		fields = ('id','article','user')
 
 
 class InterestingSerializer(serializers.HyperlinkedModelSerializer):

@@ -11,7 +11,7 @@ from articles.forms import ArticleForm
 from articles.models import Article,ArticlePicture,Interested,Like,BrandModel,Brand,Device,Comment,Like
 from articles.serializers import ArticleSerializer, BrandModelSerializer,BrandSerializer,DeviceSerializer,ArticlePictureSerializer,LikeSerializer,CommentSerializer,InterestingSerializer
 
-import django_filters
+#import django_filters
 
 def articleIndex(request):
 	return render(request,'articles.html')
@@ -28,7 +28,6 @@ class ArticleSet(viewsets.ModelViewSet):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class PopularArticlesSet(viewsets.ReadOnlyModelViewSet):
 	queryset = Article.objects.all().annotate(like_count=Count('like')).order_by('-like_count')[:10]
 	serializer_class = ArticleSerializer
@@ -40,20 +39,39 @@ class NewArticlesSet(viewsets.ReadOnlyModelViewSet):
 class CommentSet(viewsets.ModelViewSet):
 	queryset = Comment.objects.all()
 	serializer_class = CommentSerializer
-
+	def create(self,request):
+		user = request.user
+		serializer = CommentSerializer(data=request.DATA)
+		if serializer.is_valid():
+			serializer.object.user = user
+			serializer.object.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class BrandModelSet(viewsets.ModelViewSet):
 	queryset = BrandModel.objects.all()
 	serializer_class = BrandModelSerializer
-	filter_fields = ('model_name',) 
+	#filter_fields = ('model_name',) 
 
 
 class BrandSet(viewsets.ModelViewSet):
 	queryset = Brand.objects.all()
 	serializer_class = BrandSerializer
-	filter_fields = ('brand',) 
+	#filter_fields = ('brand',) 
 
 class DeviceSet(viewsets.ModelViewSet):
 	queryset = Device.objects.all()
 	serializer_class = DeviceSerializer
 	filter_fields = ('device_detail',)
+
+class LikeSet(viewsets.ModelViewSet):
+	queryset= Like.objects.all()
+	serializer_class = LikeSerializer
+	def create(self,request):
+		user = request.user
+		serializer = LikeSerializer(data=request.DATA)
+		if serializer.is_valid():
+			serializer.object.user = user
+			serializer.object.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
