@@ -47,8 +47,12 @@ INSTALLED_APPS = (
     'geographics',
     'articles',
     'rest_framework',
+    #'django_filter'
 )
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
+}
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -140,4 +144,7 @@ CACHES = {
 }
 '''
 
+
+
 AUTH_USER_MODEL = 'users.User'
+
