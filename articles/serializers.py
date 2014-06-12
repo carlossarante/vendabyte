@@ -4,26 +4,27 @@ import decimal
 from .models import Article, ArticlePicture,Brand, BrandModel, Device,Like,Comment,Interested
 from users.serializers import UserSerializer
 from users.models import User
-
-class DeviceSerializer(serializers.HyperlinkedModelSerializer):
-	class Meta:
-		model = Device
-		fields = ('url','id','device_detail')
-
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
-	user = UserSerializer()
-	class Meta:	
-		model = Comment
-		fields = ('url','date_posted','user','comment','article')
-
-class ArticlePictureSerializer(serializers.HyperlinkedModelSerializer):
-	class Meta:
-		model = ArticlePicture
+from django.utils import timezone
 
 class ShortUserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model =User
-		fields = ('url','id','first_name','last_name','username','photo')
+		fields = ('id','first_name','last_name','username','photo')
+
+class DeviceSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = Device
+		fields = ('id','url','device_detail')
+
+class CommentSerializer(serializers.HyperlinkedModelSerializer):
+	user = ShortUserSerializer(read_only=True)
+	class Meta:	
+		model = Comment
+		fields = ('id','url','date_posted','user','comment','article')
+
+class ArticlePictureSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model = ArticlePicture
 
 
 class BrandSerializer(serializers.HyperlinkedModelSerializer):
@@ -34,28 +35,30 @@ class BrandSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class BrandModelSerializer(serializers.HyperlinkedModelSerializer):
-	brand = BrandSerializer()
+	#brand = BrandSerializer()
 	class Meta:
 		model = BrandModel
-		fields = ('url','brand','model_name')
+		fields = ('brand','model_name')
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
-	#user = ShortUserSerializer()
-	#comment_set = CommentSerializer()
-	#model = BrandModelSerializer()
+	model = BrandModelSerializer()
+	#user = UserSerializer()
+	#comment_set = CommentSerializer(required=False)
+	#articlepicture_set = ArticlePictureSerializer()
+	date_posted = serializers.Field(source='date_posted')
 	class Meta:
 		model = Article
-		fields = ('id','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set')
+		fields = ('id','url','model','user','short_description','price','specs','date_posted','comment_set')
 
 
 
 
-class LikeSerializer(serializers.ModelSerializer):
+class LikeSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Like
 
 
-class InterestingSerializer(serializers.ModelSerializer):
+class InterestingSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = Interested

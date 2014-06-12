@@ -25,7 +25,6 @@ class NewArticlesSet(viewsets.ReadOnlyModelViewSet):
 	queryset = Article.objects.all().order_by('-date_posted')[:10]
 	serializer_class = ArticleSerializer
 
-
 class CommentSet(viewsets.ModelViewSet):
 	queryset = Comment.objects.all()
 	serializer_class = CommentSerializer

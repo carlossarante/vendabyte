@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from articles.views import ArticleSet,CommentSet,BrandModelSet,BrandSet,DeviceSet
+from articles.views import ArticleSet,CommentSet,BrandModelSet,BrandSet,DeviceSet,NewArticlesSet,PopularArticlesSet
 
 from rest_framework.routers import DefaultRouter
 
@@ -8,8 +8,8 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 
 router.register('article',ArticleSet)
-router.register('popular',ArticleSet)
-router.register('new',ArticleSet)
+#router.register('popular',PopularArticlesSet)
+#router.register('new',NewArticlesSet)
 router.register('comment',CommentSet)
 router.register('models',BrandModelSet)
 router.register('brands',BrandSet)

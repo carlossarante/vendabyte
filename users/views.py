@@ -34,7 +34,7 @@ def loginFacebookUser(request,response='html'):
  				return HttpResponse('User is not active')
  		else:
  			 	try: 
- 					User.objects.get(username=username)
+ 					User.objects.get(email=email)
  					return HttpResponse('Wrong Password')
  				except User.DoesNotExist:
 					return HttpResponse('User Does not Exist')	
