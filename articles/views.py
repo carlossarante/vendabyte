@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework import status
 
 from django.shortcuts import render
 from django.db.models import Count
@@ -15,6 +17,16 @@ def articleIndex(request):
 class ArticleSet(viewsets.ModelViewSet):
 	queryset = Article.objects.all()
 	serializer_class = ArticleSerializer
+	def create(self,request):
+		user = request.user
+		serializer = ArticleSerializer(data=request.DATA)
+		if serializer.is_valid():
+			serializer.object.user = user
+			serializer.object.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 class PopularArticlesSet(viewsets.ReadOnlyModelViewSet):
