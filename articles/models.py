@@ -14,7 +14,7 @@ class Brand(models.Model):
 	brand = models.CharField(max_length=255)
 	device = models.ForeignKey(Device)
 	def __unicode__(self):
-		return ('%s (%s)') % (self.brand,self.device.device_detail)
+		return self.brand
 
 class BrandModel(models.Model):
 	brand = models.ForeignKey(Brand)
