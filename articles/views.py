@@ -66,13 +66,13 @@ class CommentSet(viewsets.ModelViewSet):
 class BrandModelSet(viewsets.ModelViewSet):
 	queryset = BrandModel.objects.all()
 	serializer_class = BrandModelSerializer
-	#filter_fields = ('model_name',) 
+	filter_fields = ('model_name',) 
 
 
 class BrandSet(viewsets.ModelViewSet):
 	queryset = Brand.objects.all()
 	serializer_class = BrandSerializer
-	#filter_fields = ('brand',) 
+	filter_fields = ('brand',) 
 
 class DeviceSet(viewsets.ModelViewSet):
 	queryset = Device.objects.all()
