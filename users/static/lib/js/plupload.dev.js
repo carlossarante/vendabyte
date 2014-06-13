@@ -2231,7 +2231,7 @@ plupload.File = (function() {
 		filepool[this.id] = file;
 	}
 
-	return PluploadFile;
+	//return PluploadFile;
 }());
 
 

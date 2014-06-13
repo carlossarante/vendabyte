@@ -4,6 +4,7 @@ var Backbone 		= require('backbone'),
 	Product 		= require('../models/product'),
 	Follower 		= require('../models/follower'),
 	Gost 			= require('../models/gost'),
+	FormModel		= require('../models/form'),
 	SessionModel 	= require('../models/sessionmodel'),
 	UserModel 		= require('../models/user'),	
 	Products 		= require('../collections/products'),
@@ -12,7 +13,8 @@ var Backbone 		= require('backbone'),
 	OptionsView 	= require('../views/options'),	
 	FollowersView 	= require('../views/followers'),
 	UserProfileView = require('../views/userprofile'),
-	NotificationsView = require('../views/notificationbar');
+	NotificationsView = require('../views/notificationbar'),
+	FormView 		= require('../views/form');
 
 module.exports = Backbone.Router.extend({
 	routes: {
@@ -48,13 +50,15 @@ module.exports = Backbone.Router.extend({
 
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
-		this.productsView.render();
+		//this.productsView.render();
 
         this.followers = new Followers();
         this.followersView = new FollowersView({ collection : this.followers});  
-        this.followersView.render();
+        //this.followersView.render();
 
 		this.optionsView = new OptionsView({ model : new Gost({}) });	
+		this.formView = new FormView({ model : new FormModel({}) });
+		//this.formView.render();
 
 		Backbone.history.start({ 
     		pushState: true, 
@@ -84,7 +88,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/articles/api/new/?format=json";
+		this.products.url = "/articles/api/article/?format=json";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');

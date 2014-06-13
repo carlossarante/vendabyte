@@ -16126,7 +16126,7 @@ var Backbone = require('backbone'),
 module.exports = Backbone.Collection.extend({ 
 	model : Product ,
 });
-},{"../models/product":30,"backbone":2}],26:[function(require,module,exports){
+},{"../models/product":31,"backbone":2}],26:[function(require,module,exports){
 var Backbone = require('backbone'),
     $ = require('jquery'),
 	  Router = require('./routers/router');
@@ -16139,28 +16139,37 @@ $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
 
-  var croppicContaineroutputOptions = {
-        uploadUrl:'/static/img_save_to_file.php',
-        //cropUrl:'img_crop_to_file.php', 
-        outputUrlId:'cropOutput',
-        modal:false,
-        loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> '
+  function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs
+    var byteString = atob(dataURI.split(',')[1]);
+   /* var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);*/
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
     }
-
-  var cropContaineroutput = new Croppic('cropContaineroutput', croppicContaineroutputOptions);     
-
+    // write the ArrayBuffer to a blob, and you're done
+    var blob = new Blob([ab],{"type":mimeString});
+    return blob
+  }
 
   function handleFileSelect(evt) {
-    var filesIn = evt.target.files; // FileList object
+    var filesIn = evt.target.files;
     var el = $(this);
     var inputId = el.attr('id');
     loadBtn = $(".load-button");
     dropArea= $("#deco");
-    console.log("Elemento que genera evento", el);
-    console.log("ARCHIVOS DENTRO DE EL : ", el.context.files);
-    //$.post( "/users/login/", filesIn[0], function(data){console.log(data);});
-    reader = new FileReader(); //FileReader object
-
+    readerIn = new FileReader(); //FileReader object
 
     if (!filesIn[0].type.match('image.*')) {
         alert("Solo se permiten archivos de imagen");
@@ -16189,14 +16198,51 @@ $(function(){
       return;
     }     
 
-    reader.onload = function (e){
-      console.log(reader.result);
-      $("#thumbnail"+filesIn.cont).find('img').attr({
-          src: ''+e.target.result,
-      });
-    }
+    readerIn.onload = function (e){
+      var tempImg = new Image();
+      tempImg.src = readerIn.result;
+      readerOut = new FileReader();
 
-    reader.readAsDataURL(filesIn[0]);
+      tempImg.onload = function() {
+
+        var MAX_WIDTH = 800;
+        var MAX_HEIGHT = 600;
+        var tempW = tempImg.width;
+        var tempH = tempImg.height;
+        if (tempW > tempH) {
+            if (tempW > MAX_WIDTH) {
+               tempH *= MAX_WIDTH / tempW;
+               tempW = MAX_WIDTH;
+            }
+        } else {
+            if (tempH > MAX_HEIGHT) {
+               tempW *= MAX_HEIGHT / tempH;
+               tempH = MAX_HEIGHT;
+            }
+        }
+
+        var canvas = document.createElement('canvas');
+        canvas.width = tempW;
+        canvas.height = tempH;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(this, 0, 0, tempW, tempH);
+        var dataURL = canvas.toDataURL("image/jpeg");
+        
+        var blob = dataURItoBlob(dataURL);
+
+        readerOut.readAsDataURL(blob);
+      }
+
+      readerOut.onload = function(e) {
+        $("#thumbnail"+filesIn.cont).find('img').attr({
+          src: ''+e.target.result,
+        });
+      }
+      /*$("#thumbnail"+filesIn.cont).find('img').attr({
+          src: ''+e.target.result,
+      });*/
+    }
+    readerIn.readAsDataURL(filesIn[0]);
   }
   FileReader.prototype.id = 0;
   FileList.prototype.cont = 0;
@@ -16243,7 +16289,7 @@ $(function(){
 });
 
 
-},{"./routers/router":33,"backbone":2,"jquery":21}],27:[function(require,module,exports){
+},{"./routers/router":34,"backbone":2,"jquery":21}],27:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({});
@@ -16252,13 +16298,19 @@ module.exports=require(27)
 },{"backbone":2}],29:[function(require,module,exports){
 var Backbone = require('backbone');
 
+module.exports = Backbone.Model.extend({
+	urlRoot : "/articles/api/devices/?format=json", 
+});
+},{"backbone":2}],30:[function(require,module,exports){
+var Backbone = require('backbone');
+
 module.exports = Backbone.Model.extend({});
 
-},{"backbone":2}],30:[function(require,module,exports){
+},{"backbone":2}],31:[function(require,module,exports){
 var Backbone = require('backbone'); 
 
 module.exports = Backbone.Model.extend({});
-},{"backbone":2}],31:[function(require,module,exports){
+},{"backbone":2}],32:[function(require,module,exports){
 var Backbone  = require('backbone'),
   Handlebars  = require('handlebars'),
   $           = require('jquery'),
@@ -16377,15 +16429,16 @@ module.exports= Backbone.Model.extend({
 });
 
 
-},{"async":1,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],32:[function(require,module,exports){
-module.exports=require(30)
-},{"backbone":2}],33:[function(require,module,exports){
+},{"async":1,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],33:[function(require,module,exports){
+module.exports=require(31)
+},{"backbone":2}],34:[function(require,module,exports){
 var Backbone 		= require('backbone'),
 	//Handlebars 	= require('handlebars'),
 	$ 				= require('jquery'),
 	Product 		= require('../models/product'),
 	Follower 		= require('../models/follower'),
 	Gost 			= require('../models/gost'),
+	FormModel		= require('../models/form'),
 	SessionModel 	= require('../models/sessionmodel'),
 	UserModel 		= require('../models/user'),	
 	Products 		= require('../collections/products'),
@@ -16394,7 +16447,8 @@ var Backbone 		= require('backbone'),
 	OptionsView 	= require('../views/options'),	
 	FollowersView 	= require('../views/followers'),
 	UserProfileView = require('../views/userprofile'),
-	NotificationsView = require('../views/notificationbar');
+	NotificationsView = require('../views/notificationbar'),
+	FormView 		= require('../views/form');
 
 module.exports = Backbone.Router.extend({
 	routes: {
@@ -16430,13 +16484,15 @@ module.exports = Backbone.Router.extend({
 
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
-		this.productsView.render();
+		//this.productsView.render();
 
         this.followers = new Followers();
         this.followersView = new FollowersView({ collection : this.followers});  
-        this.followersView.render();
+        //this.followersView.render();
 
 		this.optionsView = new OptionsView({ model : new Gost({}) });	
+		this.formView = new FormView({ model : new FormModel({}) });
+		//this.formView.render();
 
 		Backbone.history.start({ 
     		pushState: true, 
@@ -16466,7 +16522,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/articles/api/new/?format=json";
+		this.products.url = "/articles/api/article/?format=json";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -16653,7 +16709,7 @@ module.exports = Backbone.Router.extend({
 	    return cookieValue;
 	},*/
 });
-},{"../collections/followers":24,"../collections/products":25,"../models/follower":28,"../models/gost":29,"../models/product":30,"../models/sessionmodel":31,"../models/user":32,"../views/followers":37,"../views/notificationbar":38,"../views/options":39,"../views/products":41,"../views/userprofile":42,"backbone":2,"jquery":21}],34:[function(require,module,exports){
+},{"../collections/followers":24,"../collections/products":25,"../models/follower":28,"../models/form":29,"../models/gost":30,"../models/product":31,"../models/sessionmodel":32,"../models/user":33,"../views/followers":38,"../views/form":39,"../views/notificationbar":40,"../views/options":41,"../views/products":43,"../views/userprofile":44,"backbone":2,"jquery":21}],35:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	_ 			= require('underscore'),
@@ -16680,7 +16736,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	}
 });
-},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],35:[function(require,module,exports){
+},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],36:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	//Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -16708,7 +16764,7 @@ module.exports = Backbone.View.extend({
         this.collection.forEach(this.addOne,this);
     }
 });
-},{"../views/comment":34,"backbone":2,"jquery":21}],36:[function(require,module,exports){
+},{"../views/comment":35,"backbone":2,"jquery":21}],37:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -16742,7 +16798,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../models/follower":28,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],37:[function(require,module,exports){
+},{"../models/follower":28,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],38:[function(require,module,exports){
 var Backbone    = require('backbone'),
     //Handlebars  = require('handlebars'),
     $           = require('jquery'),
@@ -16770,7 +16826,54 @@ module.exports = Backbone.View.extend({
         this.collection.forEach(this.addOne,this);
       }
 });
-},{"../views/follower":36,"backbone":2,"jquery":21}],38:[function(require,module,exports){
+},{"../views/follower":37,"backbone":2,"jquery":21}],39:[function(require,module,exports){
+var Backbone 	= require('backbone'),
+	Handlebars 	= require('handlebars'),
+	$ 			= require('jquery'),
+	_ 			= require('underscore');
+	//Comment = require('../models/comment'),
+	//Comments = require('../collections/comments'),
+	//CommentsView = require('../views/comments');
+
+module.exports = Backbone.View.extend({
+	el : $(".upload-box"),
+
+	events : {
+		'click .action.icon-share' : 'share',
+	},
+
+	template : _.template($("#form-template").html()),
+
+	initialize : function () {
+		this.listenTo(this.model, "change", this.render, this);	
+		this.model.fetch({ 
+			success: function(){
+       			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
+    		}
+    	});
+    	console.log("EL MODEL FORM:", this.model.toJSON())
+    	window.formu = this.model;
+			
+	},
+
+	render : function(){
+		var self = this;
+		var device = this.model.toJSON();
+		var html = this.template(device);
+		this.$el.html(html);
+		return this;
+	},
+
+	share : function(){
+		alert("Se utilizara para compartir");
+	},
+
+	navigate : function (){
+		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
+	}
+});
+
+},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],40:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	$ 			= require('jquery'),
 	_ 			= require('underscore');
@@ -16816,14 +16919,14 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"backbone":2,"jquery":21,"underscore":22}],39:[function(require,module,exports){
+},{"backbone":2,"jquery":21,"underscore":22}],41:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
-	_ 			= require('underscore'),
-	Comment = require('../models/comment'),
-	Comments = require('../collections/comments'),
-	CommentsView = require('../views/comments');
+	_ 			= require('underscore');
+	//Comment = require('../models/comment'),
+	//Comments = require('../collections/comments'),
+	//CommentsView = require('../views/comments');
 
 module.exports = Backbone.View.extend({
 	el : $(".options-menu"),
@@ -16883,7 +16986,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../collections/comments":23,"../models/comment":27,"../views/comments":35,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],40:[function(require,module,exports){
+},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],42:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -16925,12 +17028,13 @@ module.exports = Backbone.View.extend({
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
-        	$.get(comment[x], function(data) {
+        	/*$.get(comment[x], function(data) {
         		comment[x] = data;
         		console.log("COMMENTARIOS OBJECT : ", comment[x]);
         		self.comments.add(new Comment(comment[x]));
-        	});        	 
-        }          
+        	});*/
+        	self.comments.add(new Comment(comment[x]));        	 
+        }         
         //this.commentsView.render();
 		return this;
 	},
@@ -16984,7 +17088,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../collections/comments":23,"../models/comment":27,"../views/comments":35,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],41:[function(require,module,exports){
+},{"../collections/comments":23,"../models/comment":27,"../views/comments":36,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],43:[function(require,module,exports){
 var Backbone    = require('backbone'),
     //Handlebars  = require('handlebars'),
     $           = require('jquery'),
@@ -17012,7 +17116,7 @@ module.exports = Backbone.View.extend({
         this.collection.forEach(this.addOne,this);
       }
 });
-},{"../views/product":40,"backbone":2,"jquery":21}],42:[function(require,module,exports){
+},{"../views/product":42,"backbone":2,"jquery":21}],44:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	$ 			= require('jquery'),
 	_ 			= require('underscore');
