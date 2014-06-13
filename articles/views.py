@@ -28,6 +28,19 @@ class ArticleSet(viewsets.ModelViewSet):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ArticlePictureSet(viewsets.ModelViewSet):
+	queryset = ArticlePicture.objects.all()	
+	serializer_class = ArticlePictureSerializer
+	def create(self,request):
+		user = request.user
+		serializer = ArticlePictureSerializer(data=request.DATA,files=request.FILES)
+		if serializer.is_valid():
+			if not (serializer.object.article.user.username == request.user.username):
+				return Response(status.HTTP_403_FORBIDDEN)
+			serializer.object.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class PopularArticlesSet(viewsets.ReadOnlyModelViewSet):
 	queryset = Article.objects.all().annotate(like_count=Count('like')).order_by('-like_count')[:10]
 	serializer_class = ArticleSerializer
@@ -43,6 +56,8 @@ class CommentSet(viewsets.ModelViewSet):
 		user = request.user
 		serializer = CommentSerializer(data=request.DATA)
 		if serializer.is_valid():
+			if not (serializer.object.article.user.username == request.user.username):
+				return Response(status.HTTP_403_FORBIDDEN)
 			serializer.object.user = user
 			serializer.object.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -71,6 +86,22 @@ class LikeSet(viewsets.ModelViewSet):
 		user = request.user
 		serializer = LikeSerializer(data=request.DATA)
 		if serializer.is_valid():
+			if not (serializer.object.article.user.username == request.user.username):
+				return Response(status.HTTP_403_FORBIDDEN)
+			serializer.object.user = user
+			serializer.object.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class InterestingSet(viewsets.ModelViewSet):
+	queryset = Interested.objects.all()
+	serializer_class = InterestingSerializer
+	def create(self,request):
+		user = request.user
+		serializer = InterestingSerializer(data=request.DATA)
+		if serializer.is_valid():
+			if not (serializer.object.article.user.username == request.user.username):
+				return Response(status.HTTP_403_FORBIDDEN)
 			serializer.object.user = user
 			serializer.object.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)

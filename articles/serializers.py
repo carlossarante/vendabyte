@@ -62,5 +62,6 @@ class LikeSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class InterestingSerializer(serializers.HyperlinkedModelSerializer):
+	user = UserSerializer(read_only=True)
 	class Meta:
 		model = Interested
