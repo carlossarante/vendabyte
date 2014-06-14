@@ -47,9 +47,8 @@ class ArticleSet(viewsets.ModelViewSet):
 					queryset.append(a.article)
 			else:
 				queryset = Article.objects.all()
-		except ValueError:
-			pass
-				#queryset = Article.objects.all().order_by('-date_posted')
+		except:
+				queryset = Article.objects.all().order_by('-date_posted')
 		return queryset
 	
 class ArticlePictureSet(viewsets.ModelViewSet):

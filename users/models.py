@@ -20,7 +20,7 @@ class User(AbstractBaseUser):
 	city = models.ForeignKey(City,default=1)
 	rating = models.DecimalField(default = 0.0,decimal_places=1,max_digits=2)
 	medals = models.ManyToManyField(Badgets,related_name='medals',blank=True)
-	following = models.ManyToManyField('self', related_name='follows', symmetrical=False,blank=True)
+	followers = models.ManyToManyField('self', related_name='follows', symmetrical=False,blank=True)
 	objects = UserManager()
 	USERNAME_FIELD='username'
 	REQUIRED_FIELDS=['first_name','last_name','birthday','email',]
@@ -33,7 +33,7 @@ class User(AbstractBaseUser):
 		return ('/users/%s/') % self.username
 
 	def __unicode__(self):
-		return (('%s %s') % (self.first_name,self.last_name))
+		return (('%s %s (%s)') % (self.first_name,self.last_name,self.username))
 	def get_full_name(self):
 		return ('%s %s') % (self.first_name,self.last_name)
 	def get_short_name(self):

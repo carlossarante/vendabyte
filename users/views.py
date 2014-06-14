@@ -1,14 +1,12 @@
 # -*- encoding: utf-8 -*-
 
 from rest_framework import viewsets
+from rest_framework.response import Response
+from rest_framework.decorators import action,link
 
 from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404,redirect
-from django.core.files import File
-from django.core.files.temp import NamedTemporaryFile
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.db.models import Count
 
@@ -17,8 +15,11 @@ from users.models import User,Badgets,Contact
 from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
 
 
-def userIndex(request):
+def userIndex(request,username):
+	user = get_object_or_404(User,username=username)
 	return render(request,'user.html')
+
+
 
 @csrf_exempt
 def loginFacebookUser(request,response='html'):
@@ -29,8 +30,13 @@ def loginFacebookUser(request,response='html'):
 		if user is not None:
 			if user.is_active:
 				login(request,user)
+<<<<<<< HEAD
+				return HttpResponse('/users/%s'% user.username)
+ 			else:
+=======
 				return redirect(user)
 			else:
+>>>>>>> 30d7ae88989af3f4f15ddd4e0153d5d74ff055b9
  				return HttpResponse('User is not active')
 		else:
  			 	try:
@@ -40,8 +46,39 @@ def loginFacebookUser(request,response='html'):
  			 		return HttpResponse('User Does not Exist')
 
 class UserSet(viewsets.ModelViewSet):
-	queryset = User.objects.all()
 	serializer_class = UserSerializer
+	
+	def get_queryset(self):
+		try:
+			requested_query = self.request.GET['list'] 
+			user = self.request.user
+			if requested_query == 'followers':
+				queryset = user.followers.all()
+			elif requested_query == 'following':
+				queryset = user.follows.all()
+			elif requested_query == 'me':
+				queryset = [self.request.user,]
+		except: 
+			queryset = User.objects.all()
+		return queryset
+
+	action(methods=['POST',])
+	def add_follower(self,request,pk=None):
+		try:
+			user = self.get_object() #get the requested user.
+			user.followers.add(self.request.user) #add current user as follower
+			return Response({'Success':'True'})
+		except:
+			 return Response({'status':'Error doing this query.'},status=status.HTTP_400_BAD_REQUEST)
+	@action(methods=['DELETE',])
+	def remove_follower(self,request,pk=None):
+		try:
+			user = self.get_object()
+			follow = user.followers.remove(self.request.user)
+			return Response({'Success':'True'})
+		except:
+			 return Response({'status':'Error doing this query.'},status=status.HTTP_400_BAD_REQUEST)
+
 class BadgetSet(viewsets.ReadOnlyModelViewSet):
 	queryset = Badgets.objects.all()
 	serializer_class = BadgetSerializer
@@ -49,4 +86,3 @@ class BadgetSet(viewsets.ReadOnlyModelViewSet):
 class ContactSet(viewsets.ModelViewSet):
 	queryset= Contact.objects.all()
 	serializer_class= ContactSerializer
-
