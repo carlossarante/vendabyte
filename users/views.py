@@ -15,8 +15,9 @@ from users.models import User,Badgets,Contact
 from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
 
 
-def userIndex(request,username):
-	user = get_object_or_404(User,username=username)
+def userIndex(request,username=None):
+	if username is not None:
+		user = get_object_or_404(User,username=username)
 	return render(request,'user.html')
 
 
@@ -30,24 +31,19 @@ def loginFacebookUser(request,response='html'):
 		if user is not None:
 			if user.is_active:
 				login(request,user)
-<<<<<<< HEAD
 				return HttpResponse('/users/%s'% user.username)
  			else:
-=======
-				return redirect(user)
-			else:
->>>>>>> 30d7ae88989af3f4f15ddd4e0153d5d74ff055b9
  				return HttpResponse('User is not active')
-		else:
- 			 	try:
- 			 		User.objects.get(email=email)
- 			 		return HttpResponse('Wrong Password')
- 			 	except User.DoesNotExist:
- 			 		return HttpResponse('User Does not Exist')
+ 		else:
+ 			 	try: 
+ 					User.objects.get(email=email)
+ 					return HttpResponse('Wrong Password')
+ 				except User.DoesNotExist:
+					return HttpResponse('User Does not Exist')	
+
 
 class UserSet(viewsets.ModelViewSet):
 	serializer_class = UserSerializer
-	
 	def get_queryset(self):
 		try:
 			requested_query = self.request.GET['list'] 
