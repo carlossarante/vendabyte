@@ -16923,10 +16923,16 @@ module.exports = Backbone.View.extend({
 		y.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
 
 		$.get("http://localhost:8000/articles/api/brands/?format=json&brand="+x.val(), function(data) {
-			data[0].brandmodel_set.forEach(function(argument) {
-				y.append('<option value='+argument+' label='+argument+'></option>');
-			})
+			data[0].brandmodel_set.forEach(function(modelo) {
+				$.get("http://localhost:8000/articles/api/models/?format=json&model_name="+modelo, function(data) {
+					y.append('<option value='+data[0].url+' label='+modelo+'></option>');
+					console.log(data,data.url)
+				});	
+			});
+					
 		});
+
+
 	},
 
 	navigate : function (){
