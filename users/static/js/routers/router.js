@@ -18,7 +18,7 @@ var Backbone 		= require('backbone'),
 
 module.exports = Backbone.Router.extend({
 	routes: {
-		"users/"		: "user",
+		":users/"		: "user",
 		"lonuevo" 		: "loNuevo",
 		"siguiendo" 	: "siguiendo",
 		"seguidores" 	: "seguidores",

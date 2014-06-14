@@ -10,6 +10,18 @@ $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
 
+  /*var formData = new FormData();
+
+  formData.append("model", "http://localhost:8000/articles/api/models/1/");
+  formData.append("short_description", "Excelente");
+  formData.append("price", "100");
+  formData.append("specs", "El mejor cel de los celulares");
+  formData.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
+
+  var request = new XMLHttpRequest();
+  request.open("POST", "http://localhost:8000/articles/api/article/");
+  request.send(formData);*/
+
   function dataURItoBlob(dataURI) {
     // convert base64 to raw binary data held in a string
     // doesn't handle URLEncoded DataURIs
@@ -31,6 +43,7 @@ $(function(){
     }
     // write the ArrayBuffer to a blob, and you're done
     var blob = new Blob([ab],{"type":mimeString});
+    window.blob = blob;
     return blob
   }
 
@@ -100,8 +113,19 @@ $(function(){
         var dataURL = canvas.toDataURL("image/jpeg");
         
         var blob = dataURItoBlob(dataURL);
-
+        blob.name = "pepsi";
         readerOut.readAsDataURL(blob);
+
+        var formData2 = new FormData();
+
+        formData2.append("article", "http://localhost:8000/articles/api/article/4/");
+        formData2.append("art_img", blob);
+        formData2.append("art_img", blob);
+        formData2.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
+
+        var request = new XMLHttpRequest();
+        request.open("POST", "http://localhost:8000/articles/api/picture/");
+        request.send(formData2);
       }
 
       readerOut.onload = function(e) {

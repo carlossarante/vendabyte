@@ -32,22 +32,12 @@ def loginFacebookUser(request,response='html'):
 				return redirect(user)
 			else:
  				return HttpResponse('User is not active')
-<<<<<<< HEAD
 		else:
  			 	try:
  			 		User.objects.get(email=email)
  			 		return HttpResponse('Wrong Password')
  			 	except User.DoesNotExist:
- 			 		return HttpResponse('User Does not Exist')	
-=======
- 		else:
- 			 	try: 
- 					User.objects.get(email=email)
- 					return HttpResponse('Wrong Password')
- 				except User.DoesNotExist:
-					return HttpResponse('User Does not Exist')	
->>>>>>> c6adc27f7df7ea971e6a1f500934adbe0a3cc567
-
+ 			 		return HttpResponse('User Does not Exist')
 
 class UserSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()

@@ -111,8 +111,8 @@
 				</div>				
 			</div>
 			
-			<form class="upload-box">
-				<ul class="thumbnail-cont">
+			<form action="/articles/api/article/" id="articleUpload" class="upload-box" style="height:auto; padding-bottom:20px; margin-bottom:40px;">
+			<!--	<ul class="thumbnail-cont">
 					<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
 					<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
 					<li id="thumbnail3" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
@@ -145,7 +145,7 @@
 						<option value="volvo">Sony</option>
 						<option value="volvo">Toshiba</option>
 					</select>
-				</div>				
+				</div>				-->
 			</form>
 
 
@@ -216,31 +216,25 @@
 		</ul>
 		
 		<div class="rb-container">
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" value="<% print(this.model.attributes[0].device_detail)%>"><% print(this.model.attributes[0].device_detail)%></div>
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" value="<% print(this.model.attributes[1].device_detail)%>"><% print(this.model.attributes[1].device_detail)%></div>
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" value="<% print(this.model.attributes[2].device_detail)%>"><% print(this.model.attributes[2].device_detail)%></div>
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" value="<% print(this.model.attributes[3].device_detail)%>"><% print(this.model.attributes[3].device_detail)%></div>
+			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[0].device_detail)%>"><% print(this.model.attributes[0].device_detail)%></div>
+			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[1].device_detail)%>"><% print(this.model.attributes[1].device_detail)%></div>
+			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[2].device_detail)%>"><% print(this.model.attributes[2].device_detail)%></div>
+			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[3].device_detail)%>"><% print(this.model.attributes[3].device_detail)%></div>
 		</div>
 
 		<div class="select-cont">
-			<select class="brand-select inline-block">
-				<option value="volvo">Samsung</option>
-				<option value="volvo">BlackBerry</option>
-				<option value="volvo">HTC</option>
-				<option value="volvo">Apple</option>
-				<option value="volvo">Sony</option>
-				<option value="volvo">Toshiba</option>
+			<select class="brand-select inline-block" name="brand" form="articleUpload" required>
+				<option value="" selected disabled="true" label="Seleccionar marca"></option>
 			</select>
 
-			<select class="model-select inline-block">
-				<option value="volvo">Samsung</option>
-				<option value="volvo">BlackBerry</option>
-				<option value="volvo">HTC</option>
-				<option value="volvo">Apple</option>
-				<option value="volvo">Sony</option>
-				<option value="volvo">Toshiba</option>
+			<select class="model-select inline-block" name="model" form="articleUpload" required>
+				<option value="" selected disabled="true" label="Seleccionar modelo"></option>
 			</select>
-		</div>				
+
+			<textarea form="articleUpload" name="short_description" placeholder="Short description" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
+			<textarea form="articleUpload" name="specs" placeholder="Specs" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
+		</div>	
+		<input name="submit" type="submit" id="submit" value="Subir articulo" form="articleUpload" style="font-size:1rem;">
   	</script>
 
   	<script id="user-template" type="text/template">

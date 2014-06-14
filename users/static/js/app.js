@@ -16139,6 +16139,18 @@ $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
 
+  /*var formData = new FormData();
+
+  formData.append("model", "http://localhost:8000/articles/api/models/1/");
+  formData.append("short_description", "Excelente");
+  formData.append("price", "100");
+  formData.append("specs", "El mejor cel de los celulares");
+  formData.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
+
+  var request = new XMLHttpRequest();
+  request.open("POST", "http://localhost:8000/articles/api/article/");
+  request.send(formData);*/
+
   function dataURItoBlob(dataURI) {
     // convert base64 to raw binary data held in a string
     // doesn't handle URLEncoded DataURIs
@@ -16160,6 +16172,7 @@ $(function(){
     }
     // write the ArrayBuffer to a blob, and you're done
     var blob = new Blob([ab],{"type":mimeString});
+    window.blob = blob;
     return blob
   }
 
@@ -16229,8 +16242,19 @@ $(function(){
         var dataURL = canvas.toDataURL("image/jpeg");
         
         var blob = dataURItoBlob(dataURL);
-
+        blob.name = "pepsi";
         readerOut.readAsDataURL(blob);
+
+        var formData2 = new FormData();
+
+        formData2.append("article", "http://localhost:8000/articles/api/article/4/");
+        formData2.append("art_img", blob);
+        formData2.append("art_img", blob);
+        formData2.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
+
+        var request = new XMLHttpRequest();
+        request.open("POST", "http://localhost:8000/articles/api/picture/");
+        request.send(formData2);
       }
 
       readerOut.onload = function(e) {
@@ -16452,7 +16476,7 @@ var Backbone 		= require('backbone'),
 
 module.exports = Backbone.Router.extend({
 	routes: {
-		"users/"		: "user",
+		":users/"		: "user",
 		"lonuevo" 		: "loNuevo",
 		"siguiendo" 	: "siguiendo",
 		"seguidores" 	: "seguidores",
@@ -16839,7 +16863,9 @@ module.exports = Backbone.View.extend({
 	el : $(".upload-box"),
 
 	events : {
-		'click .action.icon-share' : 'share',
+		'click .radioBtn' : 'fetchBrands',
+		'change .brand-select' : 'fetchModels',
+		'click #submit' : 'submitForm',
 	},
 
 	template : _.template($("#form-template").html()),
@@ -16863,9 +16889,44 @@ module.exports = Backbone.View.extend({
 		this.$el.html(html);
 		return this;
 	},
+	submitForm : function(e) {
+		alert();
+		var formData = new FormData(document.getElementById('articleUpload'));
+		formData.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
 
-	share : function(){
-		alert("Se utilizara para compartir");
+		var request = new XMLHttpRequest();
+		request.open("POST", "http://localhost:8000/articles/api/article/");
+		request.send(formData);
+	},
+
+	fetchBrands : function(e){
+		x = $(e.currentTarget);
+		y = $(".brand-select");
+		z = $(".model-select");
+		y.html('<option value="" selected disabled="disabled" label="Seleccionar marca"></option>');
+		z.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
+
+		$.get("http://localhost:8000/articles/api/devices/?format=json&device_detail="+x.val(), function(data) {
+			data[0].brand_set.forEach(function(argument) {
+				y.append('<option value='+argument+' label='+argument+'></option>');
+			})
+		});
+
+		x.parent(".rbDeco").css({
+			backgroundColor: 'green',
+			color: 'white'
+		});
+	},
+	fetchModels : function(e){
+		x = $(e.currentTarget);
+		y = $(".model-select");
+		y.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
+
+		$.get("http://localhost:8000/articles/api/brands/?format=json&brand="+x.val(), function(data) {
+			data[0].brandmodel_set.forEach(function(argument) {
+				y.append('<option value='+argument+' label='+argument+'></option>');
+			})
+		});
 	},
 
 	navigate : function (){
