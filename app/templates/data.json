@@ -1,8 +1,0 @@
-{
-    "product": "Iphone4",
-    "cover": "../static/img/ima2.jpg",
-    "precio": "45,000",
-    "avatar" : "../static/img/persona.jpg",
-    "description" : "Extremadamente vacano",
-    "user" : "Juan Fonseca"
-}

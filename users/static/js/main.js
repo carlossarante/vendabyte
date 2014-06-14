@@ -10,28 +10,50 @@ $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
 
-  var croppicContaineroutputOptions = {
-        uploadUrl:'/static/img_save_to_file.php',
-        //cropUrl:'img_crop_to_file.php', 
-        outputUrlId:'cropOutput',
-        modal:false,
-        loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> '
+  /*var formData = new FormData();
+
+  formData.append("model", "http://localhost:8000/articles/api/models/1/");
+  formData.append("short_description", "Excelente");
+  formData.append("price", "100");
+  formData.append("specs", "El mejor cel de los celulares");
+  formData.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
+
+  var request = new XMLHttpRequest();
+  request.open("POST", "http://localhost:8000/articles/api/article/");
+  request.send(formData);*/
+
+  function dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs
+    var byteString = atob(dataURI.split(',')[1]);
+   /* var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);*/
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
     }
-
-  var cropContaineroutput = new Croppic('cropContaineroutput', croppicContaineroutputOptions);     
-
+    // write the ArrayBuffer to a blob, and you're done
+    var blob = new Blob([ab],{"type":mimeString});
+    window.blob = blob;
+    return blob
+  }
 
   function handleFileSelect(evt) {
-    var filesIn = evt.target.files; // FileList object
+    var filesIn = evt.target.files;
     var el = $(this);
     var inputId = el.attr('id');
     loadBtn = $(".load-button");
     dropArea= $("#deco");
-    console.log("Elemento que genera evento", el);
-    console.log("ARCHIVOS DENTRO DE EL : ", el.context.files);
-    //$.post( "/users/login/", filesIn[0], function(data){console.log(data);});
-    reader = new FileReader(); //FileReader object
-
+    readerIn = new FileReader(); //FileReader object
 
     if (!filesIn[0].type.match('image.*')) {
         alert("Solo se permiten archivos de imagen");
@@ -60,14 +82,62 @@ $(function(){
       return;
     }     
 
-    reader.onload = function (e){
-      console.log(reader.result);
-      $("#thumbnail"+filesIn.cont).find('img').attr({
-          src: ''+e.target.result,
-      });
-    }
+    readerIn.onload = function (e){
+      var tempImg = new Image();
+      tempImg.src = readerIn.result;
+      readerOut = new FileReader();
 
-    reader.readAsDataURL(filesIn[0]);
+      tempImg.onload = function() {
+
+        var MAX_WIDTH = 800;
+        var MAX_HEIGHT = 600;
+        var tempW = tempImg.width;
+        var tempH = tempImg.height;
+        if (tempW > tempH) {
+            if (tempW > MAX_WIDTH) {
+               tempH *= MAX_WIDTH / tempW;
+               tempW = MAX_WIDTH;
+            }
+        } else {
+            if (tempH > MAX_HEIGHT) {
+               tempW *= MAX_HEIGHT / tempH;
+               tempH = MAX_HEIGHT;
+            }
+        }
+
+        var canvas = document.createElement('canvas');
+        canvas.width = tempW;
+        canvas.height = tempH;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(this, 0, 0, tempW, tempH);
+        var dataURL = canvas.toDataURL("image/jpeg");
+        
+        var blob = dataURItoBlob(dataURL);
+        blob.name = "pepsi";
+        readerOut.readAsDataURL(blob);
+
+        var formData2 = new FormData();
+
+        formData2.append("article", "http://localhost:8000/articles/api/article/4/");
+        formData2.append("art_img", blob);
+        formData2.append("art_img", blob);
+        formData2.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
+
+        var request = new XMLHttpRequest();
+        request.open("POST", "http://localhost:8000/articles/api/picture/");
+        request.send(formData2);
+      }
+
+      readerOut.onload = function(e) {
+        $("#thumbnail"+filesIn.cont).find('img').attr({
+          src: ''+e.target.result,
+        });
+      }
+      /*$("#thumbnail"+filesIn.cont).find('img').attr({
+          src: ''+e.target.result,
+      });*/
+    }
+    readerIn.readAsDataURL(filesIn[0]);
   }
   FileReader.prototype.id = 0;
   FileList.prototype.cont = 0;

@@ -30,16 +30,20 @@ def loginFacebookUser(request,response='html'):
 		if user is not None:
 			if user.is_active:
 				login(request,user)
+<<<<<<< HEAD
 				return HttpResponse('/users/%s'% user.username)
  			else:
+=======
+				return redirect(user)
+			else:
+>>>>>>> 30d7ae88989af3f4f15ddd4e0153d5d74ff055b9
  				return HttpResponse('User is not active')
- 		else:
- 			 	try: 
- 					User.objects.get(email=email)
- 					return HttpResponse('Wrong Password')
- 				except User.DoesNotExist:
-					return HttpResponse('User Does not Exist')	
-
+		else:
+ 			 	try:
+ 			 		User.objects.get(email=email)
+ 			 		return HttpResponse('Wrong Password')
+ 			 	except User.DoesNotExist:
+ 			 		return HttpResponse('User Does not Exist')
 
 class UserSet(viewsets.ModelViewSet):
 	serializer_class = UserSerializer
