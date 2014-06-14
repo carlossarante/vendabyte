@@ -3,6 +3,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import filters 
+from rest_framework.decorators import link
 
 from django.shortcuts import render
 from django.db.models import Count
@@ -17,8 +18,9 @@ def articleIndex(request):
 	return render(request,'articles.html')
 
 class ArticleSet(viewsets.ModelViewSet):
-	queryset = Article.objects.all()
+	#queryset = Article.objects.all()
 	serializer_class = ArticleSerializer
+	base_name = 'article'
 	def create(self,request):
 		user = request.user
 		serializer = ArticleSerializer(data=request.DATA)
@@ -27,10 +29,33 @@ class ArticleSet(viewsets.ModelViewSet):
 			serializer.object.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+	
+	def get_queryset(self):
+		try:
+			requested_query = self.request.GET['list'] #new, popular,interesting, selling 
+			if requested_query == 'new':
+				queryset = Article.objects.all().order_by('-date_posted')
+			elif requested_query == 'popular':
+				queryset = Article.objects.all().annotate(like_count=Count('like')).order_by('-like_count')
+			elif requested_query == 'selling':
+				queryset = self.request.user.article_set.all()
+			elif requested_query == 'interesting':
+				queryset = []
+				articles = Interested.objects.filter(user=self.request.user)
+			elif self.request.GET['list']:
+				for a in articles:
+					queryset.append(a.article)
+			else:
+				queryset = Article.objects.all()
+		except ValueError:
+			pass
+				#queryset = Article.objects.all().order_by('-date_posted')
+		return queryset
+	
 class ArticlePictureSet(viewsets.ModelViewSet):
-	queryset = ArticlePicture.objects.all()	
+	queryset = ArticlePicture.objects.all()
 	serializer_class = ArticlePictureSerializer
+
 	def create(self,request):
 		user = request.user
 		serializer = ArticlePictureSerializer(data=request.DATA,files=request.FILES)

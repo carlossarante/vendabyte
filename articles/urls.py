@@ -7,7 +7,9 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
-router.register('article',ArticleSet)
+router.register('article',ArticleSet,base_name='article')
+#router.register('popular',PopularArticlesSet)
+#router.register('new',NewArticlesSet)
 router.register('picture',ArticlePictureSet)
 router.register('comment',CommentSet)
 router.register('models',BrandModelSet)
