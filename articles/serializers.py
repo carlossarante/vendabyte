@@ -54,6 +54,7 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 		model = Article
 		fields = ('id','url','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set','like_count','interested_count')
 
+
 class LikeSerializer(serializers.HyperlinkedModelSerializer):
 	user = ShortUserSerializer(read_only=True)
 	class Meta:
@@ -62,6 +63,6 @@ class LikeSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class InterestingSerializer(serializers.HyperlinkedModelSerializer):
-	user = UserSerializer(read_only=True)
+	user = ShortUserSerializer(read_only=True)
 	class Meta:
 		model = Interested
