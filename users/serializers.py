@@ -6,7 +6,6 @@ from users.models import User,Badgets,Contact
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-	city = CitySerializer()
 	class Meta:
 		model = User
 		fields = ('id','first_name','last_name','birthday','username','photo','cover','city','rating','medals','followers','contact')
