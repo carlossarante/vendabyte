@@ -1,6 +1,6 @@
 from django.forms.extras.widgets import Select
 from django import forms
-from .models import Article,ArticlePicture, Brand,BrandModel,Device
+from articles.models import Article,ArticlePicture, Brand,BrandModel,Device
 
 class ArticleForm(forms.ModelForm):
 	device = forms.ModelChoiceField(queryset=Device.objects.all(),label='Dispositivo',widget=forms.RadioSelect)

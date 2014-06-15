@@ -1,7 +1,9 @@
 from rest_framework import serializers
 import json
 import decimal
-from .models import Article, ArticlePicture,Brand, BrandModel, Device,Like,Comment,Interested
+
+
+from articles.models import Article, ArticlePicture,Brand, BrandModel, Device,Like,Comment,Interested
 from users.serializers import UserSerializer
 from users.models import User
 from django.utils import timezone
@@ -49,10 +51,25 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 	articlepicture_set = ArticlePictureSerializer(read_only=True)
 	user = ShortUserSerializer(read_only=True)
 	like_count = serializers.Field(source='getLikeCount')
+	interested = serializers.SerializerMethodField('is_interested')
+	liked = serializers.SerializerMethodField('is_liked')
 	interested_count = serializers.Field(source='getInterestedCount')
 	class Meta:
 		model = Article
-		fields = ('id','url','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set','like_count','interested_count')
+		fields = ('id','url','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set','like_count','interested_count','liked','interested')		
+	
+	def is_interested(self,obj):
+		request = self.context.get('request',None)
+		article_is_interesting = obj.interested_set.filter(user=request.user)
+		if not article_is_interesting:
+			return False
+		return True
+	def is_liked(self,obj):
+		request = self.context.get('request',None)
+		article_is_liked = obj.like_set.filter(user=request.user)
+		if not article_is_liked:
+			return False
+		return True
 
 
 class LikeSerializer(serializers.HyperlinkedModelSerializer):

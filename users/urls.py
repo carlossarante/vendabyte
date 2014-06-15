@@ -14,4 +14,5 @@ urlpatterns = patterns('',
 	url(r'^$', 'users.views.userIndex'), 
 	url(r'^login/$', 'users.views.loginFacebookUser'),
     url(r'^api/', include(router.urls)),
+    url(r'^(?P<username>[a-z0-9_-]{3,16})/$', 'users.views.userIndex'),
 )   
