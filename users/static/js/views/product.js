@@ -39,12 +39,13 @@ module.exports = Backbone.View.extend({
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
-        	$.get(comment[x], function(data) {
+        	/*$.get(comment[x], function(data) {
         		comment[x] = data;
         		console.log("COMMENTARIOS OBJECT : ", comment[x]);
         		self.comments.add(new Comment(comment[x]));
-        	});        	 
-        }          
+        	});*/
+        	self.comments.add(new Comment(comment[x]));        	 
+        }         
         //this.commentsView.render();
 		return this;
 	},

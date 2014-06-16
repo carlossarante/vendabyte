@@ -1,1 +1,0 @@
-Vendabyte.Models.Product = Backbone.Model.extend({});

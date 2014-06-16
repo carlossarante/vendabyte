@@ -1,1 +1,0 @@
-Vendabyte.Collections.Comments = Backbone.Collection.extend({ model : Vendabyte.Models.Comment});

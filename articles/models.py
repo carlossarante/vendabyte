@@ -5,6 +5,8 @@ from django.utils import timezone
 from users.models import User
 from django.utils.encoding import smart_text
 
+
+
 class Device(models.Model):
 	device_detail = models.CharField(max_length=30)
 	def __unicode__(self):
@@ -40,8 +42,7 @@ class Article(models.Model):
 		return self.like_set.all().count()
 
 	def getInterestedCount(self):
-		return self.interested_set.all().count()
-
+		return self.interested_set.all().count() 
 
 class ArticlePicture(models.Model):
 	article = models.ForeignKey(Article)
