@@ -31,15 +31,15 @@ def loginFacebookUser(request,response='html'):
 		if user is not None:
 			if user.is_active:
 				login(request,user)
-				return HttpResponse('/users/%s'% user.username)
- 			else:
+				return HttpResponse('/%s'% user.username)
+			else:
  				return HttpResponse('User is not active')
- 		else:
+		else:
  			 	try: 
- 					User.objects.get(email=email)
- 					return HttpResponse('Wrong Password')
- 				except User.DoesNotExist:
-					return HttpResponse('User Does not Exist')	
+ 			 		User.objects.get(email=email)
+ 			 		return HttpResponse('Wrong Password')
+ 			 	except User.DoesNotExist:
+ 			 		return HttpResponse('User Does not Exist')	
 
 
 class UserSet(viewsets.ModelViewSet):

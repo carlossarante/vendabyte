@@ -6,7 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Vendabyte</title>
 	<link rel="stylesheet" href="/static/css/user.css">
-	<link rel="stylesheet" href="/static/css/croppic.css">
 </head>
 <body>
 	<header class="header relative">		
@@ -160,7 +159,6 @@
 				<li class="badget">iconos</li>
 				<li class="badget">iconos</li>
 				<li class="badget">iconos</li>
-
 			</ul>
 			<ul class="options-menu inline-block none">
 			{%csrf_token%}
@@ -204,6 +202,10 @@
 			<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict inline block">
 			<span class="icon-cog"></span>
 		</div>			
+  	</script>
+
+  	<script id="badgets-template" type="text/template">
+  		Iconos
   	</script>
 
   	<script id="form-template" type="text/template">	

@@ -6,7 +6,8 @@ module.exports = Backbone.View.extend({
 	el : $('.header'),
 
 	events : {
-		"click .icon-bell":"notification",
+		"click .icon-bell":"login",
+		"click .log-in":"login",
 	},
 
 	template : _.template($("#notification-template").html()),
@@ -25,6 +26,7 @@ module.exports = Backbone.View.extend({
 
 	notification : function(){
 		console.log("Click Notification icon-bell");
+		Backbone.app.activeSession.logout();
 	},
 
 	login : function(){
