@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework import filters 
 from rest_framework.decorators import link
 
-from django.shortcuts import render
-from django.db.models import Count
+from django.shortcuts import render,get_object_or_404
+from django.db.models import Count,Q
 
 from articles.forms import ArticleForm
 from articles.models import Article,ArticlePicture,Interested,Like,BrandModel,Brand,Device,Comment,Like
@@ -21,6 +21,7 @@ class ArticleSet(viewsets.ModelViewSet):
 	#queryset = Article.objects.all()
 	serializer_class = ArticleSerializer
 	base_name = 'article'
+
 	def create(self,request):
 		user = request.user
 		serializer = ArticleSerializer(data=request.DATA)
@@ -29,7 +30,8 @@ class ArticleSet(viewsets.ModelViewSet):
 			serializer.object.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-	
+
+
 	def get_queryset(self):
 		try:
 			requested_query = self.request.GET['list'] #new, popular,interesting, selling 
@@ -48,8 +50,9 @@ class ArticleSet(viewsets.ModelViewSet):
 			else:
 				queryset = Article.objects.all()
 		except:
-				queryset = Article.objects.all().order_by('-date_posted')
+				queryset = Article.objects.all()
 		return queryset
+
 	
 class ArticlePictureSet(viewsets.ModelViewSet):
 	queryset = ArticlePicture.objects.all()

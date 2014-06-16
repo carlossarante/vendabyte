@@ -14,3 +14,4 @@ class ProvinceSet(viewsets.ModelViewSet):
 class CitySet(viewsets.ModelViewSet):
 	queryset = City.objects.all()
 	serializer_class = CitySerializer
+	filter_fields = ('city_name','province__province_name')
