@@ -60,12 +60,17 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 		fields = ('id','url','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set','like_count','interested_count','liked','interested')		
 	
 	def is_interested(self,obj):
+		if obj is None:
+			return False
 		request = self.context.get('request',None)
 		article_is_interesting = obj.interested_set.filter(user=request.user)
 		if not article_is_interesting:
 			return False
 		return True
+
 	def is_liked(self,obj):
+		if obj is None:
+			return False
 		request = self.context.get('request',None)
 		article_is_liked = obj.like_set.filter(user=request.user)
 		if not article_is_liked:
