@@ -57,8 +57,13 @@ class UserSet(viewsets.ModelViewSet):
 		except: 
 			queryset = User.objects.all()
 		return queryset
+	
+	def dispatch(self, request, *args, **kwargs):
+		if kwargs.get('pk') == 'me' and request.user:
+			kwargs['pk'] = request.user.pk
+		return super(UserSet, self).dispatch(request, *args, **kwargs)
 
-	action(methods=['POST',])
+	@action(methods=['POST',])
 	def add_follower(self,request,pk=None):
 		try:
 			user = self.get_object() #get the requested user.
