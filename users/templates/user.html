@@ -198,7 +198,7 @@
 		<!--<div class="log-in">Iniciar Seción</div>-->
 		<div class="notif-bar inline-block">
 			<span class="icon-bell"><span class="notifications">2</span></span>
-			<span class="user-name"><%=username%></span>
+			<span class="user-name"><% print(this.model.attributes[0].username)%></span>
 			<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict inline block">
 			<span class="icon-cog"></span>
 		</div>			
@@ -245,7 +245,7 @@
 					<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict block">					
 				</div>					
 				<div class="inline-block">
-					<span class="user-name block"><%=username%></span>
+					<span class="user-name block"><% print(this.model.attributes[0].device_detail)%></span>
 					<span class="icon-star"></span>
 					<span class="icon-star"></span>
 					<span class="icon-star"></span>

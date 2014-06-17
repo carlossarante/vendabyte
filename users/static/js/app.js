@@ -16316,14 +16316,18 @@ $(function(){
 },{"./routers/router":34,"backbone":2,"jquery":21}],27:[function(require,module,exports){
 var Backbone = require('backbone');
 
-module.exports = Backbone.Model.extend({});
+module.exports = Backbone.Model.extend({
+	urlRoot : "/api/comment/",
+});
 },{"backbone":2}],28:[function(require,module,exports){
-module.exports=require(27)
+var Backbone = require('backbone');
+
+module.exports = Backbone.Model.extend({});
 },{"backbone":2}],29:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
-	urlRoot : "/articles/api/devices/?format=json",
+	url : "/api/devices/?format=json",
 
 	submitForm : function(e) {
 		var formData = new FormData(document.getElementById('articleUpload'));
@@ -16383,7 +16387,9 @@ module.exports = Backbone.Model.extend({});
 },{"backbone":2}],31:[function(require,module,exports){
 var Backbone = require('backbone'); 
 
-module.exports = Backbone.Model.extend({});
+module.exports = Backbone.Model.extend({
+	urlRoot : "/api/article/",
+});
 },{"backbone":2}],32:[function(require,module,exports){
 var Backbone  = require('backbone'),
   Handlebars  = require('handlebars'),
@@ -16507,7 +16513,9 @@ module.exports= Backbone.Model.extend({
 
 
 },{"async":1,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],33:[function(require,module,exports){
-module.exports=require(31)
+var Backbone = require('backbone'); 
+
+module.exports = Backbone.Model.extend({});
 },{"backbone":2}],34:[function(require,module,exports){
 var Backbone 		= require('backbone'),
 	//Handlebars 	= require('handlebars'),
@@ -16549,16 +16557,14 @@ module.exports = Backbone.Router.extend({
 		console.log("si lo hago");
 
 		this.userModel = new UserModel();
-		this.userModel.urlRoot = "/users/me/json";
+		this.userModel.urlRoot = "/api/user/?list=me&format=json";
 		this.userProfileView = new UserProfileView({model: this.userModel});
 		this.notificationsView = new NotificationsView({model : this.userModel});
-		//this.userModel.set({"username" : "mao"});
-
-		/*this.userModel.fetch({ 
+		this.userModel.fetch({ 
 			success: function(){
        			console.log("Usuario: "+Backbone.app.userModel);
     		}
-    	});*/
+    	});
 
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
@@ -16600,7 +16606,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json&list=new";
+		this.products.url = "/api/article/?format=json&list=new";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -16675,7 +16681,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json&list=popular";
+		this.products.url = "/api/article/?format=json&list=popular";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -16700,7 +16706,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json&list=interesting";
+		this.products.url = "/api/article/?format=json&list=interesting";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -16726,7 +16732,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json&list=selling";
+		this.products.url = "/api/article/?format=json&list=selling";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -16985,11 +16991,15 @@ module.exports = Backbone.View.extend({
 	template : _.template($("#notification-template").html()),
 
 	initialize : function () {
+
 		this.listenTo(this.model, "change", this.render, this);
 	},
 
 	render : function(){
 		var product = this.model.toJSON();
+		/*this.model.set(this.model.attributes[0]);
+		product = this.model.toJSON
+		window.model = this.model;*/
 		var html = this.template(product);
 		this.$el.html(html);
 		console.log("Notification render///////////////////");
@@ -17106,6 +17116,7 @@ module.exports = Backbone.View.extend({
 	template : _.template($("#product-template").html()),
 
 	initialize : function () {
+		window.url = this.model.urlRoot;
 		this.listenTo(this.model, "change", this.render, this);
 		
 	},
@@ -17119,7 +17130,7 @@ module.exports = Backbone.View.extend({
 		console.log("ESTO ES COMMEN SET  ", comment);
 		
         this.comments = new Comments();
-        this.comments.url = "/articles/api/comment/";
+        this.comments.url = "/api/comment/";
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
@@ -17153,15 +17164,15 @@ module.exports = Backbone.View.extend({
 	
 	addComment : function(){
 		var x;
-
         x = {
-            //"id": 3,
             "user": 1,
             "comment": this.$el.children('section').children('.comment-box').children('.comment-text').val(),
         	"date_posted":"25/04/2014",
-        	"article": this.model.id,
+        	"article": this.model.url(),
         	"csrfmiddlewaretoken": Backbone.app.csrftoken('csrftoken'),
         };
+
+		window.user= x;
         this.comments.add(new Comment(x));
         this.comment=_.last(this.comments.models);
         this.comment.unset("date_posted",{silent:"true"});

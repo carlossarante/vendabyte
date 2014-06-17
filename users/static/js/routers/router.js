@@ -38,16 +38,14 @@ module.exports = Backbone.Router.extend({
 		console.log("si lo hago");
 
 		this.userModel = new UserModel();
-		this.userModel.urlRoot = "/users/me/json";
+		this.userModel.urlRoot = "/api/user/?list=me&format=json";
 		this.userProfileView = new UserProfileView({model: this.userModel});
 		this.notificationsView = new NotificationsView({model : this.userModel});
-		//this.userModel.set({"username" : "mao"});
-
-		/*this.userModel.fetch({ 
+		this.userModel.fetch({ 
 			success: function(){
        			console.log("Usuario: "+Backbone.app.userModel);
     		}
-    	});*/
+    	});
 
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
@@ -89,7 +87,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json&list=new";
+		this.products.url = "/api/article/?format=json&list=new";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -164,7 +162,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json&list=popular";
+		this.products.url = "/api/article/?format=json&list=popular";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -189,7 +187,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json&list=interesting";
+		this.products.url = "/api/article/?format=json&list=interesting";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -215,7 +213,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json&list=selling";
+		this.products.url = "/api/article/?format=json&list=selling";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');

@@ -1,7 +1,7 @@
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
-	urlRoot : "/articles/api/devices/?format=json",
+	url : "/api/devices/?format=json",
 
 	submitForm : function(e) {
 		var formData = new FormData(document.getElementById('articleUpload'));
