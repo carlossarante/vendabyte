@@ -16316,14 +16316,68 @@ $(function(){
 },{"./routers/router":34,"backbone":2,"jquery":21}],27:[function(require,module,exports){
 var Backbone = require('backbone');
 
-module.exports = Backbone.Model.extend({});
+module.exports = Backbone.Model.extend({
+	urlRoot : "/api/comment/",
+});
 },{"backbone":2}],28:[function(require,module,exports){
-module.exports=require(27)
+var Backbone = require('backbone');
+
+module.exports = Backbone.Model.extend({});
 },{"backbone":2}],29:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
-	urlRoot : "/articles/api/devices/?format=json", 
+	url : "/api/devices/?format=json",
+
+	submitForm : function(e) {
+		var formData = new FormData(document.getElementById('articleUpload'));
+		formData.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
+
+		var request = new XMLHttpRequest();
+		request.open("POST", "http://localhost:8000/articles/api/article/");
+		request.onerror = function (argument) {
+			alert("error");
+		}
+		request.onload = function (argument) {
+			console.log("STATUS:",request.statusText);
+			console.log("STATUS:",request.status);
+			console.log("RESPONSE:",request.responseText);
+			console.log("RESPONSE:",request.responseXML);
+		}
+		request.onloaden = function (argument) {
+			alert("end");
+		}
+		window.request=request;
+		request.send(formData);
+
+	},
+
+	fetchBrands : function(x){
+		y = $(".brand-select");
+		z = $(".model-select");
+		y.html('<option value="" selected disabled="disabled" label="Seleccionar marca"></option>');
+		z.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
+
+		$.get("http://localhost:8000/articles/api/devices/?format=json&device_detail="+x.val(), function(data) {
+			data[0].brand_set.forEach(function(argument) {
+				y.append('<option value='+argument+' label='+argument+'></option>');
+			})
+		});
+	},
+
+	fetchModels : function(x){
+		y = $(".model-select");
+		y.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
+
+		$.get("http://localhost:8000/articles/api/brands/?format=json&brand="+x.val(), function(data) {
+			data[0].brandmodel_set.forEach(function(modelo) {
+				$.get("http://localhost:8000/articles/api/models/?format=json&model_name="+modelo, function(data) {
+					y.append('<option value='+data[0].url+' label='+modelo+'></option>');
+				});	
+			});
+					
+		});
+	}, 
 });
 },{"backbone":2}],30:[function(require,module,exports){
 var Backbone = require('backbone');
@@ -16333,7 +16387,9 @@ module.exports = Backbone.Model.extend({});
 },{"backbone":2}],31:[function(require,module,exports){
 var Backbone = require('backbone'); 
 
-module.exports = Backbone.Model.extend({});
+module.exports = Backbone.Model.extend({
+	urlRoot : "/api/article/",
+});
 },{"backbone":2}],32:[function(require,module,exports){
 var Backbone  = require('backbone'),
   Handlebars  = require('handlebars'),
@@ -16389,7 +16445,10 @@ module.exports= Backbone.Model.extend({
       json.email = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;
       console.log(json); 
-      $.post( "/users/login/", json, function(data){console.log("respuesta POST:",data);});      
+      $.post( "/users/login/", json, function(data){console.log(
+        "respuesta POST:",data);
+        //window.location.href = data;
+      });      
     };
 
     this._getuserdata = function (callback) {
@@ -16454,20 +16513,23 @@ module.exports= Backbone.Model.extend({
 
 
 },{"async":1,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],33:[function(require,module,exports){
-module.exports=require(31)
+var Backbone = require('backbone'); 
+
+module.exports = Backbone.Model.extend({});
 },{"backbone":2}],34:[function(require,module,exports){
 var Backbone 		= require('backbone'),
 	//Handlebars 	= require('handlebars'),
 	$ 				= require('jquery'),
-	Product 		= require('../models/product'),
 	Follower 		= require('../models/follower'),
 	Gost 			= require('../models/gost'),
 	FormModel		= require('../models/form'),
 	SessionModel 	= require('../models/sessionmodel'),
 	UserModel 		= require('../models/user'),	
 	Products 		= require('../collections/products'),
+	//Badgets 		= require('../collections/badgets'),
 	Followers 		= require('../collections/followers'),
 	ProductsView 	= require('../views/products'),
+	//BadgetsView 	= require('../views/badgets'),
 	OptionsView 	= require('../views/options'),	
 	FollowersView 	= require('../views/followers'),
 	UserProfileView = require('../views/userprofile'),
@@ -16495,16 +16557,14 @@ module.exports = Backbone.Router.extend({
 		console.log("si lo hago");
 
 		this.userModel = new UserModel();
-		//this.userModel.urlRoot = "/users/me/json";
+		this.userModel.urlRoot = "/api/user/?list=me&format=json";
 		this.userProfileView = new UserProfileView({model: this.userModel});
 		this.notificationsView = new NotificationsView({model : this.userModel});
-		//this.userModel.set({"username" : "mao"});
-
-		/*this.userModel.fetch({ 
+		this.userModel.fetch({ 
 			success: function(){
        			console.log("Usuario: "+Backbone.app.userModel);
     		}
-    	});*/
+    	});
 
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
@@ -16520,7 +16580,7 @@ module.exports = Backbone.Router.extend({
 
 		Backbone.history.start({ 
     		pushState: true, 
-    		root: '/users/me'
+    		root: ''
 		});
 	},
 
@@ -16546,7 +16606,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json";
+		this.products.url = "/api/article/?format=json&list=new";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -16621,7 +16681,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "articles/list/popular/?format=json";
+		this.products.url = "/api/article/?format=json&list=popular";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -16646,7 +16706,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "./articles/json";
+		this.products.url = "/api/article/?format=json&list=interesting";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -16672,7 +16732,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "./articles/json";
+		this.products.url = "/api/article/?format=json&list=selling";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -16733,7 +16793,7 @@ module.exports = Backbone.Router.extend({
 	    return cookieValue;
 	},*/
 });
-},{"../collections/followers":24,"../collections/products":25,"../models/follower":28,"../models/form":29,"../models/gost":30,"../models/product":31,"../models/sessionmodel":32,"../models/user":33,"../views/followers":38,"../views/form":39,"../views/notificationbar":40,"../views/options":41,"../views/products":43,"../views/userprofile":44,"backbone":2,"jquery":21}],35:[function(require,module,exports){
+},{"../collections/followers":24,"../collections/products":25,"../models/follower":28,"../models/form":29,"../models/gost":30,"../models/sessionmodel":32,"../models/user":33,"../views/followers":38,"../views/form":39,"../views/notificationbar":40,"../views/options":41,"../views/products":43,"../views/userprofile":44,"backbone":2,"jquery":21}],35:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	_ 			= require('underscore'),
@@ -16863,9 +16923,9 @@ module.exports = Backbone.View.extend({
 	el : $(".upload-box"),
 
 	events : {
-		'click .radioBtn' : 'fetchBrands',
-		'change .brand-select' : 'fetchModels',
-		'click #submit' : 'submitForm',
+		'click .radioBtn' : 'handleBrands',
+		'change .brand-select' : 'handleModels',
+		'click #submit' : 'handleSubmit',
 	},
 
 	template : _.template($("#form-template").html()),
@@ -16889,44 +16949,25 @@ module.exports = Backbone.View.extend({
 		this.$el.html(html);
 		return this;
 	},
-	submitForm : function(e) {
-		alert();
-		var formData = new FormData(document.getElementById('articleUpload'));
-		formData.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
-
-		var request = new XMLHttpRequest();
-		request.open("POST", "http://localhost:8000/articles/api/article/");
-		request.send(formData);
+	handleSubmit : function(e) {
+		this.model.submitForm();
 	},
 
-	fetchBrands : function(e){
+	handleBrands : function(e){
 		x = $(e.currentTarget);
-		y = $(".brand-select");
-		z = $(".model-select");
-		y.html('<option value="" selected disabled="disabled" label="Seleccionar marca"></option>');
-		z.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
-
-		$.get("http://localhost:8000/articles/api/devices/?format=json&device_detail="+x.val(), function(data) {
-			data[0].brand_set.forEach(function(argument) {
-				y.append('<option value='+argument+' label='+argument+'></option>');
-			})
-		});
+		
+		this.model.fetchBrands(x);
 
 		x.parent(".rbDeco").css({
 			backgroundColor: 'green',
 			color: 'white'
 		});
 	},
-	fetchModels : function(e){
+	
+	handleModels : function(e){
 		x = $(e.currentTarget);
-		y = $(".model-select");
-		y.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
-
-		$.get("http://localhost:8000/articles/api/brands/?format=json&brand="+x.val(), function(data) {
-			data[0].brandmodel_set.forEach(function(argument) {
-				y.append('<option value='+argument+' label='+argument+'></option>');
-			})
-		});
+		
+		this.model.fetchModels(x);
 	},
 
 	navigate : function (){
@@ -16943,17 +16984,22 @@ module.exports = Backbone.View.extend({
 	el : $('.header'),
 
 	events : {
-		"click .icon-bell":"notification",
+		"click .icon-bell":"login",
+		"click .log-in":"login",
 	},
 
 	template : _.template($("#notification-template").html()),
 
 	initialize : function () {
+
 		this.listenTo(this.model, "change", this.render, this);
 	},
 
 	render : function(){
 		var product = this.model.toJSON();
+		/*this.model.set(this.model.attributes[0]);
+		product = this.model.toJSON
+		window.model = this.model;*/
 		var html = this.template(product);
 		this.$el.html(html);
 		console.log("Notification render///////////////////");
@@ -16962,6 +17008,7 @@ module.exports = Backbone.View.extend({
 
 	notification : function(){
 		console.log("Click Notification icon-bell");
+		Backbone.app.activeSession.logout();
 	},
 
 	login : function(){
@@ -17004,8 +17051,7 @@ module.exports = Backbone.View.extend({
 	template : _.template($("#product-template").html()),
 
 	initialize : function () {
-		this.listenTo(this.model, "change", this.render, this);
-		
+		this.listenTo(this.model, "change", this.render, this);		
 	},
 
 	render : function(){
@@ -17027,18 +17073,16 @@ module.exports = Backbone.View.extend({
 		
 	},
 	popular : function(h){
-		console.log(Backbone.app.activeSession.isAuthorized());
-		//Backbone.app.navigate("popular",{trigger : true});
+		//console.log(Backbone.app.activeSession.isAuthorized());
+		Backbone.app.navigate("popular",{trigger : true});
 		
 	},
-	interesting : function(h){
-		Backbone.app.activeSession.logout();
-		//Backbone.app.navigate("meinteresa",{trigger : true});
+	interesting : function(h){		
+		Backbone.app.navigate("meinteresa",{trigger : true});
 		
 	},
 	selling : function(h){
-		Backbone.app.activeSession.login();
-		//Backbone.app.navigate("lovendo",{trigger : true});
+		Backbone.app.navigate("lovendo",{trigger : true});
 		
 	},
 
@@ -17072,6 +17116,7 @@ module.exports = Backbone.View.extend({
 	template : _.template($("#product-template").html()),
 
 	initialize : function () {
+		window.url = this.model.urlRoot;
 		this.listenTo(this.model, "change", this.render, this);
 		
 	},
@@ -17085,7 +17130,7 @@ module.exports = Backbone.View.extend({
 		console.log("ESTO ES COMMEN SET  ", comment);
 		
         this.comments = new Comments();
-        this.comments.url = "/articles/api/comment/";
+        this.comments.url = "/api/comment/";
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
@@ -17119,15 +17164,15 @@ module.exports = Backbone.View.extend({
 	
 	addComment : function(){
 		var x;
-
         x = {
-            //"id": 3,
             "user": 1,
             "comment": this.$el.children('section').children('.comment-box').children('.comment-text').val(),
         	"date_posted":"25/04/2014",
-        	"article": this.model.id,
+        	"article": this.model.url(),
         	"csrfmiddlewaretoken": Backbone.app.csrftoken('csrftoken'),
         };
+
+		window.user= x;
         this.comments.add(new Comment(x));
         this.comment=_.last(this.comments.models);
         this.comment.unset("date_posted",{silent:"true"});

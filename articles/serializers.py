@@ -50,6 +50,7 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 	comment_set = CommentSerializer(read_only=True)
 	articlepicture_set = ArticlePictureSerializer(read_only=True)
 	user = ShortUserSerializer(read_only=True)
+	model = BrandModelSerializer(read_only=True)
 	like_count = serializers.Field(source='getLikeCount')
 	interested = serializers.SerializerMethodField('is_interested')
 	liked = serializers.SerializerMethodField('is_liked')

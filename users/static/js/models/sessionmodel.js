@@ -52,7 +52,10 @@ module.exports= Backbone.Model.extend({
       json.email = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;
       console.log(json); 
-      $.post( "/users/login/", json, function(data){console.log("respuesta POST:",data);});      
+      $.post( "/users/login/", json, function(data){console.log(
+        "respuesta POST:",data);
+        //window.location.href = data;
+      });      
     };
 
     this._getuserdata = function (callback) {

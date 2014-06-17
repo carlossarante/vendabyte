@@ -10,9 +10,9 @@ module.exports = Backbone.View.extend({
 	el : $(".upload-box"),
 
 	events : {
-		'click .radioBtn' : 'fetchBrands',
-		'change .brand-select' : 'fetchModels',
-		'click #submit' : 'submitForm',
+		'click .radioBtn' : 'handleBrands',
+		'change .brand-select' : 'handleModels',
+		'click #submit' : 'handleSubmit',
 	},
 
 	template : _.template($("#form-template").html()),
@@ -36,44 +36,25 @@ module.exports = Backbone.View.extend({
 		this.$el.html(html);
 		return this;
 	},
-	submitForm : function(e) {
-		alert();
-		var formData = new FormData(document.getElementById('articleUpload'));
-		formData.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
-
-		var request = new XMLHttpRequest();
-		request.open("POST", "http://localhost:8000/articles/api/article/");
-		request.send(formData);
+	handleSubmit : function(e) {
+		this.model.submitForm();
 	},
 
-	fetchBrands : function(e){
+	handleBrands : function(e){
 		x = $(e.currentTarget);
-		y = $(".brand-select");
-		z = $(".model-select");
-		y.html('<option value="" selected disabled="disabled" label="Seleccionar marca"></option>');
-		z.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
-
-		$.get("http://localhost:8000/articles/api/devices/?format=json&device_detail="+x.val(), function(data) {
-			data[0].brand_set.forEach(function(argument) {
-				y.append('<option value='+argument+' label='+argument+'></option>');
-			})
-		});
+		
+		this.model.fetchBrands(x);
 
 		x.parent(".rbDeco").css({
 			backgroundColor: 'green',
 			color: 'white'
 		});
 	},
-	fetchModels : function(e){
+	
+	handleModels : function(e){
 		x = $(e.currentTarget);
-		y = $(".model-select");
-		y.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
-
-		$.get("http://localhost:8000/articles/api/brands/?format=json&brand="+x.val(), function(data) {
-			data[0].brandmodel_set.forEach(function(argument) {
-				y.append('<option value='+argument+' label='+argument+'></option>');
-			})
-		});
+		
+		this.model.fetchModels(x);
 	},
 
 	navigate : function (){

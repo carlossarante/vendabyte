@@ -1,15 +1,16 @@
 var Backbone 		= require('backbone'),
 	//Handlebars 	= require('handlebars'),
 	$ 				= require('jquery'),
-	Product 		= require('../models/product'),
 	Follower 		= require('../models/follower'),
 	Gost 			= require('../models/gost'),
 	FormModel		= require('../models/form'),
 	SessionModel 	= require('../models/sessionmodel'),
 	UserModel 		= require('../models/user'),	
 	Products 		= require('../collections/products'),
+	//Badgets 		= require('../collections/badgets'),
 	Followers 		= require('../collections/followers'),
 	ProductsView 	= require('../views/products'),
+	//BadgetsView 	= require('../views/badgets'),
 	OptionsView 	= require('../views/options'),	
 	FollowersView 	= require('../views/followers'),
 	UserProfileView = require('../views/userprofile'),
@@ -37,16 +38,14 @@ module.exports = Backbone.Router.extend({
 		console.log("si lo hago");
 
 		this.userModel = new UserModel();
-		//this.userModel.urlRoot = "/users/me/json";
+		this.userModel.urlRoot = "/api/user/?list=me&format=json";
 		this.userProfileView = new UserProfileView({model: this.userModel});
 		this.notificationsView = new NotificationsView({model : this.userModel});
-		//this.userModel.set({"username" : "mao"});
-
-		/*this.userModel.fetch({ 
+		this.userModel.fetch({ 
 			success: function(){
        			console.log("Usuario: "+Backbone.app.userModel);
     		}
-    	});*/
+    	});
 
 		this.products = new Products();
 		this.productsView = new ProductsView({ collection : this.products });
@@ -62,7 +61,7 @@ module.exports = Backbone.Router.extend({
 
 		Backbone.history.start({ 
     		pushState: true, 
-    		root: '/users/me'
+    		root: ''
 		});
 	},
 
@@ -88,7 +87,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/articles/api/article/?format=json";
+		this.products.url = "/api/article/?format=json&list=new";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
@@ -163,7 +162,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "articles/list/popular/?format=json";
+		this.products.url = "/api/article/?format=json&list=popular";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -188,7 +187,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "./articles/json";
+		this.products.url = "/api/article/?format=json&list=interesting";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
@@ -214,7 +213,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');
 
 		this.products.reset();
-		this.products.url = "./articles/json";
+		this.products.url = "/api/article/?format=json&list=selling";
 		this.products.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' articulos');
