@@ -71,11 +71,11 @@ module.exports = Backbone.View.extend({
 	addComment : function(){
 		var x;
         x = {
+        	"csrfmiddlewaretoken": Backbone.app.csrftoken('csrftoken'),
             "user": 1,
             "comment": this.$el.children('section').children('.comment-box').children('.comment-text').val(),
         	"date_posted":"25/04/2014",
         	"article": this.model.url(),
-        	"csrfmiddlewaretoken": Backbone.app.csrftoken('csrftoken'),
         };
 
 		window.user= x;

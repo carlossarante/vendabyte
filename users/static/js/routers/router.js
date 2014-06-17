@@ -112,7 +112,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.removeClass('none');
 
 		this.followers.reset();
-		this.followers.url = "./following/?format=json";
+		this.followers.url = "/api/user/?list=following&format=json";
 		this.followers.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.followers.length + ' personas a quienes sigues');
@@ -137,7 +137,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.removeClass('none');
 
 		this.followers.reset();
-		this.followers.url = "./followers/json";
+		this.followers.url = "/api/user/?list=followers&format=json";
 		this.followers.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.followers.length + ' seguidores');

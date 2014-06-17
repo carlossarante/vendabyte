@@ -16331,18 +16331,19 @@ module.exports = Backbone.Model.extend({
 
 	submitForm : function(e) {
 		var formData = new FormData(document.getElementById('articleUpload'));
+		console.log("formulario: ", formData);
 		formData.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
 
 		var request = new XMLHttpRequest();
-		request.open("POST", "http://localhost:8000/articles/api/article/");
+		request.open("POST", "http://localhost:8000/api/article/");
 		request.onerror = function (argument) {
 			alert("error");
 		}
 		request.onload = function (argument) {
 			console.log("STATUS:",request.statusText);
 			console.log("STATUS:",request.status);
-			console.log("RESPONSE:",request.responseText);
-			console.log("RESPONSE:",request.responseXML);
+			//console.log("RESPONSE:",request.responseText);
+			//console.log("RESPONSE:",request.responseXML);
 		}
 		request.onloaden = function (argument) {
 			alert("end");
@@ -16358,7 +16359,7 @@ module.exports = Backbone.Model.extend({
 		y.html('<option value="" selected disabled="disabled" label="Seleccionar marca"></option>');
 		z.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
 
-		$.get("http://localhost:8000/articles/api/devices/?format=json&device_detail="+x.val(), function(data) {
+		$.get("http://localhost:8000/api/devices/?format=json&device_detail="+x.val(), function(data) {
 			data[0].brand_set.forEach(function(argument) {
 				y.append('<option value='+argument+' label='+argument+'></option>');
 			})
@@ -16369,10 +16370,11 @@ module.exports = Backbone.Model.extend({
 		y = $(".model-select");
 		y.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
 
-		$.get("http://localhost:8000/articles/api/brands/?format=json&brand="+x.val(), function(data) {
+		$.get("http://localhost:8000/api/brands/?format=json&brand="+x.val(), function(data) {
 			data[0].brandmodel_set.forEach(function(modelo) {
-				$.get("http://localhost:8000/articles/api/models/?format=json&model_name="+modelo, function(data) {
+				$.get("http://localhost:8000/api/models/?format=json&model_name="+modelo, function(data) {
 					y.append('<option value='+data[0].url+' label='+modelo+'></option>');
+					console.log("MODELOOOOOOO: ",data[0].url);
 				});	
 			});
 					
@@ -16631,7 +16633,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.removeClass('none');
 
 		this.followers.reset();
-		this.followers.url = "./following/?format=json";
+		this.followers.url = "/api/user/?list=following&format=json";
 		this.followers.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.followers.length + ' personas a quienes sigues');
@@ -16656,7 +16658,7 @@ module.exports = Backbone.Router.extend({
 		followerSect.removeClass('none');
 
 		this.followers.reset();
-		this.followers.url = "./followers/json";
+		this.followers.url = "/api/user/?list=followers&format=json";
 		this.followers.fetch({ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.followers.length + ' seguidores');
@@ -16986,6 +16988,8 @@ module.exports = Backbone.View.extend({
 	events : {
 		"click .icon-bell":"login",
 		"click .log-in":"login",
+		"click .user-name":"perfil",
+		"click .logo-cont":"home",
 	},
 
 	template : _.template($("#notification-template").html()),
@@ -17005,6 +17009,52 @@ module.exports = Backbone.View.extend({
 		console.log("Notification render///////////////////");
 		return this;
 	},
+	home : function() {
+		var url = "/"+this.model.attributes[0].username+"/";
+		var products = $('.products')
+		var fileBrowse = $('.file-browse');
+		var optionMenu = $('.options-menu');
+		var badgets = $('.badgets-cont');
+		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
+
+		portada.addClass('none');
+		perfil.addClass('none');
+		products.removeClass('none');
+		formulario.addClass('none');
+		fileBrowse.removeClass('none');
+		optionMenu.removeClass('none');
+		badgets.addClass('none');
+		followerSect.addClass('none');
+
+		this.navigate(url);
+
+	},
+
+	perfil : function() {
+		var url = "/"+this.model.attributes[0].username+"/";
+		var products = $('.products')
+		var fileBrowse = $('.file-browse');
+		var optionMenu = $('.options-menu');
+		var badgets = $('.badgets-cont');
+		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
+
+		portada.removeClass('none');
+		perfil.removeClass('none');
+		products.removeClass('none');
+		formulario.addClass('none');
+		fileBrowse.addClass('none');
+		optionMenu.addClass('none');
+		badgets.removeClass('none');
+		followerSect.addClass('none');
+
+		this.navigate(url);
+	},
 
 	notification : function(){
 		console.log("Click Notification icon-bell");
@@ -17022,8 +17072,8 @@ module.exports = Backbone.View.extend({
         });
 	},
 
-	navigate : function (){
-		Backbone.app.navigate("users/",{trigger : true})
+	navigate : function (url){
+		Backbone.app.navigate(url,{trigger : true})
 	}
 });
 
@@ -17165,11 +17215,11 @@ module.exports = Backbone.View.extend({
 	addComment : function(){
 		var x;
         x = {
+        	"csrfmiddlewaretoken": Backbone.app.csrftoken('csrftoken'),
             "user": 1,
             "comment": this.$el.children('section').children('.comment-box').children('.comment-text').val(),
         	"date_posted":"25/04/2014",
         	"article": this.model.url(),
-        	"csrfmiddlewaretoken": Backbone.app.csrftoken('csrftoken'),
         };
 
 		window.user= x;
