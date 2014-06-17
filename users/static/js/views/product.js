@@ -70,12 +70,13 @@ module.exports = Backbone.View.extend({
 	
 	addComment : function(){
 		var x;
+		var time=new Date();
+
         x = {
-        	"csrfmiddlewaretoken": Backbone.app.csrftoken('csrftoken'),
-            "user": 1,
+            "user": Backbone.app.userModel.attributes[0],
             "comment": this.$el.children('section').children('.comment-box').children('.comment-text').val(),
-        	"date_posted":"25/04/2014",
-        	"article": this.model.url(),
+        	"date_posted": time.getDate()+"/"+time.getMonth()+"/"+time.getFullYear(),
+        	"article": this.model.url()+"/",
         };
 
 		window.user= x;
