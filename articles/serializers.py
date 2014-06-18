@@ -51,7 +51,7 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 	interested_count = serializers.Field(source='getInterestedCount')
 	class Meta:
 		model = Article
-		fields = ('id','url','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set','like_count','interested_count','liked','interested','like','interesting')		
+		fields = ('id','url','model','user','short_description','price','specs','date_posted','articlepicture_set','comment_set','like_count','interested_count','liked','interested')		
 	
 	def is_interested(self,obj):
 		if obj is None:
