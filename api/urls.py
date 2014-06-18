@@ -5,7 +5,7 @@ from django.conf.urls import patterns, include, url
 
 from users.views import UserSet,ContactSet,BadgetSet
 from geographics.views import CitySet,ProvinceSet
-from articles.views import ArticleSet,CommentSet,BrandModelSet,BrandSet,DeviceSet,NewArticlesSet,PopularArticlesSet,LikeSet,InterestingSet,ArticlePictureSet
+from articles.views import ArticleSet,CommentSet,BrandModelSet,BrandSet,DeviceSet,LikeSet,InterestingSet,ArticlePictureSet
 
 
 router = DefaultRouter()
