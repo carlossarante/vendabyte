@@ -22,6 +22,7 @@ module.exports = Backbone.View.extend({
 	template : _.template($("#product-template").html()),
 
 	initialize : function () {
+		window.url = this.model.urlRoot;
 		this.listenTo(this.model, "change", this.render, this);
 		
 	},
@@ -35,7 +36,7 @@ module.exports = Backbone.View.extend({
 		console.log("ESTO ES COMMEN SET  ", comment);
 		
         this.comments = new Comments();
-        this.comments.url = "/articles/api/comment/";
+        this.comments.url = "/api/comment/";
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
@@ -69,15 +70,16 @@ module.exports = Backbone.View.extend({
 	
 	addComment : function(){
 		var x;
+		var time=new Date();
 
         x = {
-            //"id": 3,
-            "user": 1,
+            "user": Backbone.app.userModel.attributes[0],
             "comment": this.$el.children('section').children('.comment-box').children('.comment-text').val(),
-        	"date_posted":"25/04/2014",
-        	"article": this.model.id,
-        	"csrfmiddlewaretoken": Backbone.app.csrftoken('csrftoken'),
+        	"date_posted": time.getDate()+"/"+time.getMonth()+"/"+time.getFullYear(),
+        	"article": this.model.url()+"/",
         };
+
+		window.user= x;
         this.comments.add(new Comment(x));
         this.comment=_.last(this.comments.models);
         this.comment.unset("date_posted",{silent:"true"});

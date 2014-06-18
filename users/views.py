@@ -31,15 +31,15 @@ def loginFacebookUser(request,response='html'):
 		if user is not None:
 			if user.is_active:
 				login(request,user)
-				return HttpResponse('/users/%s'% user.username)
- 			else:
+				return HttpResponse('/%s'% user.username)
+			else:
  				return HttpResponse('User is not active')
- 		else:
+		else:
  			 	try: 
- 					User.objects.get(email=email)
- 					return HttpResponse('Wrong Password')
- 				except User.DoesNotExist:
-					return HttpResponse('User Does not Exist')	
+ 			 		User.objects.get(email=email)
+ 			 		return HttpResponse('Wrong Password')
+ 			 	except User.DoesNotExist:
+ 			 		return HttpResponse('User Does not Exist')	
 
 
 class UserSet(viewsets.ModelViewSet):
@@ -57,8 +57,13 @@ class UserSet(viewsets.ModelViewSet):
 		except: 
 			queryset = User.objects.all()
 		return queryset
+	
+	def dispatch(self, request, *args, **kwargs):
+		if kwargs.get('pk') == 'me' and request.user:
+			kwargs['pk'] = request.user.pk
+		return super(UserSet, self).dispatch(request, *args, **kwargs)
 
-	action(methods=['POST',])
+	@action(methods=['POST',])
 	def add_follower(self,request,pk=None):
 		try:
 			user = self.get_object() #get the requested user.

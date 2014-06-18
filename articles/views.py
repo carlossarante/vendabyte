@@ -24,7 +24,7 @@ class ArticleSet(viewsets.ModelViewSet):
 
 	def create(self,request):
 		user = request.user
-		serializer = ArticleSerializer(data=request.DATA)
+		serializer = ArticleSerializer(data=request.DATA,context={'request':request})
 		if serializer.is_valid():
 			serializer.object.user = user
 			serializer.object.save()

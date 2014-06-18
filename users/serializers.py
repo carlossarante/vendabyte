@@ -4,6 +4,10 @@ from rest_framework import serializers
 from geographics.serializers import CitySerializer
 from users.models import User,Badgets,Contact
 
+class ShortUserSerializer(serializers.HyperlinkedModelSerializer):
+	class Meta:
+		model =User
+		fields = ('id','url','first_name','last_name','username','photo')
 
 class ShortUserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:

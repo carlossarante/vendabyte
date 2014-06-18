@@ -6,7 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Vendabyte</title>
 	<link rel="stylesheet" href="/static/css/user.css">
-	<link rel="stylesheet" href="/static/css/croppic.css">
 </head>
 <body>
 	<header class="header relative">		
@@ -20,7 +19,7 @@
 			<span class="user-name">Ramiro Fernandez</span>
 			<img src="" alt="Usuario" class="user-pict inline block">
 			<span class="icon-cog"></span>
-		</div>
+		</div>		
 	</header><!-- /header -->
 	<figure class="portada-cont relative none">
 			<img src="/static/img/portada.png" alt="Vendabyte" class="portada">
@@ -160,10 +159,8 @@
 				<li class="badget">iconos</li>
 				<li class="badget">iconos</li>
 				<li class="badget">iconos</li>
-
 			</ul>
 			<ul class="options-menu inline-block none">
-			{%csrf_token%}
 				<li id="newest" class="options inline-block">
 					<div class="icon">Iconos</div>
 					<span class="option">Nuevo</span>
@@ -200,13 +197,17 @@
 		<!--<div class="log-in">Iniciar Seción</div>-->
 		<div class="notif-bar inline-block">
 			<span class="icon-bell"><span class="notifications">2</span></span>
-			<span class="user-name"><%=username%></span>
+			<span class="user-name"><% print(this.model.attributes[0].username)%></span>
 			<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict inline block">
 			<span class="icon-cog"></span>
 		</div>			
   	</script>
 
-  	<script id="form-template" type="text/template">	
+  	<script id="badgets-template" type="text/template">
+  		Iconos
+  	</script>
+
+  	<script id="form-template" type="text/template">	  	
 		<ul class="thumbnail-cont">
 			<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
 			<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
@@ -233,8 +234,9 @@
 
 			<textarea form="articleUpload" name="short_description" placeholder="Short description" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
 			<textarea form="articleUpload" name="specs" placeholder="Specs" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
-		</div>	
-		<input name="submit" type="submit" id="submit" value="Subir articulo" form="articleUpload" style="font-size:1rem;">
+		</div>
+		<input type="number" name="price" min="0" style="font-size:1rem" required>	
+		<button type="button" id="submit" style="font-size:1rem;">Subir articulo</button>
   	</script>
 
   	<script id="user-template" type="text/template">
@@ -242,7 +244,7 @@
 					<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict block">					
 				</div>					
 				<div class="inline-block">
-					<span class="user-name block"><%=username%></span>
+					<span class="user-name block"><% print(this.model.attributes[0].device_detail)%></span>
 					<span class="icon-star"></span>
 					<span class="icon-star"></span>
 					<span class="icon-star"></span>
