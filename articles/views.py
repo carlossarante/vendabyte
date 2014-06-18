@@ -107,7 +107,7 @@ class DeviceSet(viewsets.ModelViewSet):
 	filter_fields = ('device_detail',)
 
 class LikeSet(viewsets.ModelViewSet):
-	queryset= Like.objects.all()
+	queryset = Like.objects.all()
 	serializer_class = LikeSerializer
 	def create(self,request):
 		user = request.user

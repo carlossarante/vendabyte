@@ -4,14 +4,9 @@ import decimal
 
 
 from articles.models import Article, ArticlePicture,Brand, BrandModel, Device,Like,Comment,Interested
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer,ShortUserSerializer
 from users.models import User
 from django.utils import timezone
-
-class ShortUserSerializer(serializers.HyperlinkedModelSerializer):
-	class Meta:
-		model =User
-		fields = ('id','url','first_name','last_name','username','photo')
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
 	date_posted = serializers.Field(source='date_posted')
@@ -19,7 +14,6 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:	
 		model = Comment
 		fields = ('id','url','date_posted','user','comment','article')
-
 
 class ArticlePictureSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
