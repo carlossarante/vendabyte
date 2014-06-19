@@ -3,7 +3,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import filters 
-from rest_framework.decorators import link
+from rest_framework.decorators import action
 
 from django.shortcuts import render,get_object_or_404
 from django.db.models import Count,Q
@@ -30,6 +30,27 @@ class ArticleSet(viewsets.ModelViewSet):
 			serializer.object.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	
+	@action(methods=['DELETE',])
+	def delete_like(self,request,pk=None):
+		try:
+			article = self.get_object()
+			user = request.user
+			like_requested = Like.objects.filter(Q(article=article),Q(user=user))
+			like_requested.delete()
+			return Response({'response':'deleted'}, status=status.HTTP_200_OK)
+		except ValueError:
+			return Response({'response':'Error in transaction'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+	@action(methods=['DELETE',])
+	def delete_interested(self,request,pk=None):
+		try:
+			article = self.get_object()
+			user = request.user
+			interested_requested = Interested.objects.filter(Q(article=article),Q(user=user))
+			interested_requested.delete()
+			return Response({'status':'deleted'}, status=status.HTTP_200_OK)
+		except:
+			return Response({'status':'Error in transaction'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 	def get_queryset(self):
@@ -47,6 +68,8 @@ class ArticleSet(viewsets.ModelViewSet):
 			elif self.request.GET['list']:
 				for a in articles:
 					queryset.append(a.article)
+			elif self.request.GET['me']:
+				queryset = request.user.article_set.all()
 			else:
 				queryset = Article.objects.all()
 		except:
@@ -104,12 +127,8 @@ class LikeSet(viewsets.ModelViewSet):
 		serializer = LikeSerializer(data=request.DATA)
 		if serializer.is_valid():
 			serializer.object.user = user
-			created = Like.objects.filter(Q(user=user),Q(article=serializer.object.article))
-			if not created:
-				serializer.object.save()
-				return Response(serializer.data, status=status.HTTP_201_CREATED)				
-			else:
-				return Response({'id':created[0].id}, status=status.HTTP_409_CONFLICT)
+			serializer.object.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)				
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class InterestingSet(viewsets.ModelViewSet):
@@ -120,10 +139,6 @@ class InterestingSet(viewsets.ModelViewSet):
 		serializer = InterestingSerializer(data=request.DATA)
 		if serializer.is_valid():
 			serializer.object.user = user
-			created = Interested.objects.filter(Q(user=user),Q(article=serializer.object.article))
-			if not created:
-				serializer.object.save()
-				return Response(serializer.data, status=status.HTTP_201_CREATED)				
-			else:
-				return Response({'id':created[0].id}, status=status.HTTP_409_CONFLICT)
+			serializer.object.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)				
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

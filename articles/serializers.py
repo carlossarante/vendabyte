@@ -1,8 +1,6 @@
 from rest_framework import serializers
 import json
 import decimal
-
-
 from articles.models import Article, ArticlePicture,Brand, BrandModel, Device,Like,Comment,Interested
 from users.serializers import UserSerializer,ShortUserSerializer
 from users.models import User
