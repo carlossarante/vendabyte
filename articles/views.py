@@ -39,7 +39,7 @@ class ArticleSet(viewsets.ModelViewSet):
 			like_requested = Like.objects.filter(Q(article=article),Q(user=user))
 			like_requested.delete()
 			return Response({'response':'deleted'}, status=status.HTTP_200_OK)
-		except ValueError:
+		except:
 			return Response({'response':'Error in transaction'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 	@action(methods=['DELETE',])
 	def delete_interested(self,request,pk=None):
@@ -126,9 +126,13 @@ class LikeSet(viewsets.ModelViewSet):
 		user = request.user
 		serializer = LikeSerializer(data=request.DATA)
 		if serializer.is_valid():
-			serializer.object.user = user
-			serializer.object.save()
-			return Response(serializer.data, status=status.HTTP_201_CREATED)				
+			created = Like.objects.filter(Q(article=serializer.object.article),Q(user=user))
+			if not created:
+				serializer.object.user = user
+				serializer.object.save()
+				return Response(serializer.data, status=status.HTTP_201_CREATED)
+			else:
+				return Response({'status':'Error, this like was created already'}, status=status.HTTP_409_CONFLICT)				
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class InterestingSet(viewsets.ModelViewSet):
@@ -138,7 +142,11 @@ class InterestingSet(viewsets.ModelViewSet):
 		user = request.user
 		serializer = InterestingSerializer(data=request.DATA)
 		if serializer.is_valid():
-			serializer.object.user = user
-			serializer.object.save()
-			return Response(serializer.data, status=status.HTTP_201_CREATED)				
+			created = Interested.objects.filter(Q(article=serializer.object.article),Q(user=user))
+			if not created:
+				serializer.object.user = user
+				serializer.object.save()
+				return Response(serializer.data, status=status.HTTP_201_CREATED)
+			else:
+				return Response({'status':'Error, this interesting was created already'}, status=status.HTTP_409_CONFLICT)				
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
