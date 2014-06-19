@@ -11,6 +11,8 @@ module.exports = Backbone.View.extend({
 	className : 'product',
 
 	events : {
+
+		'click .interest' : 'interested',
 		'click .action.icon-share' : 'share',
 		'click .action.icon-bubble' : 'comment',
 		'click .action.icon-heart' : 'love',
@@ -22,9 +24,8 @@ module.exports = Backbone.View.extend({
 	template : _.template($("#product-template").html()),
 
 	initialize : function () {
-		window.url = this.model.urlRoot;
-		this.listenTo(this.model, "change", this.render, this);
-		
+		window.model = this.model;
+		this.listenTo(this.model, "change", this.render, this);				
 	},
 
 	render : function(){
@@ -34,9 +35,24 @@ module.exports = Backbone.View.extend({
 		this.$el.html(html);
 		var comment =this.model.get("comment_set");
 		console.log("ESTO ES COMMEN SET  ", comment);
-		
+
+		if(this.model.attributes.liked)
+		{
+			this.$el.find('.icon-heart').css('color', 'red');
+		}
+		else
+		{
+			this.$el.find('.icon-heart').css('color', 'white');
+		}
+		if(this.model.attributes.interested)
+		{
+			this.$el.find('.interest').css('background-color', 'red');
+		}
+		else
+		{
+			this.$el.find('.interest').css('background-color', 'white');
+		}
         this.comments = new Comments();
-        this.comments.url = "/api/comment/";
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
         {
@@ -48,7 +64,49 @@ module.exports = Backbone.View.extend({
         	self.comments.add(new Comment(comment[x]));        	 
         }         
         //this.commentsView.render();
+
 		return this;
+	},
+
+	interested : function(){
+		var self = this;
+		
+		if(this.model.attributes.interested)
+		{
+			$.ajax({
+			    url: this.model.url()+"delete_interesting/",
+			    type: 'DELETE',
+				statusCode: {
+			    	200: function() {
+			      		self.$el.find('.interest').css('background-color', 'white');
+			      		self.model.fetch();
+			    	},	    	
+			    	500: function() {
+			    		alert("Error al sincronizar con el servidor");
+			    	}
+			 	}
+			});
+		}
+		else
+		{
+			$.ajax({
+			    url: window.location.origin + "/api/interesting/",
+			    type: 'POST',
+			    data:{article : this.model.url()},
+				statusCode: {
+			    	201: function() {
+			      		self.$el.find('.interest').css('background-color', 'red');
+			      		self.model.fetch();
+			    	},
+			    	409: function() {
+			    		self.model.fetch();
+			    	},
+			    	500: function() {
+			    		alert("Error al sincronizar con el servidor");
+			    	}
+			 	}
+			});
+		}
 	},
 
 	share : function(){
@@ -76,14 +134,23 @@ module.exports = Backbone.View.extend({
             "user": Backbone.app.userModel.attributes[0],
             "comment": this.$el.children('section').children('.comment-box').children('.comment-text').val(),
         	"date_posted": time.getDate()+"/"+time.getMonth()+"/"+time.getFullYear(),
-        	"article": this.model.url()+"/",
+        	"article": this.model.url(),
         };
 
-		window.user= x;
         this.comments.add(new Comment(x));
         this.comment=_.last(this.comments.models);
         this.comment.unset("date_posted",{silent:"true"});
-        this.comment.save();
+        this.comment.unset("user",{silent:"true"});
+        this.comment.save(/*{
+        	wait : true,
+        	success: function(){
+       			console.log("COMENTARIO GUARDADOOOOOOOO "+Backbone.app.userModel);
+    		},
+    		error: function(){
+       			console.log("COMENTARIO NOOO GUARDADOOOOOOOO "+Backbone.app.userModel);
+    		}
+        }*/);
+
 	},
 	
 	notComment : function(){
@@ -92,8 +159,44 @@ module.exports = Backbone.View.extend({
 	},
 
 	love : function(){
-		alert("Se utilizara para añadir a favoritos");
-		 this.comment3.set({"user" : "Pedro el Escamozo"});
+		var self = this;
+		
+		if(this.model.attributes.liked)
+		{
+			$.ajax({
+			    url: this.model.url()+"delete_like/",
+			    type: 'DELETE',
+				statusCode: {
+			    	200: function() {
+			      		self.$el.find('.icon-heart').css('color', 'white');
+			      		self.model.fetch();
+			    	},	    	
+			    	500: function() {
+			    		alert("Error al sincronizar con el servidor");
+			    	}
+			 	}
+			});
+		}
+		else
+		{
+			$.ajax({
+			    url: window.location.origin + "/api/likes/",
+			    type: 'POST',
+			    data:{article : this.model.url()},
+				statusCode: {
+			    	201: function() {
+			      		self.$el.find('.icon-heart').css('color', 'red');
+			      		self.model.fetch();
+			    	},
+			    	409: function() {
+			    		self.model.fetch();
+			    	},
+			    	500: function() {
+			    		alert("Error al sincronizar con el servidor");
+			    	}
+			 	}
+			});
+		}		
 	},
 
 	navigate : function (){

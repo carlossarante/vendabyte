@@ -9,6 +9,7 @@ module.exports = Backbone.View.extend({
 		"click .icon-bell":"login",
 		"click .log-in":"login",
 		"click .user-name":"perfil",
+		"click .user-pict":"perfil",
 		"click .logo-cont":"home",
 	},
 
