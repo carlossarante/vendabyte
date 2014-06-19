@@ -66,7 +66,7 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 		request = self.context.get('request',None)
 		article_is_liked = obj.like_set.filter(user=request.user)
 		if not article_is_liked:
-			return True
+			return False
 		return True
 
 
