@@ -5,7 +5,8 @@ var Backbone 		= require('backbone'),
 	Gost 			= require('../models/gost'),
 	FormModel		= require('../models/form'),
 	SessionModel 	= require('../models/sessionmodel'),
-	UserModel 		= require('../models/user'),	
+	UserModel 		= require('../models/user'),		
+	FileSelectModel = require('../models/fileselect')
 	Products 		= require('../collections/products'),
 	//Badgets 		= require('../collections/badgets'),
 	Followers 		= require('../collections/followers'),
@@ -15,6 +16,7 @@ var Backbone 		= require('backbone'),
 	FollowersView 	= require('../views/followers'),
 	UserProfileView = require('../views/userprofile'),
 	NotificationsView = require('../views/notificationbar'),
+	FileSelectView = require('../views/fileselect'),
 	FormView 		= require('../views/form');
 
 module.exports = Backbone.Router.extend({
@@ -55,7 +57,11 @@ module.exports = Backbone.Router.extend({
         this.followersView = new FollowersView({ collection : this.followers});  
         //this.followersView.render();
 
-		this.optionsView = new OptionsView({ model : new Gost({}) });	
+		this.optionsView = new OptionsView({ model : new Gost({}) });
+
+		this.fileSelectModel = new FileSelectModel({});	
+		this.fileSelectView = new FileSelectView({model: this.fileSelectModel });
+
 		this.formView = new FormView({ model : new FormModel({}) });
 		//this.formView.render();
 

@@ -24,9 +24,6 @@ module.exports = Backbone.View.extend({
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
     		}
     	});
-    	console.log("EL MODEL FORM:", this.model.toJSON())
-    	window.formu = this.model;
-			
 	},
 
 	render : function(){
@@ -37,7 +34,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	},
 	handleSubmit : function(e) {
-		this.model.submitForm();
+		this.model.submitForm();		
 	},
 
 	handleBrands : function(e){

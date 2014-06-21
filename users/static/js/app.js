@@ -16118,7 +16118,7 @@ var Backbone = require('backbone'),
 	Comment	= require('../models/follower');
 
 module.exports = Backbone.Collection.extend({});
-},{"../models/follower":28,"backbone":2}],25:[function(require,module,exports){
+},{"../models/follower":29,"backbone":2}],25:[function(require,module,exports){
 var Backbone = require('backbone'),
 	Product	= require('../models/product');
 
@@ -16126,7 +16126,7 @@ var Backbone = require('backbone'),
 module.exports = Backbone.Collection.extend({ 
 	model : Product ,
 });
-},{"../models/product":31,"backbone":2}],26:[function(require,module,exports){
+},{"../models/product":32,"backbone":2}],26:[function(require,module,exports){
 var Backbone = require('backbone'),
     $ = require('jquery'),
 	  Router = require('./routers/router');
@@ -16138,169 +16138,43 @@ var Backbone = require('backbone'),
 $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
+  
+  FileReader.prototype.id = 0;
+  FileList.prototype.cont = 0;
+  //document.getElementById('selectIn').addEventListener('change', handleFileSelect, false);
+  //document.getElementById('dropIn').addEventListener('change', handleFileSelect, false);
 
-  /*var formData = new FormData();
 
-  formData.append("model", "http://localhost:8000/articles/api/models/1/");
-  formData.append("short_description", "Excelente");
-  formData.append("price", "100");
-  formData.append("specs", "El mejor cel de los celulares");
-  formData.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
-
-  var request = new XMLHttpRequest();
-  request.open("POST", "http://localhost:8000/articles/api/article/");
-  request.send(formData);*/
   var csrftoken = Backbone.app.csrftoken('csrftoken');
 
   function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-function sameOrigin(url) {
-    // test that a given url is a same-origin URL
-    // url could be relative or scheme relative or absolute
-    var host = document.location.host; // host + port
-    var protocol = document.location.protocol;
-    var sr_origin = '//' + host;
-    var origin = protocol + sr_origin;
-    // Allow absolute or scheme relative URLs to same origin
-    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-        // or any other URL that isn't scheme relative or absolute i.e relative.
-        !(/^(\/\/|http:|https:).*/.test(url));
-}
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-            // Send the token to same-origin, relative URLs only.
-            // Send the token only if the method warrants CSRF protection
-            // Using the CSRFToken value acquired earlier
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        }
-    }
-});
-
-  function dataURItoBlob(dataURI) {
-    // convert base64 to raw binary data held in a string
-    // doesn't handle URLEncoded DataURIs
-    var byteString = atob(dataURI.split(',')[1]);
-   /* var byteString;
-    if (dataURI.split(',')[0].indexOf('base64') >= 0)
-        byteString = atob(dataURI.split(',')[1]);
-    else
-        byteString = unescape(dataURI.split(',')[1]);*/
-
-    // separate out the mime component
-    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-
-    // write the bytes of the string to an ArrayBuffer
-    var ab = new ArrayBuffer(byteString.length);
-    var ia = new Uint8Array(ab);
-    for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-    }
-    // write the ArrayBuffer to a blob, and you're done
-    var blob = new Blob([ab],{"type":mimeString});
-    window.blob = blob;
-    return blob
   }
-
-  function handleFileSelect(evt) {
-    var filesIn = evt.target.files;
-    var el = $(this);
-    var inputId = el.attr('id');
-    loadBtn = $(".load-button");
-    dropArea= $("#deco");
-    readerIn = new FileReader(); //FileReader object
-
-    if (!filesIn[0].type.match('image.*')) {
-        alert("Solo se permiten archivos de imagen");
-        return;
-      } 
-
-    if(filesIn.cont <5)
-    {
-      el.attr({
-        id : 'file'+(filesIn.cont+1),
-        class : "none"
-      });
-      $(".upload-box").prepend(el);
-      if(inputId === "selectIn"){
-        loadBtn.prepend('<input type="file" id="selectIn" value="Submit" class="button relative">');
-      }
-      else{
-        dropArea.prepend('<input type="file" id="dropIn" value="Submit" class="dropArea absolute">');
-      }      
-      document.getElementById(inputId).addEventListener('change', handleFileSelect, false);      
-
-      FileList.prototype.cont += 1;
-    }
-    else{
-      alert("Solo puede elegir 5 fotos");
-      return;
-    }     
-
-    readerIn.onload = function (e){
-      var tempImg = new Image();
-      tempImg.src = readerIn.result;
-      readerOut = new FileReader();
-
-      tempImg.onload = function() {
-
-        var MAX_WIDTH = 800;
-        var MAX_HEIGHT = 600;
-        var tempW = tempImg.width;
-        var tempH = tempImg.height;
-        if (tempW > tempH) {
-            if (tempW > MAX_WIDTH) {
-               tempH *= MAX_WIDTH / tempW;
-               tempW = MAX_WIDTH;
-            }
-        } else {
-            if (tempH > MAX_HEIGHT) {
-               tempW *= MAX_HEIGHT / tempH;
-               tempH = MAX_HEIGHT;
-            }
-        }
-
-        var canvas = document.createElement('canvas');
-        canvas.width = tempW;
-        canvas.height = tempH;
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(this, 0, 0, tempW, tempH);
-        var dataURL = canvas.toDataURL("image/jpeg");
-        
-        var blob = dataURItoBlob(dataURL);
-        blob.name = "pepsi";
-        readerOut.readAsDataURL(blob);
-
-        var formData2 = new FormData();
-
-        formData2.append("article", "http://localhost:8000/articles/api/article/4/");
-        formData2.append("art_img", blob);
-        formData2.append("art_img", blob);
-        formData2.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
-
-        var request = new XMLHttpRequest();
-        request.open("POST", "http://localhost:8000/articles/api/picture/");
-        request.send(formData2);
-      }
-
-      readerOut.onload = function(e) {
-        $("#thumbnail"+filesIn.cont).find('img').attr({
-          src: ''+e.target.result,
-        });
-      }
-      /*$("#thumbnail"+filesIn.cont).find('img').attr({
-          src: ''+e.target.result,
-      });*/
-    }
-    readerIn.readAsDataURL(filesIn[0]);
+  function sameOrigin(url) {
+      // test that a given url is a same-origin URL
+      // url could be relative or scheme relative or absolute
+      var host = document.location.host; // host + port
+      var protocol = document.location.protocol;
+      var sr_origin = '//' + host;
+      var origin = protocol + sr_origin;
+      // Allow absolute or scheme relative URLs to same origin
+      return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+          (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+          // or any other URL that isn't scheme relative or absolute i.e relative.
+          !(/^(\/\/|http:|https:).*/.test(url));
   }
-  FileReader.prototype.id = 0;
-  FileList.prototype.cont = 0;
-  document.getElementById('selectIn').addEventListener('change', handleFileSelect, false);
-  document.getElementById('dropIn').addEventListener('change', handleFileSelect, false);
+  $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+          if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+              // Send the token to same-origin, relative URLs only.
+              // Send the token only if the method warrants CSRF protection
+              // Using the CSRFToken value acquired earlier
+              xhr.setRequestHeader("X-CSRFToken", csrftoken);
+          }
+      }
+  });
+
 
 (function (d) {
         var js, id = 'facebook-jssdk',
@@ -16342,7 +16216,7 @@ $.ajaxSetup({
 });
 
 
-},{"./routers/router":34,"backbone":2,"jquery":21}],27:[function(require,module,exports){
+},{"./routers/router":35,"backbone":2,"jquery":21}],27:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
@@ -16355,8 +16229,52 @@ module.exports = Backbone.Model.extend({
 },{"backbone":2}],28:[function(require,module,exports){
 var Backbone = require('backbone');
 
-module.exports = Backbone.Model.extend({});
+module.exports = Backbone.Model.extend({
+	images : [],
+	icont: 0,
+
+	sendImages : function(){
+		var self = this;
+		var formData2 = new FormData();
+		if(self.images[self.icont])
+		{
+			formData2.append("article", this.attributes.articleLoaded.url);
+		    formData2.append("art_img", self.images[self.icont],"1.jpg");
+		    formData2.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
+
+		    this.icont +=1;
+
+		    var request = new XMLHttpRequest();
+		    request.open("POST", window.location.origin+"/api/picture/");
+		    request.onloadend = function(){	  
+		    	console.log("RESPUESTAS Y STATUS PICTURES")
+				console.log("STATUS:",request.statusText);
+				console.log("STATUS:",request.status); 
+			    self.sendImages();
+	    	}
+			request.send(formData2);   	    		
+		}	
+		else
+		{
+	    	self.images = [];
+	    	self.icont = 0;
+	    	self.unset("articleLoaded");	    	
+		  	FileList.prototype.cont = 0;
+	    	Backbone.app.fileSelectView.render();
+	    	Backbone.app.products.reset();
+	    	Backbone.app.products.fetch({ 
+				success: function(){
+	       			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
+	    		}
+    		});
+		}   		
+	},	    
+});
 },{"backbone":2}],29:[function(require,module,exports){
+var Backbone = require('backbone');
+
+module.exports = Backbone.Model.extend({});
+},{"backbone":2}],30:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
@@ -16373,17 +16291,22 @@ module.exports = Backbone.Model.extend({
 			alert("error");
 		}
 		request.onload = function (argument) {
+			console.log("RESPUESTAS Y STATUS FORMULARIO")
 			console.log("STATUS:",request.statusText);
 			console.log("STATUS:",request.status);
-			//console.log("RESPONSE:",request.responseText);
-			//console.log("RESPONSE:",request.responseXML);
+			if (request.status === 201) {
+				Backbone.app.fileSelectModel.set({"articleLoaded" : JSON.parse(request.response)});
+				Backbone.app.fileSelectModel.sendImages();
+			};
 		}
-		request.onloaden = function (argument) {
-			alert("end");
+		request.onloadend = function () {	
+			if (request.status === 201) {
+				Backbone.app.formView.render();   
+			};
 		}
 		window.request=request;
 		request.send(formData);
-
+		
 	},
 
 	fetchBrands : function(x){
@@ -16414,12 +16337,12 @@ module.exports = Backbone.Model.extend({
 		});
 	}, 
 });
-},{"backbone":2}],30:[function(require,module,exports){
+},{"backbone":2}],31:[function(require,module,exports){
 var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({});
 
-},{"backbone":2}],31:[function(require,module,exports){
+},{"backbone":2}],32:[function(require,module,exports){
 var Backbone = require('backbone'); 
 
 module.exports = Backbone.Model.extend({
@@ -16429,7 +16352,7 @@ module.exports = Backbone.Model.extend({
 		return this.urlRoot+this.id+"/";
 	},
 });
-},{"backbone":2}],32:[function(require,module,exports){
+},{"backbone":2}],33:[function(require,module,exports){
 var Backbone  = require('backbone'),
   Handlebars  = require('handlebars'),
   $           = require('jquery'),
@@ -16551,11 +16474,11 @@ module.exports= Backbone.Model.extend({
 });
 
 
-},{"async":1,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],33:[function(require,module,exports){
+},{"async":1,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],34:[function(require,module,exports){
 var Backbone = require('backbone'); 
 
 module.exports = Backbone.Model.extend({});
-},{"backbone":2}],34:[function(require,module,exports){
+},{"backbone":2}],35:[function(require,module,exports){
 var Backbone 		= require('backbone'),
 	//Handlebars 	= require('handlebars'),
 	$ 				= require('jquery'),
@@ -16563,7 +16486,8 @@ var Backbone 		= require('backbone'),
 	Gost 			= require('../models/gost'),
 	FormModel		= require('../models/form'),
 	SessionModel 	= require('../models/sessionmodel'),
-	UserModel 		= require('../models/user'),	
+	UserModel 		= require('../models/user'),		
+	FileSelectModel = require('../models/fileselect')
 	Products 		= require('../collections/products'),
 	//Badgets 		= require('../collections/badgets'),
 	Followers 		= require('../collections/followers'),
@@ -16573,6 +16497,7 @@ var Backbone 		= require('backbone'),
 	FollowersView 	= require('../views/followers'),
 	UserProfileView = require('../views/userprofile'),
 	NotificationsView = require('../views/notificationbar'),
+	FileSelectView = require('../views/fileselect'),
 	FormView 		= require('../views/form');
 
 module.exports = Backbone.Router.extend({
@@ -16613,7 +16538,11 @@ module.exports = Backbone.Router.extend({
         this.followersView = new FollowersView({ collection : this.followers});  
         //this.followersView.render();
 
-		this.optionsView = new OptionsView({ model : new Gost({}) });	
+		this.optionsView = new OptionsView({ model : new Gost({}) });
+
+		this.fileSelectModel = new FileSelectModel({});	
+		this.fileSelectView = new FileSelectView({model: this.fileSelectModel });
+
 		this.formView = new FormView({ model : new FormModel({}) });
 		//this.formView.render();
 
@@ -16832,7 +16761,7 @@ module.exports = Backbone.Router.extend({
 	    return cookieValue;
 	},*/
 });
-},{"../collections/followers":24,"../collections/products":25,"../models/follower":28,"../models/form":29,"../models/gost":30,"../models/sessionmodel":32,"../models/user":33,"../views/followers":38,"../views/form":39,"../views/notificationbar":40,"../views/options":41,"../views/products":43,"../views/userprofile":44,"backbone":2,"jquery":21}],35:[function(require,module,exports){
+},{"../collections/followers":24,"../collections/products":25,"../models/fileselect":28,"../models/follower":29,"../models/form":30,"../models/gost":31,"../models/sessionmodel":33,"../models/user":34,"../views/fileselect":38,"../views/followers":40,"../views/form":41,"../views/notificationbar":42,"../views/options":43,"../views/products":45,"../views/userprofile":46,"backbone":2,"jquery":21}],36:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	_ 			= require('underscore'),
@@ -16859,7 +16788,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	}
 });
-},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],36:[function(require,module,exports){
+},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],37:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	//Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -16887,7 +16816,140 @@ module.exports = Backbone.View.extend({
         this.collection.forEach(this.addOne,this);
     }
 });
-},{"../views/comment":35,"backbone":2,"jquery":21}],37:[function(require,module,exports){
+},{"../views/comment":36,"backbone":2,"jquery":21}],38:[function(require,module,exports){
+var Backbone 	= require('backbone'),
+	Handlebars 	= require('handlebars'),
+	$ 			= require('jquery'),
+	_ 			= require('underscore');
+	//Comment = require('../models/comment'),
+	//Comments = require('../collections/comments'),
+	//CommentsView = require('../views/comments');
+
+module.exports = Backbone.View.extend({
+	el : $(".file-browse"),
+
+	events : {
+		'change #dropIn' : 'sendImages',
+		'change #selectIn' : 'handleFileSelect',
+	},
+
+	template : _.template($("#fileSelect-template").html()),
+
+	initialize : function () {
+		this.render();
+	},
+
+	render : function(){
+		var self = this;
+		var picture = this.model.toJSON();
+		var html = this.template(picture);
+		this.$el.html(html);
+		return this;
+	},	
+	handleFileSelect: function(evt) {
+		var self = this;
+		var filesIn = evt.target.files;
+		var el = $(evt.currentTarget);
+		var inputId = el.attr('id');
+		//loadBtn = $(".load-button");
+		//dropArea= $("#deco");
+		readerIn = new FileReader(); //FileReader object
+
+		if (!filesIn[0].type.match('image.*')) {
+			alert("Solo se permiten archivos de imagen");
+			return;
+		} 
+		if(filesIn.cont <5)
+		{   
+			FileList.prototype.cont += 1;
+		}
+		else{
+		  	alert("Solo puede elegir 5 fotos");
+		  	return;
+		}     
+
+		readerIn.onload = function (e){
+			var tempImg = new Image();
+			tempImg.src = readerIn.result;
+			readerOut = new FileReader();
+
+			tempImg.onload = function() {
+			    var MAX_WIDTH = 600;
+			    var MAX_HEIGHT = 800;
+			    var totalW = tempImg.width;
+			    var totalH = tempImg.height;
+			    var x,y,newW,newH;
+			    if (totalW > totalH) {
+			        if (totalW > MAX_WIDTH) {
+			        	y=0;
+			        	newW = 3*totalH/4;
+			        	newH = totalH;
+			        	x=(totalW-newW)/2;
+			        }
+			    } else {
+			        if (totalH > MAX_HEIGHT) {
+			        	x=0;
+			        	newH = 4*totalW/3;
+			        	newW = totalW;
+			        	y=(totalH-newH)/2;
+			        }
+			    }
+			    var canvas = document.createElement('canvas');
+			    canvas.width = MAX_WIDTH;
+			    canvas.height = MAX_HEIGHT;
+			    var ctx = canvas.getContext("2d");
+			    ctx.drawImage(this,x,y,newW,newH,0,0,MAX_WIDTH,MAX_HEIGHT);
+			    var dataURL = canvas.toDataURL("image/jpeg");
+			    
+			    var blob = self.dataURItoBlob(dataURL);
+			    readerOut.readAsDataURL(blob);	
+			    self.model.images.push(blob);		
+
+			    //self.sendImages();    
+			}
+
+			readerOut.onload = function(e) {
+				$("#thumbnail"+filesIn.cont).find('img').attr({
+			    	src: ''+e.target.result,
+			    });
+			}
+		  	/*$("#thumbnail"+filesIn.cont).find('img').attr({
+		    	src: ''+e.target.result,
+		  	});*/
+		}
+		readerIn.readAsDataURL(filesIn[0]);
+	},
+	dataURItoBlob :	function(dataURI) {
+	    // convert base64 to raw binary data held in a string
+	    // doesn't handle URLEncoded DataURIs
+	    var byteString = atob(dataURI.split(',')[1]);
+	   /* var byteString;
+	    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+	        byteString = atob(dataURI.split(',')[1]);
+	    else
+	        byteString = unescape(dataURI.split(',')[1]);*/
+
+	    // separate out the mime component
+	    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+	    // write the bytes of the string to an ArrayBuffer
+	    var ab = new ArrayBuffer(byteString.length);
+	    var ia = new Uint8Array(ab);
+	    for (var i = 0; i < byteString.length; i++) {
+	        ia[i] = byteString.charCodeAt(i);
+	    }
+	    // write the ArrayBuffer to a blob, and you're done
+	    var blob = new Blob([ab],{"type":mimeString});
+	    return blob
+	},
+	navigate : function (){
+		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
+	},
+
+	
+});
+
+},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],39:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -16921,7 +16983,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../models/follower":28,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],38:[function(require,module,exports){
+},{"../models/follower":29,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],40:[function(require,module,exports){
 var Backbone    = require('backbone'),
     //Handlebars  = require('handlebars'),
     $           = require('jquery'),
@@ -16949,7 +17011,7 @@ module.exports = Backbone.View.extend({
         this.collection.forEach(this.addOne,this);
       }
 });
-},{"../views/follower":37,"backbone":2,"jquery":21}],39:[function(require,module,exports){
+},{"../views/follower":39,"backbone":2,"jquery":21}],41:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -16976,9 +17038,6 @@ module.exports = Backbone.View.extend({
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
     		}
     	});
-    	console.log("EL MODEL FORM:", this.model.toJSON())
-    	window.formu = this.model;
-			
 	},
 
 	render : function(){
@@ -16989,7 +17048,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	},
 	handleSubmit : function(e) {
-		this.model.submitForm();
+		this.model.submitForm();		
 	},
 
 	handleBrands : function(e){
@@ -17014,7 +17073,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],40:[function(require,module,exports){
+},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],42:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	$ 			= require('jquery'),
 	_ 			= require('underscore');
@@ -17115,7 +17174,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"backbone":2,"jquery":21,"underscore":22}],41:[function(require,module,exports){
+},{"backbone":2,"jquery":21,"underscore":22}],43:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -17179,7 +17238,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],42:[function(require,module,exports){
+},{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],44:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
@@ -17206,7 +17265,6 @@ module.exports = Backbone.View.extend({
 	template : _.template($("#product-template").html()),
 
 	initialize : function () {
-		window.model = this.model;
 		this.listenTo(this.model, "change", this.render, this);				
 	},
 
@@ -17216,7 +17274,6 @@ module.exports = Backbone.View.extend({
 		var html = this.template(product);
 		this.$el.html(html);
 		var comment =this.model.get("comment_set");
-		console.log("ESTO ES COMMEN SET  ", comment);
 
 		if(this.model.attributes.liked)
 		{
@@ -17332,7 +17389,6 @@ module.exports = Backbone.View.extend({
        			console.log("COMENTARIO NOOO GUARDADOOOOOOOO "+Backbone.app.userModel);
     		}
         }*/);
-
 	},
 	
 	notComment : function(){
@@ -17386,7 +17442,7 @@ module.exports = Backbone.View.extend({
 	}
 });
 
-},{"../collections/comments":23,"../models/comment":27,"../views/comments":36,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],43:[function(require,module,exports){
+},{"../collections/comments":23,"../models/comment":27,"../views/comments":37,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],45:[function(require,module,exports){
 var Backbone    = require('backbone'),
     //Handlebars  = require('handlebars'),
     $           = require('jquery'),
@@ -17414,7 +17470,7 @@ module.exports = Backbone.View.extend({
         this.collection.forEach(this.addOne,this);
       }
 });
-},{"../views/product":42,"backbone":2,"jquery":21}],44:[function(require,module,exports){
+},{"../views/product":44,"backbone":2,"jquery":21}],46:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	$ 			= require('jquery'),
 	_ 			= require('underscore');

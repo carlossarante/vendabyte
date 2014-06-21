@@ -14,17 +14,22 @@ module.exports = Backbone.Model.extend({
 			alert("error");
 		}
 		request.onload = function (argument) {
+			console.log("RESPUESTAS Y STATUS FORMULARIO")
 			console.log("STATUS:",request.statusText);
 			console.log("STATUS:",request.status);
-			//console.log("RESPONSE:",request.responseText);
-			//console.log("RESPONSE:",request.responseXML);
+			if (request.status === 201) {
+				Backbone.app.fileSelectModel.set({"articleLoaded" : JSON.parse(request.response)});
+				Backbone.app.fileSelectModel.sendImages();
+			};
 		}
-		request.onloaden = function (argument) {
-			alert("end");
+		request.onloadend = function () {	
+			if (request.status === 201) {
+				Backbone.app.formView.render();   
+			};
 		}
 		window.request=request;
 		request.send(formData);
-
+		
 	},
 
 	fetchBrands : function(x){

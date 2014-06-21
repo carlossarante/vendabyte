@@ -24,7 +24,6 @@ module.exports = Backbone.View.extend({
 	template : _.template($("#product-template").html()),
 
 	initialize : function () {
-		window.model = this.model;
 		this.listenTo(this.model, "change", this.render, this);				
 	},
 
@@ -34,7 +33,6 @@ module.exports = Backbone.View.extend({
 		var html = this.template(product);
 		this.$el.html(html);
 		var comment =this.model.get("comment_set");
-		console.log("ESTO ES COMMEN SET  ", comment);
 
 		if(this.model.attributes.liked)
 		{
@@ -150,7 +148,6 @@ module.exports = Backbone.View.extend({
        			console.log("COMENTARIO NOOO GUARDADOOOOOOOO "+Backbone.app.userModel);
     		}
         }*/);
-
 	},
 	
 	notComment : function(){

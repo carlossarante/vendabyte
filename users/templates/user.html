@@ -99,7 +99,7 @@
 				</div>
 			</div>		
 			<div class="file-browse caja none">
-				<div id= "deco" class="deco">
+				<!--<div id= "deco" class="deco">
 					<span class="">Arrastra las fotos de tu articulo aqui</span>
 					<br/>
 					<input type="file" id="dropIn" value="Submit" class="dropArea absolute">
@@ -107,7 +107,7 @@
 						<input type="file" id="selectIn" value="Submit" class="button relative">
 						Buscar el Archivo
 					</div>
-				</div>				
+				</div>	-->			
 			</div>
 			
 			<form action="/articles/api/article/" id="articleUpload" class="upload-box" style="height:auto; padding-bottom:20px; margin-bottom:40px;">
@@ -205,6 +205,18 @@
 
   	<script id="badgets-template" type="text/template">
   		Iconos
+  	</script>
+
+  	<script id="fileSelect-template" type="text/template">
+  		<div id= "deco" class="deco">
+			<span class="">Arrastra las fotos de tu articulo aqui</span>
+			<br/>
+			<input type="file" id="dropIn" value="Submit" class="dropArea absolute">
+			<div class="load-button">
+				<input type="file" id="selectIn" value="Submit" class="button relative">
+				Buscar el Archivo
+			</div>
+		</div>		
   	</script>
 
   	<script id="form-template" type="text/template">	  	
