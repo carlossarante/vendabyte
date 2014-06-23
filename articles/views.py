@@ -15,6 +15,8 @@ from articles.serializers import ArticleSerializer, BrandModelSerializer,BrandSe
 #import django_filters
 
 def articleIndex(request):
+	if bool(request.user.is_anonymous()):
+		return render(request,'index.html')
 	return render(request,'articles.html')
 
 class ArticleSet(viewsets.ModelViewSet):
@@ -42,7 +44,7 @@ class ArticleSet(viewsets.ModelViewSet):
 		except:
 			return Response({'response':'Error in transaction'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 	@action(methods=['DELETE',])
-	def delete_interested(self,request,pk=None):
+	def delete_interesting(self,request,pk=None):
 		try:
 			article = self.get_object()
 			user = request.user

@@ -8,12 +8,7 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding unique constraint on 'Like', fields ['article', 'user']
-        db.create_unique(u'articles_like', ['article_id', 'user_id'])
-
-        # Adding unique constraint on 'Interested', fields ['article', 'user']
-        db.create_unique(u'articles_interested', ['article_id', 'user_id'])
-
+        pass
 
     def backwards(self, orm):
         # Removing unique constraint on 'Interested', fields ['article', 'user']
