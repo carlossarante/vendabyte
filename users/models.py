@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Avg
 from django.contrib.auth.models import AbstractBaseUser
 from geographics.models import Province,City
 from .managers import UserManager
@@ -18,7 +19,6 @@ class User(AbstractBaseUser):
 	photo = models.ImageField(upload_to='users',blank=True)
 	cover = models.ImageField(upload_to='cover',blank=True)
 	city = models.ForeignKey(City,default=1)
-	rating = models.DecimalField(default = 0.0,decimal_places=1,max_digits=2)
 	medals = models.ManyToManyField(Badgets,related_name='medals',blank=True)
 	followers = models.ManyToManyField('self', related_name='follows', symmetrical=False,blank=True)
 	objects = UserManager()
@@ -44,7 +44,8 @@ class User(AbstractBaseUser):
 		return True
 	def set_enc_password(self):
 		return self.set_password(('%s%s%s') % (self.id,self.facebook_uid,settings.SALT))
-
+	def get_average_rating(self):
+		return self.rating_set.aggregate(Avg('stars'))
 
 	@property
 	def is_staff(self):
@@ -54,3 +55,8 @@ class Contact(models.Model):
 	user = models.OneToOneField(User)
 	email = models.EmailField()
 	mobile_phone = models.BigIntegerField()
+
+class Rating(models.Model):
+	user_rated = models.ForeignKey(User)
+	rating_user = models.ForeignKey(User,related_name='rating_user')
+	stars = models.DecimalField(decimal_places=1,max_digits=3)

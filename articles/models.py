@@ -28,7 +28,7 @@ class Article(models.Model):
 	model = models.ForeignKey(BrandModel)
 	user = models.ForeignKey(User)
 	short_description = models.CharField(max_length=140)
-	price = models.DecimalField(decimal_places=2,max_digits=7)
+	price = models.DecimalField(decimal_places=2,max_digits=10)
 	specs = models.TextField()
 	date_posted = models.DateTimeField(default=timezone.now)
 	selled = models.BooleanField(default=False)
