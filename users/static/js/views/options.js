@@ -30,8 +30,6 @@ module.exports = Backbone.View.extend({
 	theNew : function(h){
 
 		Backbone.app.navigate("lonuevo",{trigger : true});
-		//$(h.currentTarget).css('display', 'none');
-		//$.get('http://localhost:8000/articles/brands/samsung/', function(data){console.log(data)});	
 	},
 
 	following : function(h){
@@ -43,7 +41,6 @@ module.exports = Backbone.View.extend({
 		
 	},
 	popular : function(h){
-		//console.log(Backbone.app.activeSession.isAuthorized());
 		Backbone.app.navigate("popular",{trigger : true});
 		
 	},

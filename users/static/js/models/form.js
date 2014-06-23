@@ -9,7 +9,7 @@ module.exports = Backbone.Model.extend({
 		formData.append('csrfmiddlewaretoken',Backbone.app.csrftoken('csrftoken'));
 
 		var request = new XMLHttpRequest();
-		request.open("POST", "http://localhost:8000/api/article/");
+		request.open("POST", window.location.origin+"/api/article/");
 		request.onerror = function (argument) {
 			alert("error");
 		}
@@ -38,7 +38,7 @@ module.exports = Backbone.Model.extend({
 		y.html('<option value="" selected disabled="disabled" label="Seleccionar marca"></option>');
 		z.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
 
-		$.get("http://localhost:8000/api/devices/?format=json&device_detail="+x.val(), function(data) {
+		$.get(window.location.origin+"/api/devices/?format=json&device_detail="+x.val(), function(data) {
 			data[0].brand_set.forEach(function(argument) {
 				y.append('<option value='+argument+' label='+argument+'></option>');
 			})
@@ -49,9 +49,9 @@ module.exports = Backbone.Model.extend({
 		y = $(".model-select");
 		y.html('<option value="" selected disabled="disabled" label="Seleccionar modelo"></option>');
 
-		$.get("http://localhost:8000/api/brands/?format=json&brand="+x.val(), function(data) {
+		$.get(window.location.origin+"/api/brands/?format=json&brand="+x.val(), function(data) {
 			data[0].brandmodel_set.forEach(function(modelo) {
-				$.get("http://localhost:8000/api/models/?format=json&model_name="+modelo, function(data) {
+				$.get(window.location.origin+"/api/models/?format=json&model_name="+modelo, function(data) {
 					y.append('<option value='+data[0].url+' label='+modelo+'></option>');
 					console.log("MODELOOOOOOO: ",data[0].url);
 				});	
