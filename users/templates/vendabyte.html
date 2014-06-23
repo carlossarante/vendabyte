@@ -157,7 +157,6 @@
 
 			</ul>
 			<ul class="options-menu inline-block none">
-			{%csrf_token%}
 				<li id="newest" class="options inline-block">
 					<div class="icon">Iconos</div>
 					<span class="option">Nuevo</span>
@@ -200,7 +199,23 @@
 		</div>			
   	</script>
 
-  	<script id="form-template" type="text/template">	
+  	<script id="badgets-template" type="text/template">
+  		Iconos
+  	</script>
+
+  	<script id="fileSelect-template" type="text/template">
+  		<div id= "deco" class="deco">
+			<span class="">Arrastra las fotos de tu articulo aqui</span>
+			<br/>
+			<input type="file" id="dropIn" value="Submit" class="dropArea absolute">
+			<div class="load-button">
+				<input type="file" id="selectIn" value="Submit" class="button relative">
+				Buscar el Archivo
+			</div>
+		</div>		
+  	</script>
+
+  	<script id="form-template" type="text/template">	  	
 		<ul class="thumbnail-cont">
 			<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
 			<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
@@ -237,7 +252,7 @@
 					<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict block">					
 				</div>					
 				<div class="inline-block">
-					<span class="user-name block"><%=username%></span>
+					<span class="user-name block"><% print(this.model.attributes[0].device_detail)%></span>
 					<span class="icon-star"></span>
 					<span class="icon-star"></span>
 					<span class="icon-star"></span>
