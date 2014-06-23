@@ -50,6 +50,8 @@ module.exports = Backbone.View.extend({
 		{
 			this.$el.find('.interest').css('background-color', 'white');
 		}
+
+
         this.comments = new Comments();
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
         for(var x in comment )
@@ -148,6 +150,7 @@ module.exports = Backbone.View.extend({
        			console.log("COMENTARIO NOOO GUARDADOOOOOOOO "+Backbone.app.userModel);
     		}
         }*/);
+        window.model= this.comment;
 	},
 	
 	notComment : function(){
