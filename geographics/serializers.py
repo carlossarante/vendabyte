@@ -9,4 +9,4 @@ class ProvinceSerializer(serializers.HyperlinkedModelSerializer):
 class CitySerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = City
-		fields = ('url','id','province')
+		fields = ('url','id','city_name','province')
