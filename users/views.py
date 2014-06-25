@@ -39,7 +39,7 @@ def loginFacebookUser(request,response='html'):
  			 		User.objects.get(email=email)
  			 		return HttpResponse('Wrong Password')
  			 	except User.DoesNotExist:
- 			 		return Response({'status':'User not found'},status=status.HTTP_404_NOT_FOUND)	
+ 			 		return Response({'status':'User not found'},status=404)	
 
 
 class UserSet(viewsets.ModelViewSet):
