@@ -23,6 +23,7 @@ class ArticleSet(viewsets.ModelViewSet):
 	#queryset = Article.objects.all()
 	serializer_class = ArticleSerializer
 	base_name = 'article'
+	paginate_by = 5
 
 	def create(self,request):
 		user = request.user
