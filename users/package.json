@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./server.js",
-    "bundle": "browserify ./static/js/main.js -o ./static/js/app.js"
+    "userbundle": "browserify ./static/js/usermain.js -o ./static/js/userapp.js",
+    "homebundle": "browserify ./static/js/homemain.js -o ./static/js/homeapp.js"
   },
   "author": "Conuco",
   "license": "MIT",

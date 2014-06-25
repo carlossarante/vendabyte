@@ -29,6 +29,7 @@ a
 	background verde-claro
 	font-size 0rem
 	text-align center
+	box-shadow 0px 0px 5px black
 	
 	.logo-cont
 		display inline-block
@@ -257,23 +258,24 @@ a
 	width 96%
 	display inline-block
 	position relative
+	background-color gris-claro
 
 	.deco
-		border 2px solid gris-medio
-		width 96%
-		height 90%
-		top 3.1%
-		margin 0 auto
-		position relative
-		display block
+		border 2px solid gris-medio		
 		border-style dashed
+		top 5px
+		bottom 5px
+		left 5px
+		right 5px
+		margin 0
+		position absolute
 
 		#dropIn
 			top 0
 			left 0
 			width 100%
 			height 100%
-			opacity 1
+			opacity 0
 			padding 0
 
 
@@ -371,11 +373,12 @@ a
 	top 0
 	right 0
 	font-size 1rem
-	height auto
+	height 100%
 	text-align center
 	width 50%
 	vertical-align top
 	background-color white
+	overflow auto
 
 
 .sign-in

@@ -11,6 +11,8 @@ gris-medio = rgb(148,158,147)
 gris-oscuro = rgb(66,68,65)
 mamei = rgb(255,206,0)
 crema = rgb(249,234,216)
+opaco = rgba(255,255,255,0.3)
+azulfb = blue
 
 body 
 	background gris-claro
@@ -25,22 +27,83 @@ a
 	width 100%
 	height 45px
 	background verde-claro
+	font-size 0rem
+	text-align center
+	box-shadow 0px 0px 5px black
 	
 	.logo-cont
-		left 15%
 		display inline-block
 		
 		.logo 
 			width 200px
 	.log-in
-		position absolute
-		right 20%
-		top 0px
-		background-color blue
+		vertical-align top
+		background-color azulfb
 		color white
 		padding 10px 5px 5px 5px
 		box-shadow 0px 0px 5px black
-		font-size 1.2rem	
+		font-size 1.2rem
+		cursor pointer
+	.search
+		background-color opaco
+		border 0
+		padding 5px
+		border-radius 0 3px 3px 0		
+		font-size 1.2rem
+		width 400px
+		display inline-block
+		text-align center
+		vertical-align top
+		color white
+		margin-top 5px
+		margin-right 20px
+		&:focus
+			outline red none 1px
+	.notif-bar
+		vertical-align top
+		.icon-bell
+			line-height 45px
+			font-size 1.7rem
+			display inline-block
+			vertical-align top
+			color white
+			padding 0 10px
+			border-right 1px solid opaco
+			border-left 1px solid opaco
+			position relative
+			.notifications
+				border-radius 50%
+				background-color red
+				position absolute
+				color white
+				font-size 0.7rem
+				padding 2px
+				line-height 1rem
+		.user-name
+			display inline-block
+			font-size 1.2rem
+			color white
+			line-height 45px
+			vertical-align top
+			padding 0 3px
+			border-right 1px solid opaco
+		.user-pict
+			display inline-block
+			width 35px
+			height 35px
+			padding 2px
+			vertical-align top
+			margin 3px 10px 0 10px
+		.icon-cog
+			line-height 45px
+			font-size 1.7rem
+			display inline-block
+			vertical-align top
+			color white
+			padding 0 10px
+			border-right 1px solid opaco
+			border-left 1px solid opaco
+
 
 .wrapper
 	width 100%
@@ -104,21 +167,30 @@ a
 				transition all 0.3s
 					
 .caja
-	box-shadow 0 0 5px black
+	box-shadow 0 0 5px gris-medio
 	margin 20px 0px
 	width 96%
 	display inline-block
 	position relative
+	background-color gris-claro
 
 	.deco
-		border 3px solid gris-medio
-		width 96%
-		height 95%
-		top 0
-		margin-left 2%
-		position absolute
-		display block
+		border 2px solid gris-medio		
 		border-style dashed
+		top 5px
+		bottom 5px
+		left 5px
+		right 5px
+		margin 0
+		position absolute
+
+		#dropIn
+			top 0
+			left 0
+			width 100%
+			height 100%
+			opacity 0
+			padding 0
 
 .file-browse
 	height 150px
@@ -161,6 +233,7 @@ a
 	text-align center
 	width 50%
 	vertical-align top
+	background-color white
 	overflow auto
 
 
@@ -169,7 +242,7 @@ a
 	text-align center
 
 	span
-		line-height 75px
+		line-height 65px
 
 .products
 	width 96%
@@ -288,8 +361,11 @@ a
 	
 
 .button
-	background verde-claro
-	padding 10px
+	background azulfb
+	padding 5px
+	cursor pointer
+	color white
+	border-radius 5px
 
 .block
 	display block

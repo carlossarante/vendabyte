@@ -9,7 +9,12 @@ module.exports= Backbone.Model.extend({
     id: null,
     third_party_id: null,
     name: null,
-    email: null,
+    email: null,    
+    first_name:null,
+    last_name:null,
+    picture:null,
+    cover:null,
+    birthday:null,
     status: 0
   },
 
@@ -44,24 +49,37 @@ module.exports= Backbone.Model.extend({
     this._onSUCCESS = function (result) {
       var csrftoken = Backbone.app.csrftoken('csrftoken');
       var json={};
+      window.user = _session.attributes;
       console.log('this._onSUCCESS with result:', result);
       console.log(_session.get('third_party_id'));
       json.email = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;
       json.csrfmiddlewaretoken=csrftoken;
-      json.email = _session.attributes.email;
-      json.facebook_uid = _session.attributes.id;
-      console.log(json); 
-      $.post( "/users/login/", json, function(data){console.log(
-        "respuesta POST:",data);
-        //window.location.href = data;
-      });      
+      console.log(json);
+      $.ajax({
+          url: "/users/login/",
+          type: 'POST',
+          data: json,
+          /*success:function(data){
+            console.log("respuesta POST:",data);
+            //window.location.href = data;},
+          },*/
+          statusCode: {
+            200:function(data){
+              console.log("respuesta POST:",data);
+              window.location.href = data;},
+            },
+            404:function(data){
+
+            },
+          }
+      });    
     };
 
     this._getuserdata = function (callback) {
       console.log('_getuserdata called;');
       /* Here you can assemble a query */
-      FB.api('/me?fields=third_party_id,email,name', function (response) {
+      FB.api('me?fields=id,name,third_party_id,email,first_name,last_name,birthday,picture,cover', function (response) {
         if (!response || response.error) {
           callback(true, response.error);
         } else {
@@ -81,6 +99,11 @@ module.exports= Backbone.Model.extend({
           third_party_id: user['third_party_id'],
           name: user['name'],
           email: user['email'],
+          first_name:user['first_name'],
+          last_name:user['last_name'],
+          picture:user['picture'],
+          cover:user['cover'],
+          birthday:user['birthday'],
           status: "1"
         }, {
           silent: true

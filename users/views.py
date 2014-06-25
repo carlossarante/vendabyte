@@ -18,7 +18,7 @@ from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
 def userIndex(request,username=None):
 	if username is not None:
 		user = get_object_or_404(User,username=username)
-	return render(request,'vendabyte.html')
+	return render(request,'user.html')
 
 
 

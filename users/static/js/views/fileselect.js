@@ -10,7 +10,7 @@ module.exports = Backbone.View.extend({
 	el : $(".file-browse"),
 
 	events : {
-		'change #dropIn' : 'sendImages',
+		'change #dropIn' : 'handleFileSelect',
 		'change #selectIn' : 'handleFileSelect',
 	},
 

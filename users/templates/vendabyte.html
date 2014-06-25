@@ -1,187 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!--{% load staticfiles %}-->
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Vendabyte</title>
-	<link rel="stylesheet" href="/static/css/user.css">
+	<link rel="stylesheet" href="/static/css/home.css">
 </head>
 <body>
-	<header class="header relative">		
+	<header class="header relative">
 		<figure class="logo-cont">
 			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
 		</figure>
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
-		<div class="log-in">Iniciar Seción</div>
-		</div>
+		<div class="log-in inline-block">Iniciar Seción</div>
+		</div>	
 	</header><!-- /header -->
-	<figure class="portada-cont relative none">
-			<img src="/static/img/portada.png" alt="Vendabyte" class="portada">
-		</figure>
 	<section class="wrapper relative">		
-		<section class="offers-sect absolute">			
-			<section class="followers-sect none">
-				<li class="follower-cont inline-block relative">
-					<div class="inline-block">
-						<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>	
-					</div>					
-					<div class="inline-block">
-						<span class="user-name">Ramiro Fernandez</span>
-						<div class="deco-count">
-							<span class="following-count">200</span>
-							<span class="following">Siguiendo</span>
-						</div>
-						<div class="deco-count">
-							<span class="followers-count">20</span>	
-							<span class="followers">Seguidores</span>
-						</div>						
-						<div class="follow-user">Seguir</div>
-					</div>
-				</li>		
-				<li class="follower-cont inline-block relative">
-					<div class="inline-block">
-						<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>	
-					</div>					
-					<div class="inline-block">
-						<span class="user-name">Ramiro Fernandez</span>
-						<div class="deco-count">
-							<span class="following-count">200</span>
-							<span class="following">Siguiendo</span>
-						</div>
-						<div class="deco-count">
-							<span class="followers-count">20</span>	
-							<span class="followers">Seguidores</span>
-						</div>						
-						<div class="follow-user">Seguir</div>
-					</div>
-				</li>		
-			</section>	
+		<section class="offers-sect absolute">	
+			<div class="sign-in caja">
+				<div class="deco">
+					<span class="">Descubre mucho más</span>
+					<span class="button"> login with facebook</span>			
+				</div>				
+			</div>				
 			<section class="products none">				
 			</section>
 		</section>
-		<section class="load-sect relative">
-			<div class="user-cont inline-block relative none">
-				<div class="inline-block">
-					<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">					
-				</div>					
-				<div class="inline-block">
-					<span class="user-name block">Ramiro Fernandez</span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>	
-					<br/>
-					<div id="deco1"class="deco-count">
-						<span class="following-count">200</span>
-						<span class="following">Siguiendo</span>
-					</div>
-					<div class="deco-count">
-						<span class="followers-count">20</span>	
-						<span class="followers">Seguidores</span>
-					</div>
-				</div>
-			</div>		
-			<div class="file-browse caja none">
+		<section class="load-sect relative">			
+			<div class="file-browse caja none">	
 				<div id= "deco" class="deco">
-					<span class="">Arrastra las fotos de tu articulo aqui</span>
-					<br/>
-					<input type="file" id="dropIn" value="Submit" class="dropArea absolute">
-					<div class="load-button">
-						<input type="file" id="selectIn" value="Submit" class="button relative">
-						Buscar el Archivo
-					</div>
-				</div>				
-			</div>
-			
-			<form action="/articles/api/article/" id="articleUpload" class="upload-box" style="height:auto; padding-bottom:20px; margin-bottom:40px;">
-			<!--	<ul class="thumbnail-cont">
-					<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-					<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-					<li id="thumbnail3" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-					<li id="thumbnail4" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-					<li id="thumbnail5" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-				</ul>
-				
-				<div class="rb-container">
-					<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Celular">Celular</div>
-					<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Computadora">Computadora</div>
-					<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Videojuego">Videojuego</div>
-					<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Otros">Otros</div>
+				<span class="">Arrastra las fotos de tu articulo aqui</span>
+				<br/>
+				<input type="file" id="dropIn" value="Submit" class="dropArea absolute">
+				<div class="load-button">
+					<input type="file" id="selectIn" value="Submit" class="button relative">
+					Buscar el Archivo
 				</div>
-
-				<div class="select-cont">
-					<select class="brand-select inline-block">
-						<option value="volvo">Samsung</option>
-						<option value="volvo">BlackBerry</option>
-						<option value="volvo">HTC</option>
-						<option value="volvo">Apple</option>
-						<option value="volvo">Sony</option>
-						<option value="volvo">Toshiba</option>
-					</select>
-
-					<select class="model-select inline-block">
-						<option value="volvo">Samsung</option>
-						<option value="volvo">BlackBerry</option>
-						<option value="volvo">HTC</option>
-						<option value="volvo">Apple</option>
-						<option value="volvo">Sony</option>
-						<option value="volvo">Toshiba</option>
-					</select>
-				</div>				-->
-			</form>
-
-
-			<ul class="badgets-cont inline-block relative none">
-				<span class="badget-tittle">Mis Badgets</span>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-
-			</ul>
-			<ul class="options-menu inline-block none">
-				<li id="newest" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Nuevo</span>
-				</li>
-				<li id="following" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Siguiendo</span>
-				</li>
-				<li id="followers" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Seguidores</span>
-				</li>
-				<li id="popular" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Popular</span>
-				</li>
-				<li id="interesting" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Me interesa</span>
-				</li>
-				<li id="selling" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Lo vendo</span>
-				</li>
-			</ul>
+			</div>			
+			</div>
+			<img src="../static/img/ima1.jpg" alt="Vende rapido" class="" style="width:100%;">
 		</section>				
 	</section>
 
@@ -190,17 +47,14 @@
 			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
 		</figure>
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
-		<!--<div class="log-in">Iniciar Seción</div>-->
-		<div class="notif-bar inline-block">
-			<span class="icon-bell"><span class="notifications">2</span></span>
-			<span class="user-name"><%=username%></span>
-			<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict inline block">
-			<span class="icon-cog"></span>
-		</div>			
+		<div class="log-in inline-block">Iniciar Seción</div>
+		</div>		
   	</script>
-
-  	<script id="badgets-template" type="text/template">
-  		Iconos
+  	<script id="fblogin-template" type="text/template">
+		<div class="deco">
+			<span class="">Descubre mucho más</span>
+			<span class="button"> login with facebook</span>			
+		</div>	
   	</script>
 
   	<script id="fileSelect-template" type="text/template">
@@ -213,61 +67,6 @@
 				Buscar el Archivo
 			</div>
 		</div>		
-  	</script>
-
-  	<script id="form-template" type="text/template">	  	
-		<ul class="thumbnail-cont">
-			<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-			<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-			<li id="thumbnail3" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-			<li id="thumbnail4" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-			<li id="thumbnail5" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-		</ul>
-		
-		<div class="rb-container">
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[0].device_detail)%>"><% print(this.model.attributes[0].device_detail)%></div>
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[1].device_detail)%>"><% print(this.model.attributes[1].device_detail)%></div>
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[2].device_detail)%>"><% print(this.model.attributes[2].device_detail)%></div>
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[3].device_detail)%>"><% print(this.model.attributes[3].device_detail)%></div>
-		</div>
-
-		<div class="select-cont">
-			<select class="brand-select inline-block" name="brand" form="articleUpload" required>
-				<option value="" selected disabled="true" label="Seleccionar marca"></option>
-			</select>
-
-			<select class="model-select inline-block" name="model" form="articleUpload" required>
-				<option value="" selected disabled="true" label="Seleccionar modelo"></option>
-			</select>
-
-			<textarea form="articleUpload" name="short_description" placeholder="Short description" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
-			<textarea form="articleUpload" name="specs" placeholder="Specs" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
-		</div>
-		<input type="number" name="price" min="0" style="font-size:1rem" required>	
-		<button type="button" id="submit" style="font-size:1rem;">Subir articulo</button>
-  	</script>
-
-  	<script id="user-template" type="text/template">
-  			<div class="inline-block">
-					<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict block">					
-				</div>					
-				<div class="inline-block">
-					<span class="user-name block"><% print(this.model.attributes[0].device_detail)%></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>	
-					<br/>
-					<div id="deco1"class="deco-count">
-						<span class="following-count">200</span>
-						<span class="following">Siguiendo</span>
-					</div>
-					<div class="deco-count">
-						<span class="followers-count">20</span>	
-						<span class="followers">Seguidores</span>
-					</div>
-				</div>
   	</script>
 
 	<script id="product-template" type="text/template">
@@ -291,12 +90,7 @@
 						<span class="action icon-bubble" alt="hola"></span>	
 						<span class="action icon-share"></span>		
 					</div>					
-				</section>
-				<div class="comment-box">
-					<textarea class="comment-text inline-block" cols="40" rows="5"></textarea>
-					<div class="acept button inline-block">Comentar</div>
-					<div class="decline button inline-block">Cancelar</div>
-				</div>				
+				</section>			
 				<section class="comment-cont">					
 				</section>
 			</section>	
@@ -313,33 +107,9 @@
 				</p>
 			</div>
   	</script>
-	 <script id="follower-template" type="text/template">
-			<div class="inline-block">
-				<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>	
-			</div>					
-			<div class="inline-block">
-				<span class="user-name"><%=first_name%> <%=last_name%></span>
-				<div class="deco-count">
-					<span class="following-count">200</span>
-					<span class="following">Siguiendo</span>
-				</div>
-				<div class="deco-count">
-					<span class="followers-count">20</span>	
-					<span class="followers">Seguidores</span>
-				</div>						
-				<div class="follow-user">Seguir</div>
-			</div>
-  	</script>
-  	
-
 
 	<script src="/static/lib/modernizr-2.6.2-respond-1.1.0.min.js" type="text/javascript"></script>
 	<script src="/static/lib/jquery.js"></script>	
-	<script src="/static/js/app.js" type="text/javascript"></script>
+	<script src="/static/js/homeapp.js" type="text/javascript"></script>
 </body>
 </html>
