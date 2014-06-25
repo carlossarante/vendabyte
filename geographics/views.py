@@ -9,7 +9,7 @@ from .serializers import CitySerializer,ProvinceSerializer
 class ProvinceSet(viewsets.ModelViewSet):
 	queryset = Province.objects.all()
 	serializer_class = ProvinceSerializer
-
+	filter_fields = ('province_name',)
 
 class CitySet(viewsets.ModelViewSet):
 	queryset = City.objects.all()

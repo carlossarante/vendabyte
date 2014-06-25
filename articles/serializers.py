@@ -55,6 +55,8 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 		if obj is None:
 			return False
 		request = self.context.get('request',None)
+		if request.user.is_anonymous():
+			return False
 		article_is_interesting = obj.interested_set.filter(user=request.user)
 		if not article_is_interesting:
 			return False
@@ -64,6 +66,8 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 		if obj is None:
 			return False
 		request = self.context.get('request',None)
+		if request.user.is_anonymous():
+			return False
 		article_is_liked = obj.like_set.filter(user=request.user)
 		if not article_is_liked:
 			return False
