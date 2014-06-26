@@ -1,9 +1,12 @@
+from django.utils import timezone
 from django.db import models
 from django.db.models import Avg
 from django.contrib.auth.models import AbstractBaseUser
-from geographics.models import Province,City
-from .managers import UserManager
 from django.conf import settings
+
+from geographics.models import Province,City
+
+from .managers import UserManager
 
 
 class Badgets(models.Model):
@@ -21,6 +24,8 @@ class User(AbstractBaseUser):
 	city = models.ForeignKey(City,default=1)
 	medals = models.ManyToManyField(Badgets,related_name='medals',blank=True)
 	followers = models.ManyToManyField('self', related_name='follows', symmetrical=False,blank=True)
+	sex = models.CharField(max_length=10,null=True)
+	date_joined = models.DateTimeField(default=timezone.now)
 	objects = UserManager()
 	USERNAME_FIELD='username'
 	REQUIRED_FIELDS=['first_name','last_name','birthday','email',]

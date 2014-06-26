@@ -21,7 +21,6 @@ def userIndex(request,username=None):
 	return render(request,'vendabyte.html')
 
 
-
 @csrf_exempt
 def loginFacebookUser(request,response='html'):
 	if request.method == 'POST': 
@@ -58,6 +57,13 @@ class UserSet(viewsets.ModelViewSet):
 			queryset = User.objects.all()
 		return queryset
 	
+
+	def create(self,request):
+		serializer = UserSerializer(data=request.DATA,files=request.FILES)
+		if serializer.is_valid():
+			serializer.set_enc_password()
+			serializer.save()
+
 	def dispatch(self, request, *args, **kwargs):
 		if kwargs.get('pk') == 'me' and request.user:
 			kwargs['pk'] = request.user.pk
@@ -79,6 +85,8 @@ class UserSet(viewsets.ModelViewSet):
 			return Response({'Success':'True'})
 		except:
 			 return Response({'status':'Error doing this query.'},status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class BadgetSet(viewsets.ReadOnlyModelViewSet):
 	queryset = Badgets.objects.all()
