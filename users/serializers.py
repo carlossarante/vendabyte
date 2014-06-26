@@ -28,7 +28,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 	#rating = serializers.Field(source='rating',read_only=True)
 	contact = ContactSerializer(read_only=True)
 	followers = ShortUserSerializer(read_only=True)
+	date_joined = serializers.Field(source='date_joined')
 
 	class Meta:
 		model = User
-		fields = ('id','first_name','last_name','birthday','username','photo','cover','city','medals','followers','contact')
+		fields = ('id','first_name','last_name','birthday','username','photo','cover','city','medals','followers','contact','rating_set','sex','date_joined')
