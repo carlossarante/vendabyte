@@ -87,7 +87,7 @@ class ArticlePictureSet(viewsets.ModelViewSet):
 		user = request.user
 		serializer = ArticlePictureSerializer(data=request.DATA,files=request.FILES)
 		if serializer.is_valid():
-			if not (serializer.object.article.user.username == request.user.username):
+			if not (serializer.object.article.user.id == request.user.id):
 				return Response(status.HTTP_403_FORBIDDEN)
 			serializer.object.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
