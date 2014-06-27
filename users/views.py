@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-from rest_framework import viewsets
+from rest_framework import viewsets,status
 from rest_framework.response import Response
 from rest_framework.decorators import action,link
 
@@ -73,7 +73,7 @@ class UserSet(viewsets.ModelViewSet):
 	def create(self,request):
 		serializer = UserSerializer(data=request.DATA,files=request.FILES)
 		if serializer.is_valid():
-			serializer.set_enc_password()
+			#serializer.set_enc_password()
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)		

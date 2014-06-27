@@ -16994,14 +16994,23 @@ module.exports = Backbone.View.extend({
         });
 	},
 	logout : function(){
-		Backbone.app.activeSession.logout({
+		/*Backbone.app.activeSession.logout({
 			before: function () {
 				console.log('before login()')
 			},
 			after: function () {
 				console.log('after login()')
       		}
-        });
+        });*/
+        $.ajax({
+		    url: window.location.origin + "/users/logout",
+		    type: 'GET',
+			statusCode: {
+		    	200: function() {
+		      		console.log('Sesion Cerrada');
+		    	},
+		 	}
+		});
 	},
 
 	navigate : function (url){

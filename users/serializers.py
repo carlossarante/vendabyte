@@ -47,7 +47,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 	def is_following(self,obj):
 		request = self.context.get('request',None)
-		if obj is None:
+		if request is None:
 			return False
 		if request.user.is_anonymous():
 			return False
