@@ -40,7 +40,7 @@ def loginFacebookUser(request,response='html'):
 		if user is not None:
 			if user.is_active:
 				login(request,user)
-				return HttpResponse('/%s'% user.username)
+				return HttpResponse('/users/%s'% user.id)
 			else:
  				return HttpResponse('User is not active')
 		else:
