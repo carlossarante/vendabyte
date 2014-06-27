@@ -31,7 +31,7 @@ class User(AbstractBaseUser):
 	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 	is_superuser = models.BooleanField(default=False)
-	facebook_uid= models.PositiveIntegerField(blank=True)
+	facebook_uid= models.PositiveIntegerField(blank=True,default=0)
 	
 	def get_absolute_url(self):
 		return ('/users/%s/') % self.id
