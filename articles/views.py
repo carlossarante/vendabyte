@@ -67,7 +67,7 @@ class ArticleSet(viewsets.ModelViewSet):
 				queryset = self.request.user.article_set.all()
 			elif requested_query == 'interesting':
 				queryset = []
-				articles = Interested.objects.filter(user=self.request.user)
+				articles = Article.interested_set.filter(user=self.request.user)
 			elif self.request.GET['list']:
 				for a in articles:
 					queryset.append(a.article)

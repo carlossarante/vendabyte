@@ -8,7 +8,7 @@ from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_objec
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login,logout
 from django.conf import settings
-from django.db.models import Count
+from django.db.models import Count,Q
 
 
 from users.models import User,Badgets,Contact
@@ -61,6 +61,8 @@ class UserSet(viewsets.ModelViewSet):
 				queryset = user.followers.all()
 			elif requested_query == 'following':
 				queryset = user.follows.all()
+			elif requested_query == 'interested':
+				queryset = user.interested_set.all()
 			else:
 				queryset = [self.request.user,]
 		except: 
