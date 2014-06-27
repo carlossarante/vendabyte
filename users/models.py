@@ -49,7 +49,7 @@ class User(AbstractBaseUser):
 		return True
 	def set_enc_password(self):
 		return self.set_password(('%s%s%s') % (self.id,self.facebook_uid,settings.SALT))
-	def get_average_rating(self):
+	def average_rating(self):
 		return self.rating_set.aggregate(Avg('stars'))
 
 	@property
