@@ -73,6 +73,9 @@ class UserSet(viewsets.ModelViewSet):
 		if serializer.is_valid():
 			serializer.set_enc_password()
 			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)		
+
 
 	def dispatch(self, request, *args, **kwargs):
 		if kwargs.get('pk') == 'me' and request.user:
