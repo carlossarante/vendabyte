@@ -4,5 +4,5 @@ urlpatterns = patterns('',
 	url(r'^$', 'users.views.userIndex'), 
 	url(r'^login/$', 'users.views.loginFacebookUser'),
 	url(r'^logout/$', 'users.views.logout_me'),
-    url(r'^(?P<username>[a-z0-9_-]{3,16})/$', 'users.views.userIndex'),
+    url(r'^(?P<id_user>\d+)/$', 'users.views.userIndex'),
 )   

@@ -15,11 +15,11 @@ from users.models import User,Badgets,Contact
 from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
 
 
-def userIndex(request,username=None):
+def userIndex(request,id_user=None):
 	if request.user.is_anonymous():
 		return HttpResponseRedirect('/')
-	if username is not None:
-		user = get_object_or_404(User,username=username)
+	if id_user is not None:
+		user = get_object_or_404(User,id=id_user)
 	return render(request,'user.html')
 
 
@@ -73,8 +73,10 @@ class UserSet(viewsets.ModelViewSet):
 	def create(self,request):
 		serializer = UserSerializer(data=request.DATA,files=request.FILES,context={'request':request})
 		if serializer.is_valid():
-			#serializer.set_enc_password()
 			serializer.save()
+			u = User.objects.get(id = serializer.data['id'])
+			u.set_enc_password()
+			u.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)		
 

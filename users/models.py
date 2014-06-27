@@ -16,9 +16,8 @@ class Badgets(models.Model):
 class User(AbstractBaseUser):
 	first_name = models.CharField(max_length=255)
 	last_name = models.CharField(max_length=255)
-	birthday = models.DateField(default=timezone.now())
-	username = models.CharField(max_length=255,unique=True)
-	email = models.EmailField()
+	birthday = models.DateField(default=timezone.now(),null=True)
+	email = models.EmailField(unique=True)
 	photo = models.ImageField(upload_to='users',blank=True)
 	cover = models.ImageField(upload_to='cover',blank=True)
 	city = models.ForeignKey(City,default=1)
@@ -27,18 +26,18 @@ class User(AbstractBaseUser):
 	sex = models.CharField(max_length=10,null=True)
 	date_joined = models.DateTimeField(default=timezone.now)
 	objects = UserManager()
-	USERNAME_FIELD='username'
-	REQUIRED_FIELDS=['first_name','last_name','birthday','email',]
-	is_active = models.BooleanField(default=False)
+	USERNAME_FIELD='email'
+	REQUIRED_FIELDS=['first_name','last_name','birthday',]
+	is_active = models.BooleanField(default=True)
 	is_admin = models.BooleanField(default=False)
 	is_superuser = models.BooleanField(default=False)
 	facebook_uid= models.PositiveIntegerField(blank=True)
 	
 	def get_absolute_url(self):
-		return ('/users/%s/') % self.username
+		return ('/users/%s/') % self.id
 
 	def __unicode__(self):
-		return (('%s %s (%s)') % (self.first_name,self.last_name,self.username))
+		return (('%s %s (%s)') % (self.first_name,self.last_name,self.email))
 	def get_full_name(self):
 		return ('%s %s') % (self.first_name,self.last_name)
 	def get_short_name(self):
