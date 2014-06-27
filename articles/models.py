@@ -36,7 +36,7 @@ class Article(models.Model):
 
 
 	def __unicode__(self):
-		return (('%s by %s') % (self.model.model_name,smart_text(self.user.username)))
+		return (('%s by %s') % (self.model.model_name,smart_text(self.user.email)))
 	
 	def getLikeCount(self):
 		return self.like_set.all().count()
