@@ -26,9 +26,9 @@ def userIndex(request,username=None):
 def logout_me(request):
 	try:
 		logout(request)
-		return HttpResponse({'Good bye! Come back soon!'},status=200)
+		return HttpResponse('Good bye! Come back soon!',status=200)
 	except:
-			return HttpResponse({'Error, try again later'},status=500)
+		return HttpResponse('Error, try again later',status=500)
 
 
 @csrf_exempt
