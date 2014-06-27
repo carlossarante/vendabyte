@@ -20,7 +20,7 @@ def userIndex(request,username=None):
 		return HttpResponseRedirect('/')
 	if username is not None:
 		user = get_object_or_404(User,username=username)
-	return render(request,'vendabyte.html')
+	return render(request,'user.html')
 
 
 def logout_me(request):

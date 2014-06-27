@@ -9,17 +9,17 @@
 </head>
 <body>
 	<header class="header relative">		
-		<figure class="logo-cont">
+		<!--<figure class="logo-cont">
 			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
 		</figure>
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
-		<!--<div class="log-in">Iniciar Seción</div>-->
+		<!--<div class="log-in">Iniciar Seción</div>
 		<div class="notif-bar inline-block">
 			<span class="icon-bell"><span class="notifications"></span></span>
 			<span class="user-name">Ramiro Fernandez</span>
 			<img src="" alt="Usuario" class="user-pict inline block">
 			<span class="icon-cog"></span>
-		</div>		
+		</div>		-->
 	</header><!-- /header -->
 	<figure class="portada-cont relative none">
 			<img src="/static/img/portada.png" alt="Vendabyte" class="portada">
@@ -110,7 +110,7 @@
 				</div>	-->			
 			</div>
 			
-			<form action="/articles/api/article/" id="articleUpload" class="upload-box" style="height:auto; padding-bottom:20px; margin-bottom:40px;">
+			<form action="/articles/api/article/" id="articleUpload" class="upload-box none" style="height:auto; padding-bottom:20px; margin-bottom:40px;">
 			<!--	<ul class="thumbnail-cont">
 					<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
 					<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
@@ -196,9 +196,9 @@
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
 		<!--<div class="log-in">Iniciar Seción</div>-->
 		<div class="notif-bar inline-block">
-			<span class="icon-bell"><span class="notifications">2</span></span>
-			<span class="user-name"><% print(this.model.attributes[0].username)%></span>
-			<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict inline block">
+			<span class="icon-bell"><span class="notifications none">2</span></span>
+			<span class="user-name"><% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%></span>
+			<img src="/media/<% print(this.model.attributes[0].photo)%>" alt="<% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%>" class="user-pict inline block">
 			<span class="icon-cog"></span>
 		</div>			
   	</script>
@@ -253,10 +253,10 @@
 
   	<script id="user-template" type="text/template">
   			<div class="inline-block">
-					<img src="/media/users/persona.jpg" alt="Usuario" class="user-pict block">					
+					<img src="/media/<% print(this.model.attributes[0].photo)%>" alt="Usuario" class="user-pict block">					
 				</div>					
 				<div class="inline-block">
-					<span class="user-name block"><% print(this.model.attributes[0].device_detail)%></span>
+					<span class="user-name block"><% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%></span>
 					<span class="icon-star"></span>
 					<span class="icon-star"></span>
 					<span class="icon-star"></span>
@@ -276,8 +276,8 @@
 
 	<script id="product-template" type="text/template">
 			<div class="user inline-block">
-				<img src="/media/users/persona.jpg" alt="<%=user.name%>" class="user-pict block">
-				<a href="" class="follow block">Seguir</a>	
+				<img src="/media/<%=user.photo%>" alt="<%=user.name%>" class="user-pict block">
+				<div class="follow block">Seguir</div>	
 			</div>					
 			<section class="art-cont inline-block">
 				<span class="user-name block"><%=user.first_name%> <%=user.last_name%></span>
@@ -285,7 +285,7 @@
 				<p class="description inline-block"><%=short_description%></p>
 				<section class="art-desc relative">
 					<figure class="art-pict">
-						<img src="/media/users/ima2.jpg" alt="Vendabyte" class="">
+						<img src="/media/<%=articlepicture_set[0].art_img%>" alt="model.model_name" class="">
 					</figure>
 					<span class="precio absolute">RD$<%=price%></span>
 					<span class="add-cart absolute icon-plus"></span>	
@@ -307,7 +307,7 @@
   	</script>
   	 <script id="comment-template" type="text/template">
 			<div class="user inline-block">
-				<img src="/media/users/persona.jpg" alt="<%=user.first_name%>" class="user-pict">
+				<img src="/media/<%=user.photo%>" alt="<%=user.first_name%> <%=user.last_name%>" class="user-pict">
 			</div>
 			<div class="inline-block">
 				<a class="person" href="<%=user.url%>" title="<%=user.first_name%> <%=user.last_name%>"><%=user.first_name%> <%=user.last_name%></a>
@@ -319,7 +319,7 @@
   	</script>
 	 <script id="follower-template" type="text/template">
 			<div class="inline-block">
-				<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
+				<img src="/media/<%=photo%>" alt="<%=first_name%> <%=last_name%>" class="user-pict block">
 				<span class="icon-star"></span>
 				<span class="icon-star"></span>
 				<span class="icon-star"></span>
@@ -344,6 +344,6 @@
 
 	<script src="/static/lib/modernizr-2.6.2-respond-1.1.0.min.js" type="text/javascript"></script>
 	<script src="/static/lib/jquery.js"></script>	
-	<script src="/static/js/app.js" type="text/javascript"></script>
+	<script src="/static/js/userapp.js" type="text/javascript"></script>
 </body>
 </html>

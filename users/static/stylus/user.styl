@@ -29,9 +29,11 @@ a
 	background verde-claro
 	font-size 0rem
 	text-align center
+	box-shadow 0px 0px 5px black
 	
 	.logo-cont
 		display inline-block
+		cursor pointer
 		
 		.logo 
 			width 200px
@@ -71,6 +73,7 @@ a
 			border-right 1px solid opaco
 			border-left 1px solid opaco
 			position relative
+			cursor pointer
 			.notifications
 				border-radius 50%
 				background-color red
@@ -85,8 +88,9 @@ a
 			color white
 			line-height 45px
 			vertical-align top
-			padding 0 3px
+			padding 0 10px
 			border-right 1px solid opaco
+			cursor pointer
 		.user-pict
 			display inline-block
 			width 35px
@@ -94,6 +98,7 @@ a
 			padding 2px
 			vertical-align top
 			margin 3px 10px 0 10px
+			cursor pointer
 		.icon-cog
 			line-height 45px
 			font-size 1.7rem
@@ -103,6 +108,7 @@ a
 			padding 0 10px
 			border-right 1px solid opaco
 			border-left 1px solid opaco
+			cursor pointer
 
 .portada-cont
 	max-width 1280px
@@ -129,10 +135,11 @@ a
 	border-right 1px solid gris-medio
 	background-color gris-claro
 	text-align center
+	min-height	850px
 	
 	.badgets-cont
 		width 96%
-		margin 30 0 20 0
+		margin 50px 0px 20px 0px
 		padding 0
 		box-shadow 0px 0px 5px gris-medio
 		font-size 1rem
@@ -257,23 +264,24 @@ a
 	width 96%
 	display inline-block
 	position relative
+	background-color gris-claro
 
 	.deco
-		border 2px solid gris-medio
-		width 96%
-		height 90%
-		top 3.1%
-		margin 0 auto
-		position relative
-		display block
+		border 2px solid gris-medio		
 		border-style dashed
+		top 5px
+		bottom 5px
+		left 5px
+		right 5px
+		margin 0
+		position absolute
 
 		#dropIn
 			top 0
 			left 0
 			width 100%
 			height 100%
-			opacity 1
+			opacity 0
 			padding 0
 
 
@@ -371,11 +379,12 @@ a
 	top 0
 	right 0
 	font-size 1rem
-	height auto
+	height 100%
 	text-align center
 	width 50%
 	vertical-align top
 	background-color white
+	overflow auto
 
 
 .sign-in
@@ -391,8 +400,9 @@ a
 	margin-top 20px
 	.product
 		text-align left
-		overflow hidden
+		//overflow hidden
 		margin-bottom 20px
+		font-size 0rem
 		.user
 			width 16%
 			overflow hidden
@@ -400,11 +410,13 @@ a
 
 		.art-cont
 			width 81%
-			float right
+			//float right
 			color verde-titulos
+			margin-left 3%
 
 			.description 
 				margin 0
+				font-size 1rem
 
 			.art-desc
 				margin-top 5px
@@ -417,6 +429,7 @@ a
 
 					img
 						width 100%
+				
 				.actions
 					width 100%
 					background-color verde-claro
@@ -430,16 +443,15 @@ a
 						margin 0 10px
 						float right
 						cursor pointer
-
 					.interest
 						cursor pointer
 						font-size 1rem
-						padding 2px
+						padding 2px 5px
 						margin-left 10px
-						background-color white
+						//background-color white
 						line-height 30px
-						color verde-claro
-				
+						//color verde-claro
+					
 				.precio
 					font-size 1rem
 					top 10px
@@ -474,9 +486,11 @@ a
 					color white
 					padding 5px
 					margin-bottom 5px
+					cursor pointer
 			.comment
 				background-color gris-claro
 				margin-bottom 3px
+				font-size 1rem
 
 				.user
 					width 10%
@@ -593,11 +607,13 @@ a
 
 .user-name
 	color gris-medio
+	font-size 1.2rem
 
 .product-name
 	font-weight bold
 	border-right 2px solid 
 	padding-right 5px
+	font-size 1rem
 
 .follow
 	width 90%
@@ -606,6 +622,8 @@ a
 	padding 5%
 	margin-top 10px
 	color white
+	cursor pointer
+	font-size 1rem
 	
 
 .button
@@ -626,4 +644,10 @@ a
 
 .none
 	display none
- 
+
+.on-state
+	background-color mamei
+	color white
+.off-state
+	background-color white
+	color verde-claro	

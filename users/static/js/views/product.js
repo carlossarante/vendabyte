@@ -19,11 +19,15 @@ module.exports = Backbone.View.extend({
 		'click .add-cart.absolute.icon-plus' : 'addCart',
 		'click .acept' : 'addComment',
 		'click .decline' : 'notComment',
+		'click .follow' : 'follow',
 	},
 
 	template : _.template($("#product-template").html()),
 
 	initialize : function () {
+		console.log("EL ID DEL USUARIOOOO:", this.model.attributes.user.id );
+		window.model = this.model;
+		this.model.fetchModel(this);
 		this.listenTo(this.model, "change", this.render, this);				
 	},
 
@@ -31,12 +35,12 @@ module.exports = Backbone.View.extend({
 		var self = this;
 		var product = this.model.toJSON();
 		var html = this.template(product);
-		this.$el.html(html);
+		this.$el.html(html);		
 		var comment =this.model.get("comment_set");
 
 		if(this.model.attributes.liked)
 		{
-			this.$el.find('.icon-heart').css('color', 'red');
+			this.$el.find('.icon-heart').css('color', '#ffcc00');
 		}
 		else
 		{
@@ -44,11 +48,17 @@ module.exports = Backbone.View.extend({
 		}
 		if(this.model.attributes.interested)
 		{
-			this.$el.find('.interest').css('background-color', 'red');
+			//this.$el.find('.interest').css('background-color', '#ffcc00');
+			self.$el.find('.interest').html("No me interesa");
+			self.$el.find('.interest').removeClass('off-state');
+			self.$el.find('.interest').addClass('on-state');
 		}
 		else
 		{
-			this.$el.find('.interest').css('background-color', 'white');
+			//this.$el.find('.interest').css('background-color', 'white');
+			self.$el.find('.interest').html("Me interesa");			
+			self.$el.find('.interest').removeClass('on-state');
+			self.$el.find('.interest').addClass('off-state');
 		}
 
 
@@ -78,7 +88,10 @@ module.exports = Backbone.View.extend({
 			    type: 'DELETE',
 				statusCode: {
 			    	200: function() {
-			      		self.$el.find('.interest').css('background-color', 'white');
+			      		//self.$el.find('.interest').css('background-color', 'white');
+			      		self.$el.find('.interest').html("Me interesa");			
+						self.$el.find('.interest').removeClass('on-state');
+						self.$el.find('.interest').addClass('off-state');
 			      		self.model.fetch();
 			    	},	    	
 			    	500: function() {
@@ -95,7 +108,10 @@ module.exports = Backbone.View.extend({
 			    data:{article : this.model.url()},
 				statusCode: {
 			    	201: function() {
-			      		self.$el.find('.interest').css('background-color', 'red');
+			      		//self.$el.find('.interest').css('background-color', '#ffcc00');
+			      		self.$el.find('.interest').html("No me interesa");
+						self.$el.find('.interest').removeClass('off-state');
+						self.$el.find('.interest').addClass('on-state');
 			      		self.model.fetch();
 			    	},
 			    	409: function() {
@@ -150,7 +166,7 @@ module.exports = Backbone.View.extend({
        			console.log("COMENTARIO NOOO GUARDADOOOOOOOO "+Backbone.app.userModel);
     		}
         }*/);
-        window.model= this.comment;
+        this.notComment();
 	},
 	
 	notComment : function(){
@@ -185,7 +201,7 @@ module.exports = Backbone.View.extend({
 			    data:{article : this.model.url()},
 				statusCode: {
 			    	201: function() {
-			      		self.$el.find('.icon-heart').css('color', 'red');
+			      		self.$el.find('.icon-heart').css('color', '#ffcc00');
 			      		self.model.fetch();
 			    	},
 			    	409: function() {
@@ -197,6 +213,16 @@ module.exports = Backbone.View.extend({
 			 	}
 			});
 		}		
+	},
+	follow : function(){
+		$.ajax({
+		    url: window.location.origin + "/api/user/"+this.model.attributes.user.id +"/add_follower/",
+		    type: 'POST',
+			statusCode: {
+		    	200: function() {
+		    	},
+		 	}
+		});
 	},
 
 	navigate : function (){
