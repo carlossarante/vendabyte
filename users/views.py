@@ -6,7 +6,7 @@ from rest_framework.decorators import action,link
 
 from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404,redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.conf import settings
 from django.db.models import Count
 
@@ -16,9 +16,19 @@ from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
 
 
 def userIndex(request,username=None):
+	if request.user.is_anonymous():
+		return HttpResponseRedirect('/')
 	if username is not None:
 		user = get_object_or_404(User,username=username)
 	return render(request,'vendabyte.html')
+
+
+def logout_me(request):
+	try:
+		logout(request)
+		return HttpResponse({'Good bye! Come back soon!'},status=200)
+	except:
+			return HttpResponse({'Error, try again later'},status=500)
 
 
 @csrf_exempt
@@ -51,7 +61,7 @@ class UserSet(viewsets.ModelViewSet):
 				queryset = user.followers.all()
 			elif requested_query == 'following':
 				queryset = user.follows.all()
-			elif requested_query == 'me':
+			else:
 				queryset = [self.request.user,]
 		except: 
 			queryset = User.objects.all()
@@ -68,7 +78,6 @@ class UserSet(viewsets.ModelViewSet):
 		if kwargs.get('pk') == 'me' and request.user:
 			kwargs['pk'] = request.user.pk
 		return super(UserSet, self).dispatch(request, *args, **kwargs)
-
 	@action(methods=['POST',])
 	def add_follower(self,request,pk=None):
 		try:
