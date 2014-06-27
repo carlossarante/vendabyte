@@ -18,7 +18,7 @@ class ShortUserSerializer(serializers.HyperlinkedModelSerializer):
 		request = self.context.get('request',None)
 		if (request is None) or bool(request.user.is_anonymous()):
 			return False
-		following = User.objects.filter(Q(follows=request.user),Q(id=obj.id))
+		following =  obj.followers.filter(id=request.user.id)
 		if not following:
 			return False
 		return True
