@@ -12,7 +12,6 @@ urlpatterns = patterns('',
     url(r'^users/',include('users.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/',include('api.urls')),
-    url(r'^(?P<username>[a-z0-9_-]{3,16})/$', 'users.views.userIndex'),
 )
 
 if settings.DEBUG:
