@@ -71,7 +71,7 @@ class UserSet(viewsets.ModelViewSet):
 	
 
 	def create(self,request):
-		serializer = UserSerializer(data=request.DATA,files=request.FILES)
+		serializer = UserSerializer(data=request.DATA,files=request.FILES,context={'request':request})
 		if serializer.is_valid():
 			#serializer.set_enc_password()
 			serializer.save()

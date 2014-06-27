@@ -16,7 +16,7 @@ class Badgets(models.Model):
 class User(AbstractBaseUser):
 	first_name = models.CharField(max_length=255)
 	last_name = models.CharField(max_length=255)
-	birthday = models.DateField()
+	birthday = models.DateField(default=timezone.now())
 	username = models.CharField(max_length=255,unique=True)
 	email = models.EmailField()
 	photo = models.ImageField(upload_to='users',blank=True)
