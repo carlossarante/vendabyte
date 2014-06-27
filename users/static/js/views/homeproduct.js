@@ -34,23 +34,6 @@ module.exports = Backbone.View.extend({
 		this.$el.html(html);
 		var comment =this.model.get("comment_set");
 
-		if(this.model.attributes.liked)
-		{
-			this.$el.find('.icon-heart').css('color', 'red');
-		}
-		else
-		{
-			this.$el.find('.icon-heart').css('color', 'white');
-		}
-		if(this.model.attributes.interested)
-		{
-			this.$el.find('.interest').css('background-color', 'red');
-		}
-		else
-		{
-			this.$el.find('.interest').css('background-color', 'white');
-		}
-
 
         this.comments = new Comments();
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  

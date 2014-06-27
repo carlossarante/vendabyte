@@ -39,6 +39,28 @@
 			</div>			
 			</div>
 			<img src="../static/img/ima1.jpg" alt="Vende rapido" class="" style="width:100%;">
+			<!--<form action="/articles/api/article/" id="registerUser" class="register-box">
+
+				<div class="select-cont">
+					<select class="brand-select inline-block">
+						<option value="volvo">Samsung</option>
+						<option value="volvo">BlackBerry</option>
+						<option value="volvo">HTC</option>
+						<option value="volvo">Apple</option>
+						<option value="volvo">Sony</option>
+						<option value="volvo">Toshiba</option>
+					</select>
+
+					<select class="model-select inline-block">
+						<option value="volvo">Samsung</option>
+						<option value="volvo">BlackBerry</option>
+						<option value="volvo">HTC</option>
+						<option value="volvo">Apple</option>
+						<option value="volvo">Sony</option>
+						<option value="volvo">Toshiba</option>
+					</select>
+				</div>				
+			</form>-->
 		</section>				
 	</section>
 
@@ -80,7 +102,7 @@
 				<p class="description inline-block"><%=short_description%></p>
 				<section class="art-desc relative">
 					<figure class="art-pict">
-						<img src="/media/users/ima2.jpg" alt="Vendabyte" class="">
+						<img src="/media/users/ima2.jpg" alt="<%=model.model_name%>" class="">
 					</figure>
 					<span class="precio absolute">RD$<%=price%></span>
 					<span class="add-cart absolute icon-plus"></span>	

@@ -1,6 +1,7 @@
 var Backbone    = require('backbone'),
     //Handlebars  = require('handlebars'),
     $           = require('jquery'),
+    Product = require('../models/product');
     ProductView = require('../views/product');
 
 module.exports = Backbone.View.extend({
@@ -23,5 +24,17 @@ module.exports = Backbone.View.extend({
 
       addAll: function () {
         this.collection.forEach(this.addOne,this);
-      }
+      },
+      fetchData:function(url){
+        var self = this;
+        $.ajax({
+          url: url,
+          type: 'GET',
+          statusCode: {
+            200:function(data){
+              Backbone.app.products.add(data.results);
+             }
+          }
+        });
+      },
 });

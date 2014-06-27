@@ -23,5 +23,5 @@ module.exports = Backbone.View.extend({
 
       addAll: function () {
         this.collection.forEach(this.addOne,this);
-      }
+      },      
 });

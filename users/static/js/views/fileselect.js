@@ -32,6 +32,9 @@ module.exports = Backbone.View.extend({
 		var filesIn = evt.target.files;
 		var el = $(evt.currentTarget);
 		var inputId = el.attr('id');
+		var articleForm = $('#articleUpload');
+
+		articleForm.removeClass('none');
 		//loadBtn = $(".load-button");
 		//dropArea= $("#deco");
 		readerIn = new FileReader(); //FileReader object

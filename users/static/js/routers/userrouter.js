@@ -4,7 +4,7 @@ var Backbone 		= require('backbone'),
 	Follower 		= require('../models/follower'),
 	Gost 			= require('../models/gost'),
 	FormModel		= require('../models/form'),
-	//SessionModel 	= require('../models/sessionmodel'),
+	SessionModel 	= require('../models/sessionmodel'),
 	UserModel 		= require('../models/user'),		
 	FileSelectModel = require('../models/fileselect')
 	Products 		= require('../collections/products'),
@@ -81,6 +81,7 @@ module.exports = Backbone.Router.extend({
 
 		var products = $('.products')
 		var fileBrowse = $('.file-browse');
+		var articleForm = $('#articleUpload');
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
@@ -93,11 +94,11 @@ module.exports = Backbone.Router.extend({
 
 		this.products.reset();
 		this.products.url = "/api/article/?format=json&list=new";
-		this.products.fetch({ 
+		this.products.fetch(/*{ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
     		}
-    	});
+    	}*/);
 	},
 
 	siguiendo : function(){

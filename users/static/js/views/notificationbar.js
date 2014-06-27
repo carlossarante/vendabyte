@@ -6,7 +6,8 @@ module.exports = Backbone.View.extend({
 	el : $('.header'),
 
 	events : {
-		"click .icon-bell":"login",
+		"click .icon-bell":"notification",
+		"click .icon-cog":"logout",
 		"click .log-in":"login",
 		"click .user-name":"perfil",
 		"click .user-pict":"perfil",
@@ -49,9 +50,11 @@ module.exports = Backbone.View.extend({
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
 		followerSect.addClass('none');
+		Backbone.app.formView.render();
+		Backbone.app.fileSelectView.render();
+		FileList.prototype.cont = 0;
 
 		this.navigate(url);
-
 	},
 
 	perfil : function() {
@@ -73,17 +76,29 @@ module.exports = Backbone.View.extend({
 		optionMenu.addClass('none');
 		badgets.removeClass('none');
 		followerSect.addClass('none');
+		Backbone.app.formView.render();
+		Backbone.app.fileSelectView.render();
+		FileList.prototype.cont = 0;
 
 		this.navigate(url);
 	},
 
 	notification : function(){
-		console.log("Click Notification icon-bell");
-		Backbone.app.activeSession.logout();
+		console.log("Click Notification icon-bell");		
 	},
 
 	login : function(){
 		Backbone.app.activeSession.login({
+			before: function () {
+				console.log('before login()')
+			},
+			after: function () {
+				console.log('after login()')
+      		}
+        });
+	},
+	logout : function(){
+		Backbone.app.activeSession.logout({
 			before: function () {
 				console.log('before login()')
 			},

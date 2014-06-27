@@ -33,7 +33,8 @@ module.exports = Backbone.View.extend({
 			},
 			after: function () {
 				console.log('after login()')
-      		}
-        });
+      		},
+
+        },{scope: 'public_profile,email,user_birthday'});
 	},
 });

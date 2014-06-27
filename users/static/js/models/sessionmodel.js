@@ -15,6 +15,8 @@ module.exports= Backbone.Model.extend({
     picture:null,
     cover:null,
     birthday:null,
+    gender:null,
+    location:null,
     status: 0
   },
 
@@ -49,12 +51,11 @@ module.exports= Backbone.Model.extend({
     this._onSUCCESS = function (result) {
       var csrftoken = Backbone.app.csrftoken('csrftoken');
       var json={};
-      window.user = _session.attributes;
       console.log('this._onSUCCESS with result:', result);
       console.log(_session.get('third_party_id'));
       json.email = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;
-      json.csrfmiddlewaretoken=csrftoken;
+      //json.csrfmiddlewaretoken=csrftoken;
       console.log(json);
       $.ajax({
           url: "/users/login/",
@@ -67,19 +68,51 @@ module.exports= Backbone.Model.extend({
           statusCode: {
             200:function(data){
               console.log("respuesta POST:",data);
-              window.location.href = data;},
+              window.location.href = data;
             },
             404:function(data){
-
+              json={};
+              json.email = _session.attributes.email;
+              json.facebook_uid = _session.attributes.id;
+              //json.csrfmiddlewaretoken=csrftoken;
+              json.first_name = _session.attributes.first_name;
+              json.last_name = _session.attributes.last_name;
+              json.username = _session.attributes.email;
+              json.photo = _session.attributes.picture.data.url;
+              json.cover = _session.attributes.cover.source;
+              json.sex = _session.attributes.gender;
+              json.birthday = "1988-24-04";
+              var split=  _session.attributes.location.name.split(",",1);
+              $.get('/api/cities/?city_name='+split.join(), function(data) {
+                json.city = data[0].url;
+                  $.ajax({
+                    url: "/api/user/",
+                    type: 'POST',
+                    data: json,
+                    /*success:function(data){
+                      console.log("respuesta POST:",data);
+                      //window.location.href = data;},
+                    },*/
+                    statusCode: {
+                      200:function(data){
+                        console.log("respuesta POST:",data);
+                        window.location.href = data;
+                      },
+                      404:function(data){
+                        
+                      },
+                    },
+                }); 
+              });                    
             },
-          }
+          },
       });    
     };
 
     this._getuserdata = function (callback) {
       console.log('_getuserdata called;');
       /* Here you can assemble a query */
-      FB.api('me?fields=id,name,third_party_id,email,first_name,last_name,birthday,picture,cover', function (response) {
+      FB.api('me?fields=id,name,third_party_id,email,first_name,last_name,birthday,picture,cover,gender,location', function (response) {
         if (!response || response.error) {
           callback(true, response.error);
         } else {
@@ -104,6 +137,8 @@ module.exports= Backbone.Model.extend({
           picture:user['picture'],
           cover:user['cover'],
           birthday:user['birthday'],
+          gender:user['gender'],
+          location: user['location'],
           status: "1"
         }, {
           silent: true
@@ -138,6 +173,5 @@ module.exports= Backbone.Model.extend({
       scope: 'email,user_likes'
     });
   }
-
 });
 

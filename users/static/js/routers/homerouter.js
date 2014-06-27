@@ -12,6 +12,7 @@ var Backbone 		= require('backbone'),
 
 module.exports = Backbone.Router.extend({
 	routes: {
+		""				: "user",
 		":users/"		: "user",
 		"lonuevo" 		: "loNuevo",
 		//"me" 			: "user",
@@ -80,12 +81,12 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/api/article/?format=json&list=new";
-		this.products.fetch({ 
+		this.products.url = "/api/article/?format=json";
+		this.products.fetch(/*{ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
     		}
-    	});
+    	}*/);
 	},
 
 	user : function(){

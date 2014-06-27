@@ -16120,6 +16120,19 @@ var Backbone = require('backbone'),
 
 module.exports = Backbone.Collection.extend({ 
 	model : Product ,
+	fetch:function(){
+        var self = this;
+        $.ajax({
+          url: self.url,
+          type: 'GET',
+          statusCode: {
+            200:function(data){            	
+              	self.add(data.results);
+             	console.log('Recuperados ' + Backbone.app.products.length + ' productos');
+             }
+          }
+        });
+     },
 });
 },{"../models/product":29,"backbone":2}],25:[function(require,module,exports){
 var Backbone = require('backbone'),
@@ -16279,6 +16292,24 @@ module.exports = Backbone.Model.extend({
 	url : function() {
 		return this.urlRoot+this.id+"/";
 	},
+
+	fetchModel:function(vista){
+		var self = this;
+		$.ajax({
+			    url: this.attributes.model,
+			    type: 'GET',
+				statusCode: {
+			    	200: function(data) {
+			    		self.attributes.model=data;
+			    		console.log(self.attributes.model);
+			    		vista.render();
+			    	},	    	
+			    	500: function() {
+			    		alert("Error al sincronizar con el servidor");
+			    	}
+			 	}
+			});
+	}
 });
 },{"backbone":2}],30:[function(require,module,exports){
 var Backbone  = require('backbone'),
@@ -16298,6 +16329,8 @@ module.exports= Backbone.Model.extend({
     picture:null,
     cover:null,
     birthday:null,
+    gender:null,
+    location:null,
     status: 0
   },
 
@@ -16332,12 +16365,11 @@ module.exports= Backbone.Model.extend({
     this._onSUCCESS = function (result) {
       var csrftoken = Backbone.app.csrftoken('csrftoken');
       var json={};
-      window.user = _session.attributes;
       console.log('this._onSUCCESS with result:', result);
       console.log(_session.get('third_party_id'));
       json.email = _session.attributes.email;
       json.facebook_uid = _session.attributes.id;
-      json.csrfmiddlewaretoken=csrftoken;
+      //json.csrfmiddlewaretoken=csrftoken;
       console.log(json);
       $.ajax({
           url: "/users/login/",
@@ -16350,18 +16382,51 @@ module.exports= Backbone.Model.extend({
           statusCode: {
             200:function(data){
               console.log("respuesta POST:",data);
-              //window.location.href = data;},
+              window.location.href = data;
             },
-          }
-      }); 
-     /* $.post( "/users/login/", json, function(data){
-      });  */    
+            404:function(data){
+              json={};
+              json.email = _session.attributes.email;
+              json.facebook_uid = _session.attributes.id;
+              //json.csrfmiddlewaretoken=csrftoken;
+              json.first_name = _session.attributes.first_name;
+              json.last_name = _session.attributes.last_name;
+              json.username = _session.attributes.email;
+              json.photo = _session.attributes.picture.data.url;
+              json.cover = _session.attributes.cover.source;
+              json.sex = _session.attributes.gender;
+              json.birthday = "1988-24-04";
+              var split=  _session.attributes.location.name.split(",",1);
+              $.get('/api/cities/?city_name='+split.join(), function(data) {
+                json.city = data[0].url;
+                  $.ajax({
+                    url: "/api/user/",
+                    type: 'POST',
+                    data: json,
+                    /*success:function(data){
+                      console.log("respuesta POST:",data);
+                      //window.location.href = data;},
+                    },*/
+                    statusCode: {
+                      200:function(data){
+                        console.log("respuesta POST:",data);
+                        window.location.href = data;
+                      },
+                      404:function(data){
+                        
+                      },
+                    },
+                }); 
+              });                    
+            },
+          },
+      });    
     };
 
     this._getuserdata = function (callback) {
       console.log('_getuserdata called;');
       /* Here you can assemble a query */
-      FB.api('me?fields=id,name,third_party_id,email,first_name,last_name,birthday,picture,cover', function (response) {
+      FB.api('me?fields=id,name,third_party_id,email,first_name,last_name,birthday,picture,cover,gender,location', function (response) {
         if (!response || response.error) {
           callback(true, response.error);
         } else {
@@ -16386,6 +16451,8 @@ module.exports= Backbone.Model.extend({
           picture:user['picture'],
           cover:user['cover'],
           birthday:user['birthday'],
+          gender:user['gender'],
+          location: user['location'],
           status: "1"
         }, {
           silent: true
@@ -16420,7 +16487,6 @@ module.exports= Backbone.Model.extend({
       scope: 'email,user_likes'
     });
   }
-
 });
 
 
@@ -16443,6 +16509,7 @@ var Backbone 		= require('backbone'),
 
 module.exports = Backbone.Router.extend({
 	routes: {
+		""				: "user",
 		":users/"		: "user",
 		"lonuevo" 		: "loNuevo",
 		//"me" 			: "user",
@@ -16511,12 +16578,12 @@ module.exports = Backbone.Router.extend({
 		followerSect.addClass('none');	
 
 		this.products.reset();
-		this.products.url = "/api/article/?format=json&list=new";
-		this.products.fetch({ 
+		this.products.url = "/api/article/?format=json";
+		this.products.fetch(/*{ 
 			success: function(){
        			console.log('Recuperados ' + Backbone.app.products.length + ' productos');
     		}
-    	});
+    	}*/);
 	},
 
 	user : function(){
@@ -16663,8 +16730,9 @@ module.exports = Backbone.View.extend({
 			},
 			after: function () {
 				console.log('after login()')
-      		}
-        });
+      		},
+
+        },{scope: 'public_profile,email,user_birthday'});
 	},
 });
 
@@ -16747,23 +16815,6 @@ module.exports = Backbone.View.extend({
 		this.$el.html(html);
 		var comment =this.model.get("comment_set");
 
-		if(this.model.attributes.liked)
-		{
-			this.$el.find('.icon-heart').css('color', 'red');
-		}
-		else
-		{
-			this.$el.find('.icon-heart').css('color', 'white');
-		}
-		if(this.model.attributes.interested)
-		{
-			this.$el.find('.interest').css('background-color', 'red');
-		}
-		else
-		{
-			this.$el.find('.interest').css('background-color', 'white');
-		}
-
 
         this.comments = new Comments();
         this.commentsView = new CommentsView({ collection : this.comments, el : this.$el.children('section').children('.comment-cont') });  
@@ -16840,7 +16891,7 @@ module.exports = Backbone.View.extend({
 
       addAll: function () {
         this.collection.forEach(this.addOne,this);
-      }
+      },      
 });
 },{"../views/homeproduct":37,"backbone":2,"jquery":21}],39:[function(require,module,exports){
 var Backbone 	= require('backbone'),
@@ -16851,7 +16902,8 @@ module.exports = Backbone.View.extend({
 	el : $('.header'),
 
 	events : {
-		"click .icon-bell":"login",
+		"click .icon-bell":"notification",
+		"click .icon-cog":"logout",
 		"click .log-in":"login",
 		"click .user-name":"perfil",
 		"click .user-pict":"perfil",
@@ -16894,9 +16946,11 @@ module.exports = Backbone.View.extend({
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
 		followerSect.addClass('none');
+		Backbone.app.formView.render();
+		Backbone.app.fileSelectView.render();
+		FileList.prototype.cont = 0;
 
 		this.navigate(url);
-
 	},
 
 	perfil : function() {
@@ -16918,17 +16972,29 @@ module.exports = Backbone.View.extend({
 		optionMenu.addClass('none');
 		badgets.removeClass('none');
 		followerSect.addClass('none');
+		Backbone.app.formView.render();
+		Backbone.app.fileSelectView.render();
+		FileList.prototype.cont = 0;
 
 		this.navigate(url);
 	},
 
 	notification : function(){
-		console.log("Click Notification icon-bell");
-		Backbone.app.activeSession.logout();
+		console.log("Click Notification icon-bell");		
 	},
 
 	login : function(){
 		Backbone.app.activeSession.login({
+			before: function () {
+				console.log('before login()')
+			},
+			after: function () {
+				console.log('after login()')
+      		}
+        });
+	},
+	logout : function(){
+		Backbone.app.activeSession.logout({
 			before: function () {
 				console.log('before login()')
 			},
