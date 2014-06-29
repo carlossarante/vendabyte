@@ -77,7 +77,7 @@ class UserSet(viewsets.ModelViewSet):
 			u = User.objects.get(id = serializer.data['id'])
 			u.set_enc_password()
 			u.save()
-			return HttpResponse(('users/%s'%serializer.data['id']), status=status.HTTP_201_CREATED)
+			return HttpResponseRedirect('/users/%s'%serializer.data['id']) #Retorna la url del usuario.
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)		
 
 
