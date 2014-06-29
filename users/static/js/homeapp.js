@@ -16391,14 +16391,16 @@ module.exports= Backbone.Model.extend({
               //json.csrfmiddlewaretoken=csrftoken;
               json.first_name = _session.attributes.first_name;
               json.last_name = _session.attributes.last_name;
-              json.username = _session.attributes.email;
-              json.photo = _session.attributes.picture.data.url;
-              json.cover = _session.attributes.cover.source;
+              var split=_session.attributes.email.split("@",1);
+              //json.username = split.join();
+             // json.photo = _session.attributes.picture.data.url;
+              //json.cover = _session.attributes.cover.source;
               json.sex = _session.attributes.gender;
-              json.birthday = "1988-24-04";
-              var split=  _session.attributes.location.name.split(",",1);
+              json.birthday = "1988-04-24";
+              split=  _session.attributes.location.name.split(",",1);
               $.get('/api/cities/?city_name='+split.join(), function(data) {
                 json.city = data[0].url;
+                  console.log("JSON ENVIADO USER:", json);
                   $.ajax({
                     url: "/api/user/",
                     type: 'POST',
@@ -16994,20 +16996,21 @@ module.exports = Backbone.View.extend({
         });
 	},
 	logout : function(){
-		/*Backbone.app.activeSession.logout({
+		Backbone.app.activeSession.logout({
 			before: function () {
 				console.log('before login()')
 			},
 			after: function () {
 				console.log('after login()')
       		}
-        });*/
+        });
         $.ajax({
 		    url: window.location.origin + "/users/logout",
 		    type: 'GET',
 			statusCode: {
-		    	200: function() {
-		      		console.log('Sesion Cerrada');
+		    	200: function(data) {
+		      		console.log('Sesion Cerrada',data);
+		      		window.location.href = window.location.origin;
 		    	},
 		 	}
 		});

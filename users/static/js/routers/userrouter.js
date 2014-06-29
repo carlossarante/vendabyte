@@ -21,15 +21,14 @@ var Backbone 		= require('backbone'),
 
 module.exports = Backbone.Router.extend({
 	routes: {
-		":users/"		: "user",
-		"lonuevo" 		: "loNuevo",
-		"siguiendo" 	: "siguiendo",
-		"seguidores" 	: "seguidores",
-		"popular" 		: "popular",
-		"meinteresa" 	: "meInteresa",
-		"lovendo" 		: "loVendo",
-		//"me" 			: "user",
-		"product/:name" : "product" 
+		":users/:id/"	: "user",
+		"lonuevo/" 		: "loNuevo",
+		"siguiendo/" 	: "siguiendo",
+		"seguidores/" 	: "seguidores",
+		"popular/" 		: "popular",
+		"meinteresa/" 	: "meInteresa",
+		"lovendo/" 		: "loVendo",		
+		"product/:name/" : "product" 
 	},
 
 	initialize : function(){
