@@ -68,7 +68,7 @@ module.exports= Backbone.Model.extend({
           statusCode: {
             200:function(data){
               console.log("respuesta POST:",data);
-              //window.location.href = data;
+              window.location.href = data;
             },
             404:function(data){
               json={};
@@ -91,18 +91,11 @@ module.exports= Backbone.Model.extend({
                     url: "/api/user/",
                     type: 'POST',
                     data: json,
-                    success:function(data){
-                      console.log("respuesta POST:",data);
-                      //window.location.href = data;},
-                    },
                     statusCode: {
-                      200:function(argument) {
-                        alert(argument);
-                      },
                       201:function(data){
                         alert(data);
                         console.log("respuesta POST:",data);
-                        //window.location.href = data;
+                        window.location.href = data;
                       },
                       404:function(data){                        
                       },
