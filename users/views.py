@@ -4,8 +4,8 @@ from rest_framework import viewsets,status
 from rest_framework.response import Response
 from rest_framework.decorators import action,link
 
-from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404,redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404,redirect
 from django.contrib.auth import authenticate, login,logout
 from django.conf import settings
 from django.db.models import Count,Q
@@ -21,6 +21,7 @@ def userIndex(request,id_user=None):
 	if id_user is not None:
 		user = get_object_or_404(User,id=id_user)
 	return render(request,'user.html')
+
 
 
 def logout_me(request):
@@ -53,6 +54,7 @@ def loginFacebookUser(request,response='html'):
 
 class UserSet(viewsets.ModelViewSet):
 	serializer_class = UserSerializer
+	
 	def get_queryset(self):
 		try:
 			requested_query = self.request.GET['list'] 
@@ -61,8 +63,6 @@ class UserSet(viewsets.ModelViewSet):
 				queryset = user.followers.all()
 			elif requested_query == 'following':
 				queryset = user.follows.all()
-			elif requested_query == 'interested':
-				queryset = user.interested_set.all()
 			else:
 				queryset = [self.request.user,]
 		except: 
@@ -77,7 +77,7 @@ class UserSet(viewsets.ModelViewSet):
 			u = User.objects.get(id = serializer.data['id'])
 			u.set_enc_password()
 			u.save()
-			return Response(serializer.data, status=status.HTTP_201_CREATED)
+			return HttpResponse(('users/%s'%serializer.data['id']), status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)		
 
 
