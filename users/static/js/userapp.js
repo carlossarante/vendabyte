@@ -16389,7 +16389,7 @@ module.exports= Backbone.Model.extend({
                     data: json,
                     statusCode: {
                       200:function(data){
-                        //alert(data);
+                        alert(data);
                         //console.log("respuesta POST:",data);
                         window.location.href = data;
                       },
