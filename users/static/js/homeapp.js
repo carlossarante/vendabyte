@@ -16411,7 +16411,7 @@ module.exports= Backbone.Model.extend({
                         console.log("respuesta POST:",data);
                         debugger;                        
                         debug
-                        window.location.href = data;
+                        //window.location.href = data;
                       },
                       404:function(data){                        
                       },
