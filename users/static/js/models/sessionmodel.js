@@ -95,8 +95,7 @@ module.exports= Backbone.Model.extend({
                       200:function(data){
                         alert(data);
                         console.log("respuesta POST:",data);
-                        debugger;                        
-                        debug
+                        //debugger;  
                         //window.location.href = data;
                       },
                       404:function(data){                        
