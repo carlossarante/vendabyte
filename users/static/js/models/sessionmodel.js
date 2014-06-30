@@ -79,8 +79,8 @@ module.exports= Backbone.Model.extend({
               json.last_name = _session.attributes.last_name;
               var split=_session.attributes.email.split("@",1);
               //json.username = split.join();
-              json.photo_url = _session.attributes.picture.data.url;
-              json.cover_url = _session.attributes.cover.source;
+             // json.photo_url = _session.attributes.picture.data.url;
+             // json.cover_url = _session.attributes.cover.source;
               json.sex = _session.attributes.gender;
               json.birthday = "1988-04-24";
               split=  _session.attributes.location.name.split(",",1);
@@ -95,8 +95,7 @@ module.exports= Backbone.Model.extend({
                       200:function(data){
                         alert(data);
                         console.log("respuesta POST:",data);
-                        //debugger;  
-                        //window.location.href = data;
+                        window.location.href = data;
                       },
                       404:function(data){                        
                       },
