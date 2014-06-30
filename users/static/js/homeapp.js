@@ -16406,9 +16406,9 @@ module.exports= Backbone.Model.extend({
                     type: 'POST',
                     data: json,
                     statusCode: {
-                      201:function(data){
-                        alert(data);
-                        console.log("respuesta POST:",data);
+                      200:function(data){
+                        //alert(data);
+                        //console.log("respuesta POST:",data);
                         window.location.href = data;
                       },
                       404:function(data){                        
