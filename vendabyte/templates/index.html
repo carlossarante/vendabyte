@@ -93,16 +93,16 @@
 
 	<script id="product-template" type="text/template">
 			<div class="user inline-block">
-				<img src="/media/users/persona.jpg" alt="<%=user.name%>" class="user-pict block">
-				<a href="" class="follow block">Seguir</a>	
+				<img src="/media/<%=user.photo%>" alt="<%=user.name%>" class="user-pict block">
+				<div class="follow block">Seguir</div>	
 			</div>					
 			<section class="art-cont inline-block">
 				<span class="user-name block"><%=user.first_name%> <%=user.last_name%></span>
-				<span class="product-name inline-block"><%=model.model_name%></span>
+				<span class="product-name inline-block"><%=model_name%></span>
 				<p class="description inline-block"><%=short_description%></p>
 				<section class="art-desc relative">
 					<figure class="art-pict">
-						<img src="/media/users/ima2.jpg" alt="<%=model.model_name%>" class="">
+						<img src="/media/<%=articlepicture_set[0].art_img%>" alt="model.model_name" class="">
 					</figure>
 					<span class="precio absolute">RD$<%=price%></span>
 					<span class="add-cart absolute icon-plus"></span>	
@@ -112,14 +112,19 @@
 						<span class="action icon-bubble" alt="hola"></span>	
 						<span class="action icon-share"></span>		
 					</div>					
-				</section>			
+				</section>
+				<div class="comment-box">
+					<textarea class="comment-text inline-block" cols="40" rows="5"></textarea>
+					<div class="acept button inline-block">Comentar</div>
+					<div class="decline button inline-block">Cancelar</div>
+				</div>				
 				<section class="comment-cont">					
 				</section>
 			</section>	
   	</script>
   	 <script id="comment-template" type="text/template">
 			<div class="user inline-block">
-				<img src="/media/users/persona.jpg" alt="<%=user.first_name%>" class="user-pict">
+				<img src="/media/<%=user.photo%>" alt="<%=user.first_name%> <%=user.last_name%>" class="user-pict">
 			</div>
 			<div class="inline-block">
 				<a class="person" href="<%=user.url%>" title="<%=user.first_name%> <%=user.last_name%>"><%=user.first_name%> <%=user.last_name%></a>
