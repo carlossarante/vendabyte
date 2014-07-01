@@ -72,11 +72,13 @@ class UserSet(viewsets.ModelViewSet):
 
 	def create(self,request):
 		serializer = UserSerializer(data=request.DATA,files=request.FILES,context={'request':request})
+		return HttpResponse(request.DATA,status=500)
 		if serializer.is_valid():
 			serializer.save()
 			u = User.objects.get(id = serializer.data['id'])
 			u.set_enc_password()
 			u.save()
+			login(request,u) #Login al usuario creado.
 			return HttpResponse('/users/%s'%serializer.data['id']) #Retorna la url del usuario.
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)		
 
