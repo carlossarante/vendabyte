@@ -10,9 +10,9 @@ from django.contrib.auth import authenticate, login,logout
 from django.conf import settings
 from django.db.models import Count,Q
 
-
-from users.models import User,Badgets,Contact
+from tasks import getUserPictures
 from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
+from users.models import User,Badgets,Contact
 
 
 def userIndex(request,id_user=None):
@@ -76,6 +76,8 @@ class UserSet(viewsets.ModelViewSet):
 			serializer.save()
 			u = User.objects.get(id = serializer.data['id'])
 			u.set_enc_password()
+			#return HttpResponse(status=500)
+			getUserPictures.delay(u,request.POST['photo_url'], request.POST['cover_url'])
 			u.save()
 			loginFacebookUser(request)
 			return HttpResponse('/users/%s'%serializer.data['id']) #Retorna la url del usuario.
