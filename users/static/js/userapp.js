@@ -16389,7 +16389,6 @@ module.exports= Backbone.Model.extend({
                     data: json,
                     statusCode: {
                       200:function(data){
-                        alert(data);
                         console.log("respuesta POST:",data);
                         window.location.href = data;
                       },
@@ -17141,11 +17140,17 @@ module.exports = Backbone.View.extend({
 
 	handleBrands : function(e){
 		x = $(e.currentTarget);
+		y = $(".rbDeco");
+
+		y.css({
+			backgroundColor: 'white',
+			color: "rgb(148,158,147)",
+		});
 		
 		this.model.fetchBrands(x);
 
 		x.parent(".rbDeco").css({
-			backgroundColor: 'green',
+			backgroundColor: "rgb(79,216,0)",
 			color: 'white'
 		});
 	},
