@@ -72,7 +72,6 @@ class UserSet(viewsets.ModelViewSet):
 
 	def create(self,request):
 		serializer = UserSerializer(data=request.DATA,files=request.FILES,context={'request':request})
-		return HttpResponse(request.DATA,status=500)
 		if serializer.is_valid():
 			serializer.save()
 			u = User.objects.get(id = serializer.data['id'])
