@@ -78,6 +78,8 @@ class UserSet(viewsets.ModelViewSet):
 			u = User.objects.get(id = serializer.data['id'])
 			u.set_enc_password()
 			u.save()
+			authenticated_user = authenticate(user= u.email,facebook_uid= u.facebook_uid)
+			login(request,authenticated_user) #Login al usuario creado.
 			login(request,u) #Login al usuario creado.
 			return HttpResponse('/users/%s'%serializer.data['id']) #Retorna la url del usuario.
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)		
