@@ -198,7 +198,9 @@
 		<div class="notif-bar inline-block">
 			<span class="icon-bell"><span class="notifications none">2</span></span>
 			<span class="user-name"><% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%></span>
-			<img src="/media/<% print(this.model.attributes[0].photo)%>" alt="<% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%>" class="user-pict inline block">
+			<div class="user-deco inline-block">
+				<img src="/media/<% print(this.model.attributes[0].photo)%>" alt="<% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%>" class="user-pict">
+			</div>
 			<span class="icon-cog"></span>
 		</div>			
   	</script>
@@ -253,30 +255,32 @@
 
   	<script id="user-template" type="text/template">
   			<div class="inline-block">
-					<img src="/media/<% print(this.model.attributes[0].photo)%>" alt="Usuario" class="user-pict block">					
-				</div>					
-				<div class="inline-block">
-					<span class="user-name block"><% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>	
-					<br/>
-					<div id="deco1"class="deco-count">
-						<span class="following-count">200</span>
-						<span class="following">Siguiendo</span>
-					</div>
-					<div class="deco-count">
-						<span class="followers-count">20</span>	
-						<span class="followers">Seguidores</span>
-					</div>
+				<img src="/media/<% print(this.model.attributes[0].photo)%>" alt="Usuario" class="user-pict block">					
+			</div>					
+			<div class="inline-block">
+				<span class="user-name block"><% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%></span>
+				<span class="icon-star"></span>
+				<span class="icon-star"></span>
+				<span class="icon-star"></span>
+				<span class="icon-star"></span>
+				<span class="icon-star"></span>	
+				<br/>
+				<div id="deco1"class="deco-count">
+					<span class="following-count">200</span>
+					<span class="following">Siguiendo</span>
 				</div>
+				<div class="deco-count">
+					<span class="followers-count">20</span>	
+					<span class="followers">Seguidores</span>
+				</div>
+			</div>
   	</script>
 
 	<script id="product-template" type="text/template">
 			<div class="user inline-block">
-				<img src="/media/<%=user.photo%>" alt="<%=user.name%>" class="user-pict block">
+				<div class="user-deco">
+					<img src="/media/<%=user.photo%>" alt="<%=user.name%>" class="user-pict block">
+				</div>
 				<div class="follow block">Seguir</div>	
 			</div>					
 			<section class="art-cont inline-block">
@@ -319,7 +323,9 @@
   	</script>
 	 <script id="follower-template" type="text/template">
 			<div class="inline-block">
-				<img src="/media/<%=photo%>" alt="<%=first_name%> <%=last_name%>" class="user-pict block">
+				<div class="user-deco block">
+					<img src="/media/<%=photo%>" alt="<%=first_name%> <%=last_name%>" class="user-pict">
+				</div>
 				<span class="icon-star"></span>
 				<span class="icon-star"></span>
 				<span class="icon-star"></span>

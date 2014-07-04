@@ -29,31 +29,27 @@ module.exports = Backbone.View.extend({
 
 	theNew : function(h){
 
-		Backbone.app.navigate("lonuevo",{trigger : true});
+		Backbone.app.navigate("lonuevo/",{trigger : true});
 	},
 
 	following : function(h){
-		Backbone.app.navigate("siguiendo",{trigger : true});
+		Backbone.app.navigate("siguiendo/",{trigger : true});
 		
 	},
 	followers : function(h){
-		Backbone.app.navigate("seguidores",{trigger : true});
+		Backbone.app.navigate("seguidores/",{trigger : true});
 		
 	},
 	popular : function(h){
-		Backbone.app.navigate("popular",{trigger : true});
+		Backbone.app.navigate("popular/",{trigger : true});
 		
 	},
 	interesting : function(h){		
-		Backbone.app.navigate("meinteresa",{trigger : true});
+		Backbone.app.navigate("meinteresa/",{trigger : true});
 		
 	},
 	selling : function(h){
-		Backbone.app.navigate("lovendo",{trigger : true});
+		Backbone.app.navigate("lovendo/",{trigger : true});
 		
 	},
-
-	navigate : function (){
-		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true});
-	}
 });

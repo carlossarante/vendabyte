@@ -117,8 +117,4 @@ module.exports = Backbone.View.extend({
 		 	}
 		});
 	},
-
-	navigate : function (url){
-		Backbone.app.navigate(url,{trigger : true})
-	}
 });

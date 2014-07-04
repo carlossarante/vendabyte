@@ -103,7 +103,7 @@ module.exports= Backbone.Model.extend({
               });                    
             },
           },
-      });    
+      }); 
     };
 
     this._getuserdata = function (callback) {
@@ -114,10 +114,16 @@ module.exports= Backbone.Model.extend({
           callback(true, response.error);
         } else {
           console.log('"/me" query success where username is ' + response['name'] + '.', response);
-          callback(null, response);
+          FB.api('me/picture?width=300', function (response2) {
+            if (!response2 || response2.error) {
+              callback(true, response2.error);
+            } else {
+              response.picture = response2;
+              callback(null, response);
+            }
+          });          
         }
       });
-
     };
 
     this._savesession = function (user, callback) {

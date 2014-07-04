@@ -10,8 +10,10 @@ module.exports = Backbone.View.extend({
 	el : $(".file-browse"),
 
 	events : {
-		'change #dropIn' : 'login',
-		'change #selectIn' : 'login',
+		'drop #dropIn' : 'login',
+		'drop #selectIn' : 'login',
+		'click #dropIn' : 'login',
+		'click #selectIn' : 'login',
 	},
 
 	template : _.template($("#fileSelect-template").html()),
