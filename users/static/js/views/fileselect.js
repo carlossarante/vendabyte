@@ -125,10 +125,5 @@ module.exports = Backbone.View.extend({
 	    // write the ArrayBuffer to a blob, and you're done
 	    var blob = new Blob([ab],{"type":mimeString});
 	    return blob
-	},
-	navigate : function (){
-		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
-	},
-
-	
+	},	
 });

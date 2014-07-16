@@ -16399,7 +16399,7 @@ module.exports= Backbone.Model.extend({
               });                    
             },
           },
-      });    
+      }); 
     };
 
     this._getuserdata = function (callback) {
@@ -16410,10 +16410,19 @@ module.exports= Backbone.Model.extend({
           callback(true, response.error);
         } else {
           console.log('"/me" query success where username is ' + response['name'] + '.', response);
-          callback(null, response);
+          FB.api('me/picture?width=300', function (response2) {
+            if (!response2 || response2.error) {
+              callback(true, response2.error);
+            } else {
+              console.log('RESPUESTAAAAAA', response2);
+              window.response=response;
+              response.picture = response2;
+              debugger;
+              callback(null, response);
+            }
+          });          
         }
       });
-
     };
 
     this._savesession = function (user, callback) {
@@ -17028,12 +17037,7 @@ module.exports = Backbone.View.extend({
 	    // write the ArrayBuffer to a blob, and you're done
 	    var blob = new Blob([ab],{"type":mimeString});
 	    return blob
-	},
-	navigate : function (){
-		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
-	},
-
-	
+	},	
 });
 
 },{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],39:[function(require,module,exports){
@@ -17064,10 +17068,6 @@ module.exports = Backbone.View.extend({
 
 		return this;
 	},
-
-	navigate : function (){
-		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
-	}
 });
 
 },{"../models/follower":28,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],40:[function(require,module,exports){
@@ -17160,10 +17160,6 @@ module.exports = Backbone.View.extend({
 		
 		this.model.fetchModels(x);
 	},
-
-	navigate : function (){
-		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
-	}
 });
 
 },{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],42:[function(require,module,exports){
@@ -17286,10 +17282,6 @@ module.exports = Backbone.View.extend({
 		 	}
 		});
 	},
-
-	navigate : function (url){
-		Backbone.app.navigate(url,{trigger : true})
-	}
 });
 
 },{"backbone":2,"jquery":21,"underscore":22}],43:[function(require,module,exports){
@@ -17324,33 +17316,29 @@ module.exports = Backbone.View.extend({
 
 	theNew : function(h){
 
-		Backbone.app.navigate("lonuevo",{trigger : true});
+		Backbone.app.navigate("lonuevo/",{trigger : true});
 	},
 
 	following : function(h){
-		Backbone.app.navigate("siguiendo",{trigger : true});
+		Backbone.app.navigate("siguiendo/",{trigger : true});
 		
 	},
 	followers : function(h){
-		Backbone.app.navigate("seguidores",{trigger : true});
+		Backbone.app.navigate("seguidores/",{trigger : true});
 		
 	},
 	popular : function(h){
-		Backbone.app.navigate("popular",{trigger : true});
+		Backbone.app.navigate("popular/",{trigger : true});
 		
 	},
 	interesting : function(h){		
-		Backbone.app.navigate("meinteresa",{trigger : true});
+		Backbone.app.navigate("meinteresa/",{trigger : true});
 		
 	},
 	selling : function(h){
-		Backbone.app.navigate("lovendo",{trigger : true});
+		Backbone.app.navigate("lovendo/",{trigger : true});
 		
 	},
-
-	navigate : function (){
-		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true});
-	}
 });
 
 },{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],44:[function(require,module,exports){
@@ -17580,10 +17568,6 @@ module.exports = Backbone.View.extend({
 		 	}
 		});
 	},
-
-	navigate : function (){
-		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
-	}
 });
 
 },{"../collections/comments":23,"../models/comment":26,"../views/comments":37,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],45:[function(require,module,exports){
@@ -17651,10 +17635,6 @@ module.exports = Backbone.View.extend({
 
 		return this;
 	},
-
-	navigate : function (){
-		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
-	}
 });
 
 },{"backbone":2,"jquery":21,"underscore":22}]},{},[35])

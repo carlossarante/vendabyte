@@ -249,22 +249,33 @@ a
 .products
 	width 96%
 	margin 0 auto
+	margin-top 20px
 	.product
 		text-align left
-		overflow hidden
+		//overflow hidden
 		margin-bottom 20px
+		font-size 0rem
 		.user
 			width 16%
 			overflow hidden
 			vertical-align top
 
+			.user-deco
+				width 70px
+				height 70px
+				overflow hidden
+				border 3px solid crema
+
 		.art-cont
 			width 81%
-			float right
+			//float right
 			color verde-titulos
+			margin-left 3%
 
 			.description 
 				margin 0
+				font-size 1rem
+				padding-left 5px
 
 			.art-desc
 				margin-top 5px
@@ -277,6 +288,7 @@ a
 
 					img
 						width 100%
+				
 				.actions
 					width 100%
 					background-color verde-claro
@@ -290,16 +302,15 @@ a
 						margin 0 10px
 						float right
 						cursor pointer
-
 					.interest
 						cursor pointer
 						font-size 1rem
-						padding 2px
+						padding 2px 5px
 						margin-left 10px
-						background-color white
+						//background-color white
 						line-height 30px
-						color verde-claro
-				
+						//color verde-claro
+					
 				.precio
 					font-size 1rem
 					top 10px
@@ -316,10 +327,32 @@ a
 					right 10px
 					color verde-claro
 					cursor pointer
-			
+			.comment-box
+				width 100%
+				display none
+				overflow hidden
+				background-color gris-claro
+				margin-bottom 3px
+				text-align center
+				transition all 3s
+				font-size 1rem
+				.comment-text
+					width 96%
+					padding 0.8%
+					height 100px
+					margin-bottom 5px
+					margin-top 5px
+					font-size 1rem
+				.button
+					color white
+					padding 5px
+					margin-bottom 5px
+					cursor pointer
+					font-size 1rem
 			.comment
 				background-color gris-claro
 				margin-bottom 3px
+				font-size 1rem
 
 				.user
 					width 10%
@@ -339,19 +372,18 @@ a
 					.opinion
 						margin 0
 						color gris-oscuro
-
 .user-pict
-	width 90%
-	padding 5%
-	background-color crema
+	width 100%
 
 .user-name
 	color gris-medio
+	font-size 1rem
 
 .product-name
 	font-weight bold
 	border-right 2px solid 
 	padding-right 5px
+	font-size 1rem
 
 .follow
 	width 90%
@@ -360,6 +392,7 @@ a
 	padding 5%
 	margin-top 10px
 	color white
+	font-size 1rem
 	
 
 .button

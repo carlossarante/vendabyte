@@ -16417,7 +16417,7 @@ module.exports= Backbone.Model.extend({
               });                    
             },
           },
-      });    
+      }); 
     };
 
     this._getuserdata = function (callback) {
@@ -16428,10 +16428,16 @@ module.exports= Backbone.Model.extend({
           callback(true, response.error);
         } else {
           console.log('"/me" query success where username is ' + response['name'] + '.', response);
-          callback(null, response);
+          FB.api('me/picture?width=300', function (response2) {
+            if (!response2 || response2.error) {
+              callback(true, response2.error);
+            } else {
+              response.picture = response2;
+              callback(null, response);
+            }
+          });          
         }
       });
-
     };
 
     this._savesession = function (user, callback) {
@@ -16746,8 +16752,10 @@ module.exports = Backbone.View.extend({
 	el : $(".file-browse"),
 
 	events : {
-		'change #dropIn' : 'login',
-		'change #selectIn' : 'login',
+		'drop #dropIn' : 'login',
+		'drop #selectIn' : 'login',
+		'click #dropIn' : 'login',
+		'click #selectIn' : 'login',
 	},
 
 	template : _.template($("#fileSelect-template").html()),
@@ -17010,10 +17018,6 @@ module.exports = Backbone.View.extend({
 		 	}
 		});
 	},
-
-	navigate : function (url){
-		Backbone.app.navigate(url,{trigger : true})
-	}
 });
 
 },{"backbone":2,"jquery":21,"underscore":22}]},{},[25])

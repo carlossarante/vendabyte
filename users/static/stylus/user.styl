@@ -91,13 +91,13 @@ a
 			padding 0 10px
 			border-right 1px solid opaco
 			cursor pointer
-		.user-pict
-			display inline-block
+		.user-deco	
 			width 35px
 			height 35px
-			padding 2px
+			overflow hidden
+			border 2px solid crema	
+			margin 3px 10px 0 10px	
 			vertical-align top
-			margin 3px 10px 0 10px
 			cursor pointer
 		.icon-cog
 			line-height 45px
@@ -139,7 +139,7 @@ a
 	
 	.badgets-cont
 		width 96%
-		margin 50px 0px 20px 0px
+		margin 80px 0px 20px 0px
 		padding 0
 		box-shadow 0px 0px 5px gris-medio
 		font-size 1rem
@@ -147,7 +147,7 @@ a
 		.badget-tittle
 			position absolute
 			color verde-titulos
-			font-size 1.5rem
+			font-size 2.5rem
 			font-weight bold
 			bottom 100%
 
@@ -227,12 +227,14 @@ a
 		text-align left	
 
 		&:first-child
-			width 40%
+			width 172px
+			height 172px
+			overflow hidden
 			position absolute
 			bottom 0%
 			left 0
 			z-index 100
-			border 2px solid white
+			border 10px solid crema
 
 		.user-name
 			font-size 1.5rem
@@ -408,6 +410,12 @@ a
 			overflow hidden
 			vertical-align top
 
+			.user-deco
+				width 70px
+				height 70px
+				overflow hidden
+				border 3px solid crema
+
 		.art-cont
 			width 81%
 			//float right
@@ -543,10 +551,11 @@ a
 				width 25%
 				margin-top 1%
 				margin-left 1%
-
-			.user-pict
-				width 90%
-				padding 5%
+			.user-deco
+				width 56px
+				height 56px
+				overflow hidden
+				border 2px solid crema
 				margin 1% 0 5% 1%
 
 			.icon-star
@@ -605,9 +614,9 @@ a
 
 
 .user-pict
-	width 90%
-	padding 5%
-	background-color crema
+	width 100%
+	//padding 5%
+	//background-color crema
 
 .user-name
 	color gris-medio

@@ -21,8 +21,4 @@ module.exports = Backbone.View.extend({
 
 		return this;
 	},
-
-	navigate : function (){
-		Backbone.app.navigate("product/"+ this.model.get("name"),{trigger : true})
-	}
 });

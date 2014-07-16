@@ -93,7 +93,9 @@
 
 	<script id="product-template" type="text/template">
 			<div class="user inline-block">
-				<img src="/media/<%=user.photo%>" alt="<%=user.name%>" class="user-pict block">
+				<div class="user-deco">
+					<img src="/media/<%=user.photo%>" alt="<%=user.name%>" class="user-pict block">
+				</div>
 				<div class="follow block">Seguir</div>	
 			</div>					
 			<section class="art-cont inline-block">
@@ -112,7 +114,12 @@
 						<span class="action icon-bubble" alt="hola"></span>	
 						<span class="action icon-share"></span>		
 					</div>					
-				</section>	
+				</section>
+				<div class="comment-box">
+					<textarea class="comment-text inline-block" cols="40" rows="5"></textarea>
+					<div class="acept button inline-block">Comentar</div>
+					<div class="decline button inline-block">Cancelar</div>
+				</div>				
 				<section class="comment-cont">					
 				</section>
 			</section>	
