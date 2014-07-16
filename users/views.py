@@ -2,6 +2,7 @@
 
 from rest_framework import viewsets,status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action,link
 
 from django.views.decorators.csrf import csrf_exempt
@@ -54,7 +55,7 @@ def loginFacebookUser(request,response='html'):
 
 class UserSet(viewsets.ModelViewSet):
 	serializer_class = UserSerializer
-	
+	permission_classes = (IsAuthenticatedOrReadOnly,)
 	def get_queryset(self):
 		try:
 			requested_query = self.request.GET['list'] 
@@ -109,8 +110,11 @@ class UserSet(viewsets.ModelViewSet):
 
 class BadgetSet(viewsets.ReadOnlyModelViewSet):
 	queryset = Badgets.objects.all()
+	permission_classes = (IsAuthenticatedOrReadOnly,)
 	serializer_class = BadgetSerializer
 
 class ContactSet(viewsets.ModelViewSet):
 	queryset= Contact.objects.all()
+	permission_classes = (IsAuthenticatedOrReadOnly,)
+
 	serializer_class= ContactSerializer

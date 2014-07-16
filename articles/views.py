@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import status
 from rest_framework import filters 
 from rest_framework.decorators import action
@@ -22,6 +23,7 @@ def articleIndex(request):
 class ArticleSet(viewsets.ModelViewSet):
 	#queryset = Article.objects.all()
 	serializer_class = ArticleSerializer
+	permission_classes = (IsAuthenticatedOrReadOnly,)
 	base_name = 'article'
 	paginate_by = 5
 
@@ -82,7 +84,7 @@ class ArticleSet(viewsets.ModelViewSet):
 class ArticlePictureSet(viewsets.ModelViewSet):
 	queryset = ArticlePicture.objects.all()
 	serializer_class = ArticlePictureSerializer
-
+	permission_classes = (IsAuthenticatedOrReadOnly,)
 	def create(self,request):
 		user = request.user
 		serializer = ArticlePictureSerializer(data=request.DATA,files=request.FILES)
@@ -96,6 +98,7 @@ class ArticlePictureSet(viewsets.ModelViewSet):
 class CommentSet(viewsets.ModelViewSet):
 	queryset = Comment.objects.all()
 	serializer_class = CommentSerializer
+	permission_classes = (IsAuthenticatedOrReadOnly,)
 	def create(self,request):
 		user = request.user
 		serializer = CommentSerializer(data=request.DATA)
@@ -107,17 +110,20 @@ class CommentSet(viewsets.ModelViewSet):
 
 class BrandModelSet(viewsets.ModelViewSet):
 	queryset = BrandModel.objects.all()
+	permission_classes = (IsAuthenticatedOrReadOnly,)
 	serializer_class = BrandModelSerializer
 	filter_fields = ('model_name',) 
 
 
 class BrandSet(viewsets.ModelViewSet):
 	queryset = Brand.objects.all()
+	permission_classes = (IsAuthenticatedOrReadOnly,)
 	serializer_class = BrandSerializer
 	filter_fields = ('brand',) 
 
 class DeviceSet(viewsets.ModelViewSet):
 	queryset = Device.objects.all()
+	permission_classes = (IsAuthenticatedOrReadOnly,)
 	serializer_class = DeviceSerializer
 	filter_fields = ('device_detail',)
 
