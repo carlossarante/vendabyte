@@ -130,6 +130,7 @@ class DeviceSet(viewsets.ModelViewSet):
 class LikeSet(viewsets.ModelViewSet):
 	queryset = Like.objects.all()
 	serializer_class = LikeSerializer
+	permission_classes = (IsAuthenticatedOrReadOnly,)
 	def create(self,request):
 		user = request.user
 		serializer = LikeSerializer(data=request.DATA)
@@ -146,6 +147,7 @@ class LikeSet(viewsets.ModelViewSet):
 class InterestingSet(viewsets.ModelViewSet):
 	queryset = Interested.objects.all()
 	serializer_class = InterestingSerializer
+	permission_classes = (IsAuthenticatedOrReadOnly,)
 	def create(self,request):
 		user = request.user
 		serializer = InterestingSerializer(data=request.DATA)

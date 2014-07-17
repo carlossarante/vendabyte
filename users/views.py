@@ -112,9 +112,10 @@ class BadgetSet(viewsets.ReadOnlyModelViewSet):
 	queryset = Badgets.objects.all()
 	permission_classes = (IsAuthenticatedOrReadOnly,)
 	serializer_class = BadgetSerializer
+	permission_classes = (IsAuthenticatedOrReadOnly,)
+
 
 class ContactSet(viewsets.ModelViewSet):
 	queryset= Contact.objects.all()
 	permission_classes = (IsAuthenticatedOrReadOnly,)
-
 	serializer_class= ContactSerializer
