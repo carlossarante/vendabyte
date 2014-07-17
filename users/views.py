@@ -55,7 +55,6 @@ def loginFacebookUser(request,response='html'):
 
 class UserSet(viewsets.ModelViewSet):
 	serializer_class = UserSerializer
-	permission_classes = (IsAuthenticatedOrReadOnly,)
 	def get_queryset(self):
 		try:
 			requested_query = self.request.GET['list'] 
@@ -105,7 +104,6 @@ class UserSet(viewsets.ModelViewSet):
 			return Response({'Success':'True'})
 		except:
 			 return Response({'status':'Error doing this query.'},status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class BadgetSet(viewsets.ReadOnlyModelViewSet):
