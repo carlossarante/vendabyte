@@ -29,11 +29,11 @@ module.exports = Backbone.Router.extend({
 		this.userModel.urlRoot = "/api/user/?list=me&format=json";
 		//this.userProfileView = new UserProfileView({model: this.userModel});
 		this.notificationsView = new NotificationsView({model : this.userModel});
-		this.userModel.fetch({ 
-			success: function(){
-       			console.log("Usuario: "+Backbone.app.userModel);
-    		}
-    	});
+		//this.userModel.fetch({ 
+		//	success: function(){
+       	//		console.log("Usuario: "+Backbone.app.userModel);
+    	//	}
+    	//});
     	
     	this.fbLoginView = new FBLoginView();
 

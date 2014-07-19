@@ -6,7 +6,7 @@ var Backbone 		= require('backbone'),
 	FormModel		= require('../models/form'),
 	SessionModel 	= require('../models/sessionmodel'),
 	UserModel 		= require('../models/user'),		
-	FileSelectModel = require('../models/fileselect')
+	FileSelectModel = require('../models/fileselect'),
 	Products 		= require('../collections/products'),
 	//Badgets 		= require('../collections/badgets'),
 	Followers 		= require('../collections/followers'),
@@ -14,6 +14,7 @@ var Backbone 		= require('backbone'),
 	//BadgetsView 	= require('../views/badgets'),
 	OptionsView 	= require('../views/options'),	
 	FollowersView 	= require('../views/followers'),
+	UserCoverView 	= require('../views/portada'),
 	UserProfileView = require('../views/userprofile'),
 	NotificationsView = require('../views/notificationbar'),
 	FileSelectView = require('../views/fileselect'),
@@ -21,6 +22,7 @@ var Backbone 		= require('backbone'),
 
 module.exports = Backbone.Router.extend({
 	routes: {
+		":users/osiris/"	: "userProfile",
 		":users/:id/"	: "user",
 		"lonuevo/" 		: "loNuevo",
 		"siguiendo/" 	: "siguiendo",
@@ -38,7 +40,9 @@ module.exports = Backbone.Router.extend({
 		this.jsonData = {};
 
 		this.userModel = new UserModel();
+		window.user = this.userModel;
 		this.userModel.urlRoot = "/api/user/?list=me&format=json";
+		this.userCoverView= new UserCoverView({model: this.userModel});
 		this.userProfileView = new UserProfileView({model: this.userModel});
 		this.notificationsView = new NotificationsView({model : this.userModel});
 		this.userModel.fetch({ 
@@ -84,8 +88,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
-		
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
+
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.removeClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -109,8 +119,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.addClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -134,8 +150,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.addClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -159,8 +181,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.removeClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -184,8 +212,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.removeClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -210,8 +244,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.removeClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -230,15 +270,47 @@ module.exports = Backbone.Router.extend({
 		var products = $('.products')
 		var fileBrowse = $('.file-browse');
 		var optionMenu = $('.options-menu');
+		var badgets = $('.badgets-cont');
+		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		var item = $("#newest");
 		this.activeOpt(item);
 
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.removeClass('none');
-		fileBrowse.removeClass('none');
-		optionMenu.removeClass('none');
+		formulario.addClass('none');
+		fileBrowse.addClass('none');
+		optionMenu.addClass('none');
+		badgets.removeClass('none');
+		followerSect.addClass('none');
+
+
 
 		this.loNuevo();
 		console.log("ENTRE A USERS JJSJJSJSJSJJ");
+	},
+
+	userProfile:function() {
+		var products = $('.products')
+		var fileBrowse = $('.file-browse');
+		var optionMenu = $('.options-menu');
+		var badgets = $('.badgets-cont');
+		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
+
+		portada.removeClass('none');
+		perfil.removeClass('none');
+		products.removeClass('none');
+		formulario.addClass('none');
+		fileBrowse.addClass('none');
+		optionMenu.addClass('none');
+		badgets.removeClass('none');
+		followerSect.addClass('none');	
 	},
 
 	activeOpt : function(el){

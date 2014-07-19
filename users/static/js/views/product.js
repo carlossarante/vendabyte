@@ -46,6 +46,7 @@ module.exports = Backbone.View.extend({
 		{
 			this.$el.find('.icon-heart').css('color', 'white');
 		}
+
 		if(this.model.attributes.interested)
 		{
 			//this.$el.find('.interest').css('background-color', '#ffcc00');
@@ -59,6 +60,18 @@ module.exports = Backbone.View.extend({
 			self.$el.find('.interest').html("Me interesa");			
 			self.$el.find('.interest').removeClass('on-state');
 			self.$el.find('.interest').addClass('off-state');
+		}
+		if(this.model.attributes.user.id === Backbone.app.userModel.attributes[0].id)
+		{
+			self.$el.find('.follow').remove();
+		}
+		if(this.model.attributes.user.user_following)
+		{
+			self.$el.find('.follow').html("No seguir");
+		}
+		else
+		{
+			self.$el.find('.follow').html("Seguir");		
 		}
 
 
@@ -215,13 +228,37 @@ module.exports = Backbone.View.extend({
 		}		
 	},
 	follow : function(){
-		$.ajax({
-		    url: window.location.origin + "/api/user/"+this.model.attributes.user.id +"/add_follower/",
-		    type: 'POST',
-			statusCode: {
-		    	200: function() {
-		    	},
-		 	}
-		});
+		var self = this;
+
+		if(this.model.attributes.user.user_following)
+		{
+			$.ajax({
+			    url: window.location.origin + "/api/user/"+this.model.attributes.user.id +"/remove_follower/",
+			    type: 'DELETE',
+				statusCode: {
+			    	200: function() {
+			      		self.model.fetch();
+			      		Backbone.app.userProfileView.model.fetch();	
+			    	},	    	
+			    	500: function() {
+			    		alert("Error al sincronizar con el servidor");
+			    	}
+			 	}
+			});
+		}
+		else
+		{
+			$.ajax({
+			    url: window.location.origin + "/api/user/"+this.model.attributes.user.id +"/add_follower/",
+			    type: 'POST',
+				statusCode: {
+			    	200: function() {
+			    		self.model.fetch();
+			    		Backbone.app.userModel.fetch();	
+			    	},
+			 	}
+			});
+		}	
+
 	},
 });

@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="/static/css/user.css">
 </head>
 <body>
-	<header class="header relative">		
+	<header class="header fixed">		
 		<!--<figure class="logo-cont">
 			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
 		</figure>
@@ -20,12 +20,12 @@
 			<img src="" alt="Usuario" class="user-pict inline block">
 			<span class="icon-cog"></span>
 		</div>		-->
-	</header><!-- /header -->
-	<figure class="portada-cont relative none">
+	</header><!-- /header -->	
+	<section class="wrapper relative">		
+		<figure class="portada-cont relative none">
 			<img src="/static/img/portada.png" alt="Vendabyte" class="portada">
 		</figure>
-	<section class="wrapper relative">		
-		<section class="offers-sect absolute">			
+		<section class="offers-sect relative">			
 			<section class="followers-sect none">
 				<li class="follower-cont inline-block relative">
 					<div class="inline-block">
@@ -252,6 +252,9 @@
 		<input type="number" name="price" min="0" style="font-size:1rem" placeholder="Precio" required>	
 		<button type="button" id="submit" style="font-size:1rem;">Subir articulo</button>
   	</script>
+  	<script id="cover-template" type="text/template">
+  		<img src="/media/<% print(this.model.attributes[0].cover)%>" alt="Vendabyte" class="portada">
+  	</script>
 
   	<script id="user-template" type="text/template">
   			<div class="inline-block">
@@ -266,11 +269,11 @@
 				<span class="icon-star"></span>	
 				<br/>
 				<div id="deco1"class="deco-count">
-					<span class="following-count">200</span>
+					<span class="following-count"><% print(this.model.attributes[0].quantity_following)%></span>
 					<span class="following">Siguiendo</span>
 				</div>
 				<div class="deco-count">
-					<span class="followers-count">20</span>	
+					<span class="followers-count"><% print(this.model.attributes[0].quantity_followers)%></span>	
 					<span class="followers">Seguidores</span>
 				</div>
 			</div>
@@ -335,11 +338,11 @@
 			<div class="inline-block">
 				<span class="user-name"><%=first_name%> <%=last_name%></span>
 				<div class="deco-count">
-					<span class="following-count">200</span>
+					<span class="following-count"><%=quantity_following%></span>
 					<span class="following">Siguiendo</span>
 				</div>
 				<div class="deco-count">
-					<span class="followers-count">20</span>	
+					<span class="followers-count"><%=quantity_followers%></span>	
 					<span class="followers">Seguidores</span>
 				</div>						
 				<div class="follow-user">Seguir</div>

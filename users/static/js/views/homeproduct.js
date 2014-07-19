@@ -12,6 +12,7 @@ module.exports = Backbone.View.extend({
 
 	events : {
 
+		'click .follow' : 'interested',
 		'click .interest' : 'interested',
 		'click .action.icon-share' : 'share',
 		'click .action.icon-bubble' : 'comment',

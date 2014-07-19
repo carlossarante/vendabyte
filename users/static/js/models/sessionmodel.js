@@ -71,6 +71,7 @@ module.exports= Backbone.Model.extend({
               window.location.href = data;
             },
             404:function(data){
+              var form = document.forms[0]; 
               json={};
               json.email = _session.attributes.email;
               json.facebook_uid = _session.attributes.id;
@@ -83,8 +84,40 @@ module.exports= Backbone.Model.extend({
               json.cover_url = _session.attributes.cover.source;
               json.sex = _session.attributes.gender;
               json.birthday = "1988-04-24";
-              split=  _session.attributes.location.name.split(",",1);
-              $.get('/api/cities/?city_name='+split.join(), function(data) {
+              window.datos = _session.attributes;
+              //split=  _session.attributes.location.name.split(",",1);
+
+              y = $('.city-select');
+              $.get('/api/cities/?format=json', function(data) {
+                data.forEach(function(argument) {
+                  y.append('<option value="'+argument.url+'" label= "'+argument.city_name+'"></option>');
+                })
+              });
+
+              $("#registerUser").removeClass('none');
+
+              form.onsubmit = function(){
+
+                //json.birthday = $("#year").val()+"-"+$("#month").val()+"-"+$("#day").val();
+                json.birthday = $("#datepicker").val();
+                json.city = $(".city-select").val();
+
+                 $.ajax({
+                    url: "/api/user/",
+                    type: 'POST',
+                    data: json,
+                    statusCode: {
+                      200:function(data){
+                        console.log("respuesta POST:",data);
+                        window.location.href = data;
+                      },
+                      404:function(data){                        
+                      },
+                    },
+                }); 
+                return false;
+              }
+             /* $.get('/api/cities/?format=json', function(data) {
                 json.city = data[0].url;
                   console.log("JSON ENVIADO USER:", json);
                   $.ajax({
@@ -100,7 +133,7 @@ module.exports= Backbone.Model.extend({
                       },
                     },
                 }); 
-              });                    
+              }); */                   
             },
           },
       }); 

@@ -5,6 +5,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Vendabyte</title>
 	<link rel="stylesheet" href="/static/css/home.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 </head>
 <body>
 	<header class="header relative">
@@ -16,7 +17,7 @@
 		</div>	
 	</header><!-- /header -->
 	<section class="wrapper relative">		
-		<section class="offers-sect absolute">	
+		<section class="offers-sect absolute">				
 			<div class="sign-in caja">
 				<div class="deco">
 					<span class="">Descubre mucho más</span>
@@ -63,6 +64,15 @@
 			</form>-->
 		</section>				
 	</section>
+
+	<form action="#" id="registerUser" class="none" onsubmit="return false" >
+		<label for="datepicker">Fecha de nacimiento</label>
+		<input type="text" id="datepicker" required>
+		<select class="city-select inline-block" required>
+				<option value="">Seleccionar ciudad</option>
+		</select>	
+		<input type="submit" value="Enviar" id="submitUser" style="font-size:1rem;"></input>		
+	</form>
 
 	<script id="notification-template" type="text/template">
 		<figure class="logo-cont">
@@ -139,6 +149,12 @@
 
 	<script src="/static/lib/modernizr-2.6.2-respond-1.1.0.min.js" type="text/javascript"></script>
 	<script src="/static/lib/jquery.js"></script>	
+	<script src="/static/lib/jquery-ui/jquery-ui.js"></script>
 	<script src="/static/js/homeapp.js" type="text/javascript"></script>
+	<script>
+	  $(function() {
+	    $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+	  });
+  	</script>
 </body>
 </html>

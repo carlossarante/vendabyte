@@ -16140,8 +16140,8 @@ var Backbone = require('backbone'),
 	  Router = require('./routers/homerouter');
 	  Backbone.$ = $;
 
-    window.$ = $;
-    window.jQuery = $;
+    //window.$ = $;
+    //window.jQuery = $;
 
 $(function(){
   Backbone.app = new Router();
@@ -16152,7 +16152,10 @@ $(function(){
   //document.getElementById('selectIn').addEventListener('change', handleFileSelect, false);
   //document.getElementById('dropIn').addEventListener('change', handleFileSelect, false);
 
-
+  function myFunction()
+  {
+    alert("The form will be submitted");
+  }
   var csrftoken = Backbone.app.csrftoken('csrftoken');
 
   function csrfSafeMethod(method) {
@@ -16385,6 +16388,7 @@ module.exports= Backbone.Model.extend({
               window.location.href = data;
             },
             404:function(data){
+              var form = document.forms[0]; 
               json={};
               json.email = _session.attributes.email;
               json.facebook_uid = _session.attributes.id;
@@ -16397,8 +16401,40 @@ module.exports= Backbone.Model.extend({
               json.cover_url = _session.attributes.cover.source;
               json.sex = _session.attributes.gender;
               json.birthday = "1988-04-24";
-              split=  _session.attributes.location.name.split(",",1);
-              $.get('/api/cities/?city_name='+split.join(), function(data) {
+              window.datos = _session.attributes;
+              //split=  _session.attributes.location.name.split(",",1);
+
+              y = $('.city-select');
+              $.get('/api/cities/?format=json', function(data) {
+                data.forEach(function(argument) {
+                  y.append('<option value="'+argument.url+'" label= "'+argument.city_name+'"></option>');
+                })
+              });
+
+              $("#registerUser").removeClass('none');
+
+              form.onsubmit = function(){
+
+                //json.birthday = $("#year").val()+"-"+$("#month").val()+"-"+$("#day").val();
+                json.birthday = $("#datepicker").val();
+                json.city = $(".city-select").val();
+
+                 $.ajax({
+                    url: "/api/user/",
+                    type: 'POST',
+                    data: json,
+                    statusCode: {
+                      200:function(data){
+                        console.log("respuesta POST:",data);
+                        window.location.href = data;
+                      },
+                      404:function(data){                        
+                      },
+                    },
+                }); 
+                return false;
+              }
+             /* $.get('/api/cities/?format=json', function(data) {
                 json.city = data[0].url;
                   console.log("JSON ENVIADO USER:", json);
                   $.ajax({
@@ -16414,7 +16450,7 @@ module.exports= Backbone.Model.extend({
                       },
                     },
                 }); 
-              });                    
+              }); */                   
             },
           },
       }); 
@@ -16529,11 +16565,11 @@ module.exports = Backbone.Router.extend({
 		this.userModel.urlRoot = "/api/user/?list=me&format=json";
 		//this.userProfileView = new UserProfileView({model: this.userModel});
 		this.notificationsView = new NotificationsView({model : this.userModel});
-		this.userModel.fetch({ 
-			success: function(){
-       			console.log("Usuario: "+Backbone.app.userModel);
-    		}
-    	});
+		//this.userModel.fetch({ 
+		//	success: function(){
+       	//		console.log("Usuario: "+Backbone.app.userModel);
+    	//	}
+    	//});
     	
     	this.fbLoginView = new FBLoginView();
 
@@ -16798,6 +16834,7 @@ module.exports = Backbone.View.extend({
 
 	events : {
 
+		'click .follow' : 'interested',
 		'click .interest' : 'interested',
 		'click .action.icon-share' : 'share',
 		'click .action.icon-bubble' : 'comment',
@@ -16923,17 +16960,17 @@ module.exports = Backbone.View.extend({
 	},
 
 	render : function(){
-		var product = this.model.toJSON();
+		var notification = this.model.toJSON();
 		/*this.model.set(this.model.attributes[0]);
 		product = this.model.toJSON
 		window.model = this.model;*/
-		var html = this.template(product);
+		var html = this.template(notification);
 		this.$el.html(html);
 		console.log("Notification render///////////////////");
 		return this;
 	},
 	home : function() {
-		var url = "/"+this.model.attributes[0].username+"/";
+		var url = "/users/"+this.model.attributes[0].id+"/";
 		var products = $('.products')
 		var fileBrowse = $('.file-browse');
 		var optionMenu = $('.options-menu');
@@ -16959,7 +16996,9 @@ module.exports = Backbone.View.extend({
 	},
 
 	perfil : function() {
-		var url = "/"+this.model.attributes[0].username+"/";
+		$("body").scrollTop(0);
+
+		var url = "/users/"+this.model.attributes[0].id+"/";
 		var products = $('.products')
 		var fileBrowse = $('.file-browse');
 		var optionMenu = $('.options-menu');
@@ -17017,6 +17056,10 @@ module.exports = Backbone.View.extend({
 		    	},
 		 	}
 		});
+	},
+	navigate : function(url){
+		Backbone.app.navigate(url,{trigger : true});
+		
 	},
 });
 

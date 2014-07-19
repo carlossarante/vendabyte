@@ -16115,9 +16115,11 @@ var Backbone = require('backbone'),
 module.exports = Backbone.Collection.extend({ model : Comment});
 },{"../models/comment":26,"backbone":2}],24:[function(require,module,exports){
 var Backbone = require('backbone'),
-	Comment	= require('../models/follower');
+	Follower = require('../models/follower');
 
-module.exports = Backbone.Collection.extend({});
+module.exports = Backbone.Collection.extend({
+	model : Follower ,
+});
 },{"../models/follower":28,"backbone":2}],25:[function(require,module,exports){
 var Backbone = require('backbone'),
 	Product	= require('../models/product');
@@ -16196,7 +16198,13 @@ module.exports = Backbone.Model.extend({
 },{"backbone":2}],28:[function(require,module,exports){
 var Backbone = require('backbone');
 
-module.exports = Backbone.Model.extend({});
+module.exports = Backbone.Model.extend({
+	urlRoot : window.location.origin+"/api/user/",
+
+	url : function() {
+		return this.urlRoot+this.id+"/";
+	},
+});
 },{"backbone":2}],29:[function(require,module,exports){
 var Backbone = require('backbone');
 
@@ -16367,6 +16375,7 @@ module.exports= Backbone.Model.extend({
               window.location.href = data;
             },
             404:function(data){
+              var form = document.forms[0]; 
               json={};
               json.email = _session.attributes.email;
               json.facebook_uid = _session.attributes.id;
@@ -16379,8 +16388,40 @@ module.exports= Backbone.Model.extend({
               json.cover_url = _session.attributes.cover.source;
               json.sex = _session.attributes.gender;
               json.birthday = "1988-04-24";
-              split=  _session.attributes.location.name.split(",",1);
-              $.get('/api/cities/?city_name='+split.join(), function(data) {
+              window.datos = _session.attributes;
+              //split=  _session.attributes.location.name.split(",",1);
+
+              y = $('.city-select');
+              $.get('/api/cities/?format=json', function(data) {
+                data.forEach(function(argument) {
+                  y.append('<option value="'+argument.url+'" label= "'+argument.city_name+'"></option>');
+                })
+              });
+
+              $("#registerUser").removeClass('none');
+
+              form.onsubmit = function(){
+
+                //json.birthday = $("#year").val()+"-"+$("#month").val()+"-"+$("#day").val();
+                json.birthday = $("#datepicker").val();
+                json.city = $(".city-select").val();
+
+                 $.ajax({
+                    url: "/api/user/",
+                    type: 'POST',
+                    data: json,
+                    statusCode: {
+                      200:function(data){
+                        console.log("respuesta POST:",data);
+                        window.location.href = data;
+                      },
+                      404:function(data){                        
+                      },
+                    },
+                }); 
+                return false;
+              }
+             /* $.get('/api/cities/?format=json', function(data) {
                 json.city = data[0].url;
                   console.log("JSON ENVIADO USER:", json);
                   $.ajax({
@@ -16396,7 +16437,7 @@ module.exports= Backbone.Model.extend({
                       },
                     },
                 }); 
-              });                    
+              }); */                   
             },
           },
       }); 
@@ -16414,10 +16455,7 @@ module.exports= Backbone.Model.extend({
             if (!response2 || response2.error) {
               callback(true, response2.error);
             } else {
-              console.log('RESPUESTAAAAAA', response2);
-              window.response=response;
               response.picture = response2;
-              debugger;
               callback(null, response);
             }
           });          
@@ -16491,7 +16529,7 @@ var Backbone 		= require('backbone'),
 	FormModel		= require('../models/form'),
 	SessionModel 	= require('../models/sessionmodel'),
 	UserModel 		= require('../models/user'),		
-	FileSelectModel = require('../models/fileselect')
+	FileSelectModel = require('../models/fileselect'),
 	Products 		= require('../collections/products'),
 	//Badgets 		= require('../collections/badgets'),
 	Followers 		= require('../collections/followers'),
@@ -16499,6 +16537,7 @@ var Backbone 		= require('backbone'),
 	//BadgetsView 	= require('../views/badgets'),
 	OptionsView 	= require('../views/options'),	
 	FollowersView 	= require('../views/followers'),
+	UserCoverView 	= require('../views/portada'),
 	UserProfileView = require('../views/userprofile'),
 	NotificationsView = require('../views/notificationbar'),
 	FileSelectView = require('../views/fileselect'),
@@ -16506,6 +16545,7 @@ var Backbone 		= require('backbone'),
 
 module.exports = Backbone.Router.extend({
 	routes: {
+		":users/osiris/"	: "userProfile",
 		":users/:id/"	: "user",
 		"lonuevo/" 		: "loNuevo",
 		"siguiendo/" 	: "siguiendo",
@@ -16523,7 +16563,9 @@ module.exports = Backbone.Router.extend({
 		this.jsonData = {};
 
 		this.userModel = new UserModel();
+		window.user = this.userModel;
 		this.userModel.urlRoot = "/api/user/?list=me&format=json";
+		this.userCoverView= new UserCoverView({model: this.userModel});
 		this.userProfileView = new UserProfileView({model: this.userModel});
 		this.notificationsView = new NotificationsView({model : this.userModel});
 		this.userModel.fetch({ 
@@ -16569,8 +16611,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
-		
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
+
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.removeClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -16594,8 +16642,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.addClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -16619,8 +16673,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.addClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -16644,8 +16704,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.removeClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -16669,8 +16735,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.removeClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -16695,8 +16767,14 @@ module.exports = Backbone.Router.extend({
 		var optionMenu = $('.options-menu');
 		var badgets = $('.badgets-cont');
 		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.removeClass('none');
+		formulario.addClass('none');
 		fileBrowse.removeClass('none');
 		optionMenu.removeClass('none');
 		badgets.addClass('none');
@@ -16715,15 +16793,47 @@ module.exports = Backbone.Router.extend({
 		var products = $('.products')
 		var fileBrowse = $('.file-browse');
 		var optionMenu = $('.options-menu');
+		var badgets = $('.badgets-cont');
+		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
 		var item = $("#newest");
 		this.activeOpt(item);
 
+		portada.addClass('none');
+		perfil.addClass('none');
 		products.removeClass('none');
-		fileBrowse.removeClass('none');
-		optionMenu.removeClass('none');
+		formulario.addClass('none');
+		fileBrowse.addClass('none');
+		optionMenu.addClass('none');
+		badgets.removeClass('none');
+		followerSect.addClass('none');
+
+
 
 		this.loNuevo();
 		console.log("ENTRE A USERS JJSJJSJSJSJJ");
+	},
+
+	userProfile:function() {
+		var products = $('.products')
+		var fileBrowse = $('.file-browse');
+		var optionMenu = $('.options-menu');
+		var badgets = $('.badgets-cont');
+		var followerSect = $('.followers-sect');
+		var formulario=$('.upload-box');
+		var perfil = $('.user-cont');
+		var portada = $('.portada-cont');
+
+		portada.removeClass('none');
+		perfil.removeClass('none');
+		products.removeClass('none');
+		formulario.addClass('none');
+		fileBrowse.addClass('none');
+		optionMenu.addClass('none');
+		badgets.removeClass('none');
+		followerSect.addClass('none');	
 	},
 
 	activeOpt : function(el){
@@ -16764,7 +16874,7 @@ module.exports = Backbone.Router.extend({
 	    return cookieValue;
 	},*/
 });
-},{"../collections/followers":24,"../collections/products":25,"../models/fileselect":27,"../models/follower":28,"../models/form":29,"../models/gost":30,"../models/sessionmodel":32,"../models/user":33,"../views/fileselect":38,"../views/followers":40,"../views/form":41,"../views/notificationbar":42,"../views/options":43,"../views/products":45,"../views/userprofile":46,"backbone":2,"jquery":21}],35:[function(require,module,exports){
+},{"../collections/followers":24,"../collections/products":25,"../models/fileselect":27,"../models/follower":28,"../models/form":29,"../models/gost":30,"../models/sessionmodel":32,"../models/user":33,"../views/fileselect":38,"../views/followers":40,"../views/form":41,"../views/notificationbar":42,"../views/options":43,"../views/portada":44,"../views/products":46,"../views/userprofile":47,"backbone":2,"jquery":21}],35:[function(require,module,exports){
 var Backbone = require('backbone'),
     $ = require('jquery'),
 	  Router = require('./routers/userrouter');
@@ -17053,6 +17163,7 @@ module.exports = Backbone.View.extend({
 	className : 'follower-cont inline-block relative',
 
 	events : {
+		"click .follow-user" : "follow",
 	},
 
 	template : _.template($("#follower-template").html()),
@@ -17062,11 +17173,54 @@ module.exports = Backbone.View.extend({
 	},
 
 	render : function(){
+		var self = this;
 		var follower = this.model.toJSON();
 		var html = this.template(follower);
 		this.$el.html(html);
 
+		if(this.model.attributes.user_following)
+		{
+			self.$el.find('.follow-user').html("No seguir");
+		}
+		else
+		{
+			self.$el.find('.follow-user').html("Seguir");		
+		}
+
 		return this;
+	},
+	follow : function(){
+		var self = this;
+
+		if(this.model.attributes.user_following)
+		{
+			$.ajax({
+			    url: window.location.origin + "/api/user/"+this.model.attributes.id +"/remove_follower/",
+			    type: 'DELETE',
+				statusCode: {
+			    	200: function() {
+			      		self.model.fetch();
+			      		Backbone.app.userModel.fetch();	
+			    	},	    	
+			    	500: function() {
+			    		alert("Error al sincronizar con el servidor");
+			    	}
+			 	}
+			});
+		}
+		else
+		{
+			$.ajax({
+			    url: window.location.origin + "/api/user/"+this.model.attributes.id +"/add_follower/",
+			    type: 'POST',
+				statusCode: {
+			    	200: function() {
+			    		self.model.fetch();
+			    		Backbone.app.userModel.fetch();	
+			    	},
+			 	}
+			});
+		}			
 	},
 });
 
@@ -17187,17 +17341,17 @@ module.exports = Backbone.View.extend({
 	},
 
 	render : function(){
-		var product = this.model.toJSON();
+		var notification = this.model.toJSON();
 		/*this.model.set(this.model.attributes[0]);
 		product = this.model.toJSON
 		window.model = this.model;*/
-		var html = this.template(product);
+		var html = this.template(notification);
 		this.$el.html(html);
 		console.log("Notification render///////////////////");
 		return this;
 	},
 	home : function() {
-		var url = "/"+this.model.attributes[0].username+"/";
+		var url = "/users/"+this.model.attributes[0].id+"/";
 		var products = $('.products')
 		var fileBrowse = $('.file-browse');
 		var optionMenu = $('.options-menu');
@@ -17223,24 +17377,11 @@ module.exports = Backbone.View.extend({
 	},
 
 	perfil : function() {
-		var url = "/"+this.model.attributes[0].username+"/";
-		var products = $('.products')
-		var fileBrowse = $('.file-browse');
-		var optionMenu = $('.options-menu');
-		var badgets = $('.badgets-cont');
-		var followerSect = $('.followers-sect');
-		var formulario=$('.upload-box');
-		var perfil = $('.user-cont');
-		var portada = $('.portada-cont');
+		$("body").scrollTop(0);
 
-		portada.removeClass('none');
-		perfil.removeClass('none');
-		products.removeClass('none');
-		formulario.addClass('none');
-		fileBrowse.addClass('none');
-		optionMenu.addClass('none');
-		badgets.removeClass('none');
-		followerSect.addClass('none');
+		//var url = "/users/"+this.model.attributes[0].id+"/";
+		var url = "/users/osiris/";
+		
 		Backbone.app.formView.render();
 		Backbone.app.fileSelectView.render();
 		FileList.prototype.cont = 0;
@@ -17281,6 +17422,10 @@ module.exports = Backbone.View.extend({
 		    	},
 		 	}
 		});
+	},
+	navigate : function(url){
+		Backbone.app.navigate(url,{trigger : true});
+		
 	},
 });
 
@@ -17343,6 +17488,32 @@ module.exports = Backbone.View.extend({
 
 },{"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],44:[function(require,module,exports){
 var Backbone 	= require('backbone'),
+	$ 			= require('jquery'),
+	_ 			= require('underscore');
+
+module.exports = Backbone.View.extend({
+	el : $('.portada-cont'),
+
+	events : {
+	},
+
+	template : _.template($("#cover-template").html()),
+
+	initialize : function () {
+		this.listenTo(this.model, "change", this.render, this);
+	},
+
+	render : function(){
+		var cover = this.model.toJSON();
+		var html = this.template(cover);
+		this.$el.html(html);
+		console.log("Notification render///////////////////");
+		return this;
+	},	
+});
+
+},{"backbone":2,"jquery":21,"underscore":22}],45:[function(require,module,exports){
+var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
 	$ 			= require('jquery'),
 	_ 			= require('underscore'),
@@ -17390,6 +17561,7 @@ module.exports = Backbone.View.extend({
 		{
 			this.$el.find('.icon-heart').css('color', 'white');
 		}
+
 		if(this.model.attributes.interested)
 		{
 			//this.$el.find('.interest').css('background-color', '#ffcc00');
@@ -17403,6 +17575,18 @@ module.exports = Backbone.View.extend({
 			self.$el.find('.interest').html("Me interesa");			
 			self.$el.find('.interest').removeClass('on-state');
 			self.$el.find('.interest').addClass('off-state');
+		}
+		if(this.model.attributes.user.id === Backbone.app.userModel.attributes[0].id)
+		{
+			self.$el.find('.follow').remove();
+		}
+		if(this.model.attributes.user.user_following)
+		{
+			self.$el.find('.follow').html("No seguir");
+		}
+		else
+		{
+			self.$el.find('.follow').html("Seguir");		
 		}
 
 
@@ -17559,18 +17743,42 @@ module.exports = Backbone.View.extend({
 		}		
 	},
 	follow : function(){
-		$.ajax({
-		    url: window.location.origin + "/api/user/"+this.model.attributes.user.id +"/add_follower/",
-		    type: 'POST',
-			statusCode: {
-		    	200: function() {
-		    	},
-		 	}
-		});
+		var self = this;
+
+		if(this.model.attributes.user.user_following)
+		{
+			$.ajax({
+			    url: window.location.origin + "/api/user/"+this.model.attributes.user.id +"/remove_follower/",
+			    type: 'DELETE',
+				statusCode: {
+			    	200: function() {
+			      		self.model.fetch();
+			      		Backbone.app.userProfileView.model.fetch();	
+			    	},	    	
+			    	500: function() {
+			    		alert("Error al sincronizar con el servidor");
+			    	}
+			 	}
+			});
+		}
+		else
+		{
+			$.ajax({
+			    url: window.location.origin + "/api/user/"+this.model.attributes.user.id +"/add_follower/",
+			    type: 'POST',
+				statusCode: {
+			    	200: function() {
+			    		self.model.fetch();
+			    		Backbone.app.userModel.fetch();	
+			    	},
+			 	}
+			});
+		}	
+
 	},
 });
 
-},{"../collections/comments":23,"../models/comment":26,"../views/comments":37,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],45:[function(require,module,exports){
+},{"../collections/comments":23,"../models/comment":26,"../views/comments":37,"backbone":2,"handlebars":20,"jquery":21,"underscore":22}],46:[function(require,module,exports){
 var Backbone    = require('backbone'),
     //Handlebars  = require('handlebars'),
     $           = require('jquery'),
@@ -17611,7 +17819,7 @@ module.exports = Backbone.View.extend({
         });
       },
 });
-},{"../models/product":31,"../views/product":44,"backbone":2,"jquery":21}],46:[function(require,module,exports){
+},{"../models/product":31,"../views/product":45,"backbone":2,"jquery":21}],47:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	$ 			= require('jquery'),
 	_ 			= require('underscore');
