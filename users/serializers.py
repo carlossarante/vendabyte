@@ -40,10 +40,46 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 	date_joined = serializers.Field(source='date_joined')
 	average_rating = serializers.Field('average_rating')
 	user_following = serializers.SerializerMethodField('is_following')
+	quantity_followers = serializers.SerializerMethodField('cant_followers')
+	quantity_following = serializers.SerializerMethodField('cant_following')
 	class Meta:
 		model = User
-		fields = ('id','email','first_name','last_name','birthday','photo','cover','city','medals','contact','rating_set','sex','date_joined','average_rating','facebook_uid','user_following')
+		fields = (
+			'id',
+			'email',
+			'first_name',
+			'last_name',
+			'birthday',
+			'photo',
+			'cover',
+			'city',
+			'medals',
+			'contact',
+			'rating_set',
+			'sex',
+			'date_joined',
+			'average_rating',
+			'facebook_uid',
+			'user_following',
+			'quantity_followers',
+			'quantity_following',
+			)
 		write_only_fields = ('facebook_uid',)
+
+	def cant_followers(self,obj):
+		try:
+			q_followers = obj.followers.count()
+			return q_followers
+		except:
+			return 0
+	def cant_following(self,obj):
+		try:
+			q_following = obj.follows.count()
+			return q_following
+		except:
+			return 0
+
+
 
 	def is_following(self,obj):
 		request = self.context.get('request',None)
