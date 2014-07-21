@@ -73,10 +73,10 @@ module.exports = Backbone.Router.extend({
 		});
 	},
 
-	index : function(){
+	/*index : function(){
 		console.log("Estoy en el index");
 		//this.fetchData();		
-	},
+	},*/
 
 	loNuevo : function(){
 		var itemMenu = $('#newest');
@@ -316,7 +316,7 @@ module.exports = Backbone.Router.extend({
 	activeOpt : function(el){
 		$(".options").removeClass('active');
 		el.addClass('active');
-	},
+	},/*
 
 	fetchData : function(){
 		var self = this;
@@ -326,7 +326,7 @@ module.exports = Backbone.Router.extend({
 	      	self.products.add( new Product(self.jsonData));
 		});		
 	},
-
+*/
 	csrftoken : function(name){
 	    var cookieValue = null;
 	    if (document.cookie && document.cookie != '') {

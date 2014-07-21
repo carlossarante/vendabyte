@@ -16127,19 +16127,23 @@ var Backbone = require('backbone'),
 
 module.exports = Backbone.Collection.extend({ 
 	model : Product ,
+  nextPage:"",
+  prevPage:"",
 	fetch:function(){
-        var self = this;
-        $.ajax({
-          url: self.url,
-          type: 'GET',
-          statusCode: {
-            200:function(data){            	
-              	self.add(data.results);
-             	console.log('Recuperados ' + Backbone.app.products.length + ' productos');
-             }
-          }
-        });
-     },
+    var self = this;
+    $.ajax({
+      url: self.url,
+      type: 'GET',
+      statusCode: {
+        200:function(data){            	
+         	self.add(data.results);
+          self.nextPage = data.next;
+          self.prevPage = data.previous;
+         	console.log('Recuperados ' + Backbone.app.products.length + ' productos');
+        }
+      }
+    });
+  },
 });
 },{"../models/product":31,"backbone":2}],26:[function(require,module,exports){
 var Backbone = require('backbone');
@@ -16232,7 +16236,8 @@ module.exports = Backbone.Model.extend({
 		}
 		request.onloadend = function () {	
 			if (request.status === 201) {
-				Backbone.app.formView.render();   
+				Backbone.app.formView.render();  
+				$("#articleUpload").addClass('none');
 			};
 		}
 		window.request=request;
@@ -16596,10 +16601,10 @@ module.exports = Backbone.Router.extend({
 		});
 	},
 
-	index : function(){
+	/*index : function(){
 		console.log("Estoy en el index");
 		//this.fetchData();		
-	},
+	},*/
 
 	loNuevo : function(){
 		var itemMenu = $('#newest');
@@ -16839,7 +16844,7 @@ module.exports = Backbone.Router.extend({
 	activeOpt : function(el){
 		$(".options").removeClass('active');
 		el.addClass('active');
-	},
+	},/*
 
 	fetchData : function(){
 		var self = this;
@@ -16849,7 +16854,7 @@ module.exports = Backbone.Router.extend({
 	      	self.products.add( new Product(self.jsonData));
 		});		
 	},
-
+*/
 	csrftoken : function(name){
 	    var cookieValue = null;
 	    if (document.cookie && document.cookie != '') {
@@ -16886,6 +16891,21 @@ var Backbone = require('backbone'),
 $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
+
+  var element = $(window);
+  element.scroll(function(event) {
+    console.log("SCROLL TOP :",element.scrollTop());
+    var elTop = $(window).scrollTop(),
+    elHeight = $(document).height(),
+    winheight = $(window).height(),
+    scrolltrigger = 0.95;
+
+    if  ((elTop/(elHeight-winheight)) > scrolltrigger) {
+      var products = Backbone.app.products;
+      products.url = products.nextPage;
+      products.fetch();
+    }  
+  });
   
   FileReader.prototype.id = 0;
   FileList.prototype.cont = 0;
@@ -17806,6 +17826,7 @@ module.exports = Backbone.View.extend({
       addAll: function () {
         this.collection.forEach(this.addOne,this);
       },
+      
       fetchData:function(url){
         var self = this;
         $.ajax({
@@ -17814,7 +17835,7 @@ module.exports = Backbone.View.extend({
           statusCode: {
             200:function(data){
               Backbone.app.products.add(data.results);
-             }
+            }
           }
         });
       },

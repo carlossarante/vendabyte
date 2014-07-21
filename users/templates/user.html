@@ -110,7 +110,7 @@
 				</div>	-->			
 			</div>
 			
-			<form action="/articles/api/article/" id="articleUpload" class="upload-box none" style="height:auto; padding-bottom:20px; margin-bottom:40px;">
+			<form action="" id="articleUpload" class="upload-box none" style="height:auto; padding-bottom:20px; margin-bottom:40px;" onsubmit="return false">
 			<!--	<ul class="thumbnail-cont">
 					<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
 					<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
@@ -250,7 +250,7 @@
 			<textarea form="articleUpload" name="specs" placeholder="Specs" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
 		</div>
 		<input type="number" name="price" min="0" style="font-size:1rem" placeholder="Precio" required>	
-		<button type="button" id="submit" style="font-size:1rem;">Subir articulo</button>
+		<button type="submit" id="submit" style="font-size:1rem;">Subir articulo</button>
   	</script>
   	<script id="cover-template" type="text/template">
   		<img src="/media/<% print(this.model.attributes[0].cover)%>" alt="Vendabyte" class="portada">
