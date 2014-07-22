@@ -1,4 +1,6 @@
 var Backbone = require('backbone'),
-	Comment	= require('../models/follower');
+	Follower = require('../models/follower');
 
-module.exports = Backbone.Collection.extend({});
+module.exports = Backbone.Collection.extend({
+	model : Follower ,
+});

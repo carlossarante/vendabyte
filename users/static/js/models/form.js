@@ -24,7 +24,8 @@ module.exports = Backbone.Model.extend({
 		}
 		request.onloadend = function () {	
 			if (request.status === 201) {
-				Backbone.app.formView.render();   
+				Backbone.app.formView.render();  
+				$("#articleUpload").addClass('none');
 			};
 		}
 		window.request=request;

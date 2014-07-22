@@ -3,8 +3,8 @@ var Backbone = require('backbone'),
 	  Router = require('./routers/homerouter');
 	  Backbone.$ = $;
 
-    window.$ = $;
-    window.jQuery = $;
+    //window.$ = $;
+    //window.jQuery = $;
 
 $(function(){
   Backbone.app = new Router();
@@ -15,7 +15,10 @@ $(function(){
   //document.getElementById('selectIn').addEventListener('change', handleFileSelect, false);
   //document.getElementById('dropIn').addEventListener('change', handleFileSelect, false);
 
-
+  function myFunction()
+  {
+    alert("The form will be submitted");
+  }
   var csrftoken = Backbone.app.csrftoken('csrftoken');
 
   function csrfSafeMethod(method) {

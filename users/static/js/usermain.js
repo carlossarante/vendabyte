@@ -9,6 +9,21 @@ var Backbone = require('backbone'),
 $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
+
+  var element = $(window);
+  element.scroll(function(event) {
+    console.log("SCROLL TOP :",element.scrollTop());
+    var elTop = $(window).scrollTop(),
+    elHeight = $(document).height(),
+    winheight = $(window).height(),
+    scrolltrigger = 0.95;
+
+    if  ((elTop/(elHeight-winheight)) > scrolltrigger) {
+      var products = Backbone.app.products;
+      products.url = products.nextPage;
+      products.fetch();
+    }  
+  });
   
   FileReader.prototype.id = 0;
   FileList.prototype.cont = 0;

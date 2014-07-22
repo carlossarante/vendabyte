@@ -25,6 +25,7 @@ module.exports = Backbone.View.extend({
       addAll: function () {
         this.collection.forEach(this.addOne,this);
       },
+      
       fetchData:function(url){
         var self = this;
         $.ajax({
@@ -33,7 +34,7 @@ module.exports = Backbone.View.extend({
           statusCode: {
             200:function(data){
               Backbone.app.products.add(data.results);
-             }
+            }
           }
         });
       },

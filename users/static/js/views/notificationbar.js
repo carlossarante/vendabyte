@@ -22,17 +22,17 @@ module.exports = Backbone.View.extend({
 	},
 
 	render : function(){
-		var product = this.model.toJSON();
+		var notification = this.model.toJSON();
 		/*this.model.set(this.model.attributes[0]);
 		product = this.model.toJSON
 		window.model = this.model;*/
-		var html = this.template(product);
+		var html = this.template(notification);
 		this.$el.html(html);
 		console.log("Notification render///////////////////");
 		return this;
 	},
 	home : function() {
-		var url = "/"+this.model.attributes[0].username+"/";
+		var url = "/users/"+this.model.attributes[0].id+"/";
 		var products = $('.products')
 		var fileBrowse = $('.file-browse');
 		var optionMenu = $('.options-menu');
@@ -58,24 +58,11 @@ module.exports = Backbone.View.extend({
 	},
 
 	perfil : function() {
-		var url = "/"+this.model.attributes[0].username+"/";
-		var products = $('.products')
-		var fileBrowse = $('.file-browse');
-		var optionMenu = $('.options-menu');
-		var badgets = $('.badgets-cont');
-		var followerSect = $('.followers-sect');
-		var formulario=$('.upload-box');
-		var perfil = $('.user-cont');
-		var portada = $('.portada-cont');
+		$("body").scrollTop(0);
 
-		portada.removeClass('none');
-		perfil.removeClass('none');
-		products.removeClass('none');
-		formulario.addClass('none');
-		fileBrowse.addClass('none');
-		optionMenu.addClass('none');
-		badgets.removeClass('none');
-		followerSect.addClass('none');
+		//var url = "/users/"+this.model.attributes[0].id+"/";
+		var url = "/users/osiris/";
+		
 		Backbone.app.formView.render();
 		Backbone.app.fileSelectView.render();
 		FileList.prototype.cont = 0;
@@ -116,5 +103,9 @@ module.exports = Backbone.View.extend({
 		    	},
 		 	}
 		});
+	},
+	navigate : function(url){
+		Backbone.app.navigate(url,{trigger : true});
+		
 	},
 });
