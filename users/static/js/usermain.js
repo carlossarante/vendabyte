@@ -12,7 +12,6 @@ $(function(){
 
   var element = $(window);
   element.scroll(function(event) {
-    console.log("SCROLL TOP :",element.scrollTop());
     var elTop = $(window).scrollTop(),
     elHeight = $(document).height(),
     winheight = $(window).height(),

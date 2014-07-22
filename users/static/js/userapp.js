@@ -16406,12 +16406,17 @@ module.exports= Backbone.Model.extend({
               $("#registerUser").removeClass('none');
 
               form.onsubmit = function(){
-
+                var username = $("#username");
                 //json.birthday = $("#year").val()+"-"+$("#month").val()+"-"+$("#day").val();
                 json.birthday = $("#datepicker").val();
                 json.city = $(".city-select").val();
+                json.username = $("#username").val();
 
-                 $.ajax({
+                username.keypress(function(event) {
+                  console.log("ESTOY TECLEANDO :", event);
+                });
+
+                $.ajax({
                     url: "/api/user/",
                     type: 'POST',
                     data: json,
@@ -16894,7 +16899,6 @@ $(function(){
 
   var element = $(window);
   element.scroll(function(event) {
-    console.log("SCROLL TOP :",element.scrollTop());
     var elTop = $(window).scrollTop(),
     elHeight = $(document).height(),
     winheight = $(window).height(),

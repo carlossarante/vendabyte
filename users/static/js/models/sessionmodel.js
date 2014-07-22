@@ -33,7 +33,39 @@ module.exports= Backbone.Model.extend({
     console.log('logout done!');
   },
 
+  verificate:function(event) {
+    var msg = $("#verMSG");
+    console.log("ESTOY DENTRO");
+    $.ajax({
+        url: "/api/user/",
+        type: 'POST',
+        statusCode: {
+          200:function(data){
+            console.log("respuesta VERIFICACION POST:",data.responseText)
+            msg.html("Disponible");
+            msg.removeClass('none');
+          },
+          400:function(data){
+            console.log("respuesta VERIFICACION POST:",data.responseText)
+            msg.html("Usuario ya existe");
+            msg.removeClass('none');
+          },
+        },
+    }); 
+  },
+
   login: function (opts) {
+    var username = $("#username"),
+        self=this;
+
+    username.focusout(function(event) {
+      self.verificate(event);
+    });
+    username.keypress(function(event) {      
+      if(event.charCode === 13){
+        self.verificate(event);
+      }
+    });
     console.log('#########\n login called.\n###########');
     //console.log(opts);
 
@@ -96,13 +128,13 @@ module.exports= Backbone.Model.extend({
 
               $("#registerUser").removeClass('none');
 
-              form.onsubmit = function(){
-
+              form.onsubmit = function(){                
                 //json.birthday = $("#year").val()+"-"+$("#month").val()+"-"+$("#day").val();
                 json.birthday = $("#datepicker").val();
                 json.city = $(".city-select").val();
+                json.username = $("#username").val();               
 
-                 $.ajax({
+                $.ajax({
                     url: "/api/user/",
                     type: 'POST',
                     data: json,

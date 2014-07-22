@@ -16120,19 +16120,23 @@ var Backbone = require('backbone'),
 
 module.exports = Backbone.Collection.extend({ 
 	model : Product ,
+  nextPage:"",
+  prevPage:"",
 	fetch:function(){
-        var self = this;
-        $.ajax({
-          url: self.url,
-          type: 'GET',
-          statusCode: {
-            200:function(data){            	
-              	self.add(data.results);
-             	console.log('Recuperados ' + Backbone.app.products.length + ' productos');
-             }
-          }
-        });
-     },
+    var self = this;
+    $.ajax({
+      url: self.url,
+      type: 'GET',
+      statusCode: {
+        200:function(data){            	
+         	self.add(data.results);
+          self.nextPage = data.next;
+          self.prevPage = data.previous;
+         	console.log('Recuperados ' + Backbone.app.products.length + ' productos');
+        }
+      }
+    });
+  },
 });
 },{"../models/product":29,"backbone":2}],25:[function(require,module,exports){
 var Backbone = require('backbone'),
@@ -16350,7 +16354,39 @@ module.exports= Backbone.Model.extend({
     console.log('logout done!');
   },
 
+  verificate:function(event) {
+    var msg = $("#verMSG");
+    console.log("ESTOY DENTRO");
+    $.ajax({
+        url: "/api/user/",
+        type: 'POST',
+        statusCode: {
+          200:function(data){
+            console.log("respuesta VERIFICACION POST:",data.responseText)
+            msg.html("Disponible");
+            msg.removeClass('none');
+          },
+          400:function(data){
+            console.log("respuesta VERIFICACION POST:",data.responseText)
+            msg.html("Usuario ya existe");
+            msg.removeClass('none');
+          },
+        },
+    }); 
+  },
+
   login: function (opts) {
+    var username = $("#username"),
+        self=this;
+
+    username.focusout(function(event) {
+      self.verificate(event);
+    });
+    username.keypress(function(event) {      
+      if(event.charCode === 13){
+        self.verificate(event);
+      }
+    });
     console.log('#########\n login called.\n###########');
     //console.log(opts);
 
@@ -16413,13 +16449,13 @@ module.exports= Backbone.Model.extend({
 
               $("#registerUser").removeClass('none');
 
-              form.onsubmit = function(){
-
+              form.onsubmit = function(){                
                 //json.birthday = $("#year").val()+"-"+$("#month").val()+"-"+$("#day").val();
                 json.birthday = $("#datepicker").val();
                 json.city = $(".city-select").val();
+                json.username = $("#username").val();               
 
-                 $.ajax({
+                $.ajax({
                     url: "/api/user/",
                     type: 'POST',
                     data: json,
@@ -16998,24 +17034,9 @@ module.exports = Backbone.View.extend({
 	perfil : function() {
 		$("body").scrollTop(0);
 
-		var url = "/users/"+this.model.attributes[0].id+"/";
-		var products = $('.products')
-		var fileBrowse = $('.file-browse');
-		var optionMenu = $('.options-menu');
-		var badgets = $('.badgets-cont');
-		var followerSect = $('.followers-sect');
-		var formulario=$('.upload-box');
-		var perfil = $('.user-cont');
-		var portada = $('.portada-cont');
-
-		portada.removeClass('none');
-		perfil.removeClass('none');
-		products.removeClass('none');
-		formulario.addClass('none');
-		fileBrowse.addClass('none');
-		optionMenu.addClass('none');
-		badgets.removeClass('none');
-		followerSect.addClass('none');
+		//var url = "/users/"+this.model.attributes[0].id+"/";
+		var url = "/users/osiris/";
+		
 		Backbone.app.formView.render();
 		Backbone.app.fileSelectView.render();
 		FileList.prototype.cont = 0;
