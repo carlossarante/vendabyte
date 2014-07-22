@@ -23,6 +23,14 @@ def userIndex(request,id_user=None):
 		user = get_object_or_404(User,id=id_user)
 	return render(request,'user.html')
 
+@csrf_exempt
+def checkUserExistence(request):
+	try:
+		username = request.POST['username']
+		u = User.objects.get(username=username)
+		return HttpResponse('Usuario ya está registrado',status=409)
+	except User.DoesNotExist:
+		return HttpResponse('Disponible',status=200)
 
 
 def logout_me(request):
@@ -110,8 +118,6 @@ class BadgetSet(viewsets.ReadOnlyModelViewSet):
 	queryset = Badgets.objects.all()
 	permission_classes = (IsAuthenticatedOrReadOnly,)
 	serializer_class = BadgetSerializer
-	permission_classes = (IsAuthenticatedOrReadOnly,)
-
 
 class ContactSet(viewsets.ModelViewSet):
 	queryset= Contact.objects.all()
