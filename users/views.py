@@ -16,11 +16,11 @@ from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
 from users.models import User,Badgets,Contact
 
 
-def userIndex(request,id_user=None):
+def userIndex(request,username=None):
 	if request.user.is_anonymous():
 		return HttpResponseRedirect('/')
-	if id_user is not None:
-		user = get_object_or_404(User,id=id_user)
+	if username is not None:
+		user = get_object_or_404(User,username=username)
 	return render(request,'user.html')
 
 @csrf_exempt
@@ -50,7 +50,7 @@ def loginFacebookUser(request,response='html'):
 		if user is not None:
 			if user.is_active:
 				login(request,user)
-				return HttpResponse('/users/%s'% user.id)
+				return HttpResponse('/users/%s'% user.username)
 			else:
  				return HttpResponse('User is not active')
 		else:
