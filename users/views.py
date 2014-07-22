@@ -88,7 +88,7 @@ class UserSet(viewsets.ModelViewSet):
 			getUserPictures.delay(u,request.POST['photo_url'], request.POST['cover_url'])
 			u.save()
 			loginFacebookUser(request)
-			return HttpResponse('/users/%s'%serializer.data['id']) #Retorna la url del usuario.
+			return HttpResponse('/users/%s'%serializer.data['username']) #Retorna la url del usuario.
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)		
 
 
