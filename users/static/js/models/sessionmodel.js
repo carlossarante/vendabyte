@@ -37,7 +37,7 @@ module.exports= Backbone.Model.extend({
     var msg = $("#verMSG");
     console.log("ESTOY DENTRO");
     $.ajax({
-        url: "/api/user/",
+        url: "/users/check_user",
         type: 'POST',
         statusCode: {
           200:function(data){
@@ -45,7 +45,7 @@ module.exports= Backbone.Model.extend({
             msg.html("Disponible");
             msg.removeClass('none');
           },
-          400:function(data){
+          409:function(data){
             console.log("respuesta VERIFICACION POST:",data.responseText)
             msg.html("Usuario ya existe");
             msg.removeClass('none');
