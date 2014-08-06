@@ -16150,6 +16150,33 @@ var Backbone = require('backbone'),
 $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
+
+  //SCROLL INFINITO //////////////////////////////
+  var element = $(".offers-sect");
+  element.scroll(function(event) {
+    //console.log("POSICION ACUTAL",element.scrollTop())
+    var elTop = element.scrollTop(),
+    elHeight = $(".products").height(),
+    winheight = $(".wrapper").height(),
+    scrolltrigger = 0.95;
+    //console.log("RESULTADO: ",elTop/(elHeight-winheight));
+    if  ((elTop/(elHeight-winheight)) > scrolltrigger) {
+      var products = Backbone.app.products;
+      if(products.nextPage === null)
+      {
+        return;
+      }
+      else
+      {
+        products.url = products.nextPage;
+        //console.log("URL NEXT: ", products.nextPage);
+        products.fetch(); 
+      }
+    }  
+  });
+  
+  ////////////////////////////////////////////////////////
+
   
   FileReader.prototype.id = 0;
   FileList.prototype.cont = 0;
@@ -16354,12 +16381,13 @@ module.exports= Backbone.Model.extend({
     console.log('logout done!');
   },
 
-  verificate:function(event) {
+  verificate:function(event,username) {
     var msg = $("#verMSG");
     console.log("ESTOY DENTRO");
     $.ajax({
-        url: "/users/check_user",
+        url: "/users/check_user/",
         type: 'POST',
+        data: {"username": username},
         statusCode: {
           200:function(data){
             console.log("respuesta VERIFICACION POST:",data.responseText)
@@ -16380,11 +16408,11 @@ module.exports= Backbone.Model.extend({
         self=this;
 
     username.focusout(function(event) {
-      self.verificate(event);
+      self.verificate(event,username.val());
     });
     username.keypress(function(event) {      
       if(event.charCode === 13){
-        self.verificate(event);
+        self.verificate(event,username.val());
       }
     });
     console.log('#########\n login called.\n###########');
@@ -17006,7 +17034,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	},
 	home : function() {
-		var url = "/users/"+this.model.attributes[0].id+"/";
+		var url = "/users/"+this.model.attributes[0].username+"/";
 		var products = $('.products')
 		var fileBrowse = $('.file-browse');
 		var optionMenu = $('.options-menu');
@@ -17034,8 +17062,8 @@ module.exports = Backbone.View.extend({
 	perfil : function() {
 		$("body").scrollTop(0);
 
-		//var url = "/users/"+this.model.attributes[0].id+"/";
-		var url = "/users/osiris/";
+		var url = "/users/"+this.model.attributes[0].username+"/profile/";
+		//var url = "/users/osiris/";
 		
 		Backbone.app.formView.render();
 		Backbone.app.fileSelectView.render();

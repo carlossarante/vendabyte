@@ -14,6 +14,11 @@ mamei = rgb(255,206,0)
 crema = rgb(249,234,216)
 opaco = rgba(255,255,255,0.3)
 
+html
+body
+	width 100%
+	height 100%
+
 body 
 	background gris-claro
 	font-size 16px
@@ -111,6 +116,7 @@ a
 			cursor pointer
 
 .portada-cont
+	padding-top 45px
 	max-width 1280px
 	height 210px
 	z-index 3
@@ -119,24 +125,23 @@ a
 
 	.portada
 		width 100%
-
 .wrapper
-	top 45px
+	height inherit
 	width 100%
 	max-width 1024px
 	margin 0 auto	
-	border-right 1px solid gris-medio
 	background-color gris-claro
 	font-size 0rem
 	z-index 4
-	overflow hidden
-
+.wrapper2
+	min-height 100%
+	border-right 1px solid gris-medio
+	z-index 5
 .load-sect
 	width 50%
-	border-right 1px solid gris-medio
 	background-color gris-claro
 	text-align center
-	min-height	850px
+	//min-height	850px
 	
 	.badgets-cont
 		width 96%
@@ -169,12 +174,14 @@ a
 	.options-menu
 		width 96%
 		margin 0
+		margin-top 20px
+		max-width 491px
 		padding 0
 		.options
 			display inline-block
 			font-size 1.2rem
 			height 170px
-			width 157.2864px
+			width 157px
 			background-color gris-claro
 			box-shadow 0px 0px 5px gris-medio
 			margin-right 2%
@@ -263,7 +270,7 @@ a
 					
 .caja
 	box-shadow 0 0 5px gris-medio
-	margin 20px 0px
+	margin-top 20px 
 	width 96%
 	display inline-block
 	position relative
@@ -321,11 +328,13 @@ a
 			padding 0
 			cursor pointer
 .upload-box
-	height 300px
+	height auto
+	margin-top 20px
 	width 96%
 	background-color gris-claro
 	display inline-block
 	box-shadow 0 0 5px gris-medio
+	padding-bottom 20px
 	.thumbnail-cont
 		width 100%
 		padding 5px 0
@@ -379,14 +388,15 @@ a
 			font-size 1rem
 
 .offers-sect
-	float right
+	position absolute
+	border-right 1px solid gris-medio
+	border-left 1px solid gris-medio
 	font-size 1rem
 	text-align center
 	width 50%
+	min-height 100%
 	vertical-align top
 	background-color white
-	overflow auto
-	border-left 1px solid gris-medio
 
 .sign-in
 	height 75px
@@ -667,3 +677,13 @@ a
 .off-state
 	background-color white
 	color verde-claro	
+.vertical-line
+	height 100%
+	width 1px
+	background-color gris-medio
+	position absolute
+	top 0
+	left 50%
+	z-index 100
+.horizontal-line
+	height 45px

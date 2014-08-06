@@ -32,7 +32,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	},
 	home : function() {
-		var url = "/users/"+this.model.attributes[0].id+"/";
+		var url = "/users/"+this.model.attributes[0].username+"/";
 		var products = $('.products')
 		var fileBrowse = $('.file-browse');
 		var optionMenu = $('.options-menu');
@@ -54,14 +54,17 @@ module.exports = Backbone.View.extend({
 		Backbone.app.fileSelectView.render();
 		FileList.prototype.cont = 0;
 
+		$(".horizontal-line").css('display', 'block');
+
 		this.navigate(url);
 	},
 
 	perfil : function() {
 		$("body").scrollTop(0);
+		$(".horizontal-line").css('display', 'none');
 
-		//var url = "/users/"+this.model.attributes[0].id+"/";
-		var url = "/users/osiris/";
+		var url = "/users/"+this.model.attributes[0].username+"/profile/";
+		//var url = "/users/osiris/";
 		
 		Backbone.app.formView.render();
 		Backbone.app.fileSelectView.render();

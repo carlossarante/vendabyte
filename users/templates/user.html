@@ -25,168 +25,173 @@
 		<figure class="portada-cont relative none">
 			<img src="/static/img/portada.png" alt="Vendabyte" class="portada">
 		</figure>
-		<section class="offers-sect relative">			
-			<section class="followers-sect none">
-				<li class="follower-cont inline-block relative">
-					<div class="inline-block">
-						<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>	
-					</div>					
-					<div class="inline-block">
-						<span class="user-name">Ramiro Fernandez</span>
-						<div class="deco-count">
-							<span class="following-count">200</span>
-							<span class="following">Siguiendo</span>
+		<div class="wrapper2 relative">		
+			<div class="horizontal-line"></div>	
+			<section class="load-sect relative inline-block">
+				<div class="cont-izq">
+					<div class="user-cont inline-block relative none">
+						<div class="inline-block">
+							<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">					
+						</div>					
+						<div class="inline-block">
+							<span class="user-name block">Ramiro Fernandez</span>
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>	
+							<br/>
+							<div id="deco1"class="deco-count">
+								<span class="following-count">200</span>
+								<span class="following">Siguiendo</span>
+							</div>
+							<div class="deco-count">
+								<span class="followers-count">20</span>	
+								<span class="followers">Seguidores</span>
+							</div>
 						</div>
-						<div class="deco-count">
-							<span class="followers-count">20</span>	
-							<span class="followers">Seguidores</span>
-						</div>						
-						<div class="follow-user">Seguir</div>
+					</div>		
+					<div class="file-browse caja none">
+						<!--<div id= "deco" class="deco">
+							<span class="">Arrastra las fotos de tu articulo aqui</span>
+							<br/>
+							<input type="file" id="dropIn" value="Submit" class="dropArea absolute">
+							<div class="load-button">
+								<input type="file" id="selectIn" value="Submit" class="button relative">
+								Buscar el Archivo
+							</div>
+						</div>	-->			
 					</div>
-				</li>		
-				<li class="follower-cont inline-block relative">
-					<div class="inline-block">
-						<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>
-						<span class="icon-star"></span>	
-					</div>					
-					<div class="inline-block">
-						<span class="user-name">Ramiro Fernandez</span>
-						<div class="deco-count">
-							<span class="following-count">200</span>
-							<span class="following">Siguiendo</span>
+					
+					<form action="" id="articleUpload" class="upload-box none" onsubmit="return false">
+					<!--	<ul class="thumbnail-cont">
+							<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
+							<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
+							<li id="thumbnail3" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
+							<li id="thumbnail4" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
+							<li id="thumbnail5" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
+						</ul>
+						
+						<div class="rb-container">
+							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Celular">Celular</div>
+							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Computadora">Computadora</div>
+							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Videojuego">Videojuego</div>
+							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Otros">Otros</div>
 						</div>
-						<div class="deco-count">
-							<span class="followers-count">20</span>	
-							<span class="followers">Seguidores</span>
-						</div>						
-						<div class="follow-user">Seguir</div>
-					</div>
-				</li>		
-			</section>	
-			<section class="products none">				
-			</section>
-		</section>
-		<section class="load-sect relative">
-			<div class="user-cont inline-block relative none">
-				<div class="inline-block">
-					<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">					
-				</div>					
-				<div class="inline-block">
-					<span class="user-name block">Ramiro Fernandez</span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>
-					<span class="icon-star"></span>	
-					<br/>
-					<div id="deco1"class="deco-count">
-						<span class="following-count">200</span>
-						<span class="following">Siguiendo</span>
-					</div>
-					<div class="deco-count">
-						<span class="followers-count">20</span>	
-						<span class="followers">Seguidores</span>
-					</div>
+
+						<div class="select-cont">
+							<select class="brand-select inline-block">
+								<option value="volvo">Samsung</option>
+								<option value="volvo">BlackBerry</option>
+								<option value="volvo">HTC</option>
+								<option value="volvo">Apple</option>
+								<option value="volvo">Sony</option>
+								<option value="volvo">Toshiba</option>
+							</select>
+
+							<select class="model-select inline-block">
+								<option value="volvo">Samsung</option>
+								<option value="volvo">BlackBerry</option>
+								<option value="volvo">HTC</option>
+								<option value="volvo">Apple</option>
+								<option value="volvo">Sony</option>
+								<option value="volvo">Toshiba</option>
+							</select>
+						</div>				-->
+					</form>
+
+
+					<ul class="badgets-cont inline-block relative none">
+						<span class="badget-tittle">Mis Badgets</span>
+						<li class="badget">iconos</li>
+						<li class="badget">iconos</li>
+						<li class="badget">iconos</li>
+						<li class="badget">iconos</li>
+						<li class="badget">iconos</li>
+						<li class="badget">iconos</li>
+						<li class="badget">iconos</li>
+						<li class="badget">iconos</li>
+						<li class="badget">iconos</li>
+					</ul>
 				</div>
-			</div>		
-			<div class="file-browse caja none">
-				<!--<div id= "deco" class="deco">
-					<span class="">Arrastra las fotos de tu articulo aqui</span>
-					<br/>
-					<input type="file" id="dropIn" value="Submit" class="dropArea absolute">
-					<div class="load-button">
-						<input type="file" id="selectIn" value="Submit" class="button relative">
-						Buscar el Archivo
-					</div>
-				</div>	-->			
-			</div>
-			
-			<form action="" id="articleUpload" class="upload-box none" style="height:auto; padding-bottom:20px; margin-bottom:40px;" onsubmit="return false">
-			<!--	<ul class="thumbnail-cont">
-					<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-					<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-					<li id="thumbnail3" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-					<li id="thumbnail4" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-					<li id="thumbnail5" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
+				<ul class="options-menu inline-block none">
+					<li id="newest" class="options inline-block">
+						<div class="icon">Iconos</div>
+						<span class="option">Nuevo</span>
+					</li>
+					<li id="following" class="options inline-block">
+						<div class="icon">Iconos</div>
+						<span class="option">Siguiendo</span>
+					</li>
+					<li id="followers" class="options inline-block">
+						<div class="icon">Iconos</div>
+						<span class="option">Seguidores</span>
+					</li>
+					<li id="popular" class="options inline-block">
+						<div class="icon">Iconos</div>
+						<span class="option">Popular</span>
+					</li>
+					<li id="interesting" class="options inline-block">
+						<div class="icon">Iconos</div>
+						<span class="option">Me interesa</span>
+					</li>
+					<li id="selling" class="options inline-block">
+						<div class="icon">Iconos</div>
+						<span class="option">Lo vendo</span>
+					</li>
 				</ul>
-				
-				<div class="rb-container">
-					<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Celular">Celular</div>
-					<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Computadora">Computadora</div>
-					<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Videojuego">Videojuego</div>
-					<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Otros">Otros</div>
-				</div>
-
-				<div class="select-cont">
-					<select class="brand-select inline-block">
-						<option value="volvo">Samsung</option>
-						<option value="volvo">BlackBerry</option>
-						<option value="volvo">HTC</option>
-						<option value="volvo">Apple</option>
-						<option value="volvo">Sony</option>
-						<option value="volvo">Toshiba</option>
-					</select>
-
-					<select class="model-select inline-block">
-						<option value="volvo">Samsung</option>
-						<option value="volvo">BlackBerry</option>
-						<option value="volvo">HTC</option>
-						<option value="volvo">Apple</option>
-						<option value="volvo">Sony</option>
-						<option value="volvo">Toshiba</option>
-					</select>
-				</div>				-->
-			</form>
-
-
-			<ul class="badgets-cont inline-block relative none">
-				<span class="badget-tittle">Mis Badgets</span>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-				<li class="badget">iconos</li>
-			</ul>
-			<ul class="options-menu inline-block none">
-				<li id="newest" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Nuevo</span>
-				</li>
-				<li id="following" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Siguiendo</span>
-				</li>
-				<li id="followers" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Seguidores</span>
-				</li>
-				<li id="popular" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Popular</span>
-				</li>
-				<li id="interesting" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Me interesa</span>
-				</li>
-				<li id="selling" class="options inline-block">
-					<div class="icon">Iconos</div>
-					<span class="option">Lo vendo</span>
-				</li>
-			</ul>
-		</section>				
+			</section>
+			<section class="offers-sect inline-block">			
+				<section class="followers-sect none">
+					<li class="follower-cont inline-block relative">
+						<div class="inline-block">
+							<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>	
+						</div>					
+						<div class="inline-block">
+							<span class="user-name">Ramiro Fernandez</span>
+							<div class="deco-count">
+								<span class="following-count">200</span>
+								<span class="following">Siguiendo</span>
+							</div>
+							<div class="deco-count">
+								<span class="followers-count">20</span>	
+								<span class="followers">Seguidores</span>
+							</div>						
+							<div class="follow-user">Seguir</div>
+						</div>
+					</li>		
+					<li class="follower-cont inline-block relative">
+						<div class="inline-block">
+							<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>
+							<span class="icon-star"></span>	
+						</div>					
+						<div class="inline-block">
+							<span class="user-name">Ramiro Fernandez</span>
+							<div class="deco-count">
+								<span class="following-count">200</span>
+								<span class="following">Siguiendo</span>
+							</div>
+							<div class="deco-count">
+								<span class="followers-count">20</span>	
+								<span class="followers">Seguidores</span>
+							</div>						
+							<div class="follow-user">Seguir</div>
+						</div>
+					</li>		
+				</section>	
+				<section class="products none">				
+				</section>
+			</section>
+		</div>					
 	</section>
 
 	<script id="notification-template" type="text/template">

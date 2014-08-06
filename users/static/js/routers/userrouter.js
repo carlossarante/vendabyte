@@ -21,9 +21,9 @@ var Backbone 		= require('backbone'),
 	FormView 		= require('../views/form');
 
 module.exports = Backbone.Router.extend({
-	routes: {
-		":users/osiris/"	: "userProfile",
-		":users/:id/"	: "user",
+	routes: {		
+		":users/:username/"	: "user",
+		":users/:username/profile/"	: "userProfile",
 		"lonuevo/" 		: "loNuevo",
 		"siguiendo/" 	: "siguiendo",
 		"seguidores/" 	: "seguidores",
@@ -66,6 +66,12 @@ module.exports = Backbone.Router.extend({
 
 		this.formView = new FormView({ model : new FormModel({}) });
 		//this.formView.render();
+
+
+
+	/////ALTURA PANTALLA COMPLETA///////////////////
+		$(".offers-sect").css('min-height', $(window).height()-45+'px');
+	////////////////////////////////////////////////
 
 		Backbone.history.start({ 
     		pushState: true, 
@@ -267,15 +273,15 @@ module.exports = Backbone.Router.extend({
 	},
 
 	user : function(){
-		var products = $('.products')
-		var fileBrowse = $('.file-browse');
-		var optionMenu = $('.options-menu');
-		var badgets = $('.badgets-cont');
-		var followerSect = $('.followers-sect');
-		var formulario=$('.upload-box');
-		var perfil = $('.user-cont');
-		var portada = $('.portada-cont');
-		var item = $("#newest");
+		var products = $('.products'),
+		fileBrowse = $('.file-browse'),
+		optionMenu = $('.options-menu'),
+		badgets = $('.badgets-cont'),
+		followerSect = $('.followers-sect'),
+		formulario=$('.upload-box'),
+		perfil = $('.user-cont'),
+		portada = $('.portada-cont'),
+		item = $("#newest");
 		this.activeOpt(item);
 
 		portada.addClass('none');
@@ -286,8 +292,6 @@ module.exports = Backbone.Router.extend({
 		optionMenu.addClass('none');
 		badgets.removeClass('none');
 		followerSect.addClass('none');
-
-
 
 		this.loNuevo();
 		console.log("ENTRE A USERS JJSJJSJSJSJJ");
@@ -310,7 +314,7 @@ module.exports = Backbone.Router.extend({
 		fileBrowse.addClass('none');
 		optionMenu.addClass('none');
 		badgets.removeClass('none');
-		followerSect.addClass('none');	
+		followerSect.addClass('none');
 	},
 
 	activeOpt : function(el){

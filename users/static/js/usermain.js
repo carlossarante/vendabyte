@@ -10,20 +10,40 @@ $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
 
-  var element = $(window);
+  $(window).resize(function(event) {
+  /////ALTURA PANTALLA COMPLETA///////////////////
+    $(".offers-sect").css('min-height', $(window).height()-45+'px');
+  ////////////////////////////////////////////////
+    optionfloat();
+  });
+
+  //SCROLL INFINITO //////////////////////////////
+  var element = $(document);
   element.scroll(function(event) {
-    var elTop = $(window).scrollTop(),
-    elHeight = $(document).height(),
+    //console.log("POSICION ACUTAL",element.scrollTop())
+    var elTop = element.scrollTop(),
+    elHeight = $(".products").height(),
     winheight = $(window).height(),
     scrolltrigger = 0.95;
-
+   // console.log("RESULTADO: ",elTop/(elHeight-winheight));
     if  ((elTop/(elHeight-winheight)) > scrolltrigger) {
       var products = Backbone.app.products;
-      products.url = products.nextPage;
-      products.fetch();
+      if(products.nextPage === null)
+      {
+        return;
+      }
+      else
+      {
+        products.url = products.nextPage;
+        //console.log("URL NEXT: ", products.nextPage);
+        products.fetch(); 
+      }
     }  
+    optionfloat();
   });
   
+  ////////////////////////////////////////////////////////
+
   FileReader.prototype.id = 0;
   FileList.prototype.cont = 0;
   //document.getElementById('selectIn').addEventListener('change', handleFileSelect, false);
@@ -61,42 +81,73 @@ $(function(){
   });
 
 
-(function (d) {
-        var js, id = 'facebook-jssdk',
-          ref = d.getElementsByTagName('script')[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement('script');
-        js.id = id;
-        js.async = true;
-        js.src = "//connect.facebook.net/en_US/all.js";
-        ref.parentNode.insertBefore(js, ref);
-      }(document));
+  (function (d) {
+    var js, id = 'facebook-jssdk',
+      ref = d.getElementsByTagName('script')[0];
+    if (d.getElementById(id)) {
+      return;
+    }
+    js = d.createElement('script');
+    js.id = id;
+    js.async = true;
+    js.src = "//connect.facebook.net/en_US/all.js";
+    ref.parentNode.insertBefore(js, ref);
+  }(document));
 
-      window.fbAsyncInit = function () {
-        FB.init({
-          appId: '212602532249853',
-          channelUrl: '',
-          status: true, // check login status
-          cookie: true, // enable cookies to allow the server to access the session
-          xfbml: true // parse XFBML
-        });
+  window.fbAsyncInit = function () {
+    FB.init({
+      appId: '212602532249853',
+      channelUrl: '',
+      status: true, // check login status
+      cookie: true, // enable cookies to allow the server to access the session
+      xfbml: true // parse XFBML
+    });
 
-        FB.getLoginStatus(function (response) {
-          console.log('FB resp:', response, response.status);
-          /* Bind event handler only after Facebook SDK had a nice cup of coffee */
-         /*$('.icon-cog').on('click', function () {
-            Backbone.app.activeSession.login({
-              before: function () {
-                console.log('before login()')
-              },
-              after: function () {
-                console.log('after login()')
-              }
-            });
-          });*/
+    FB.getLoginStatus(function (response) {
+      console.log('FB resp:', response, response.status);
+      /* Bind event handler only after Facebook SDK had a nice cup of coffee */
+     /*$('.icon-cog').on('click', function () {
+        Backbone.app.activeSession.login({
+          before: function () {
+            console.log('before login()')
+          },
+          after: function () {
+            console.log('after login()')
+          }
         });
-      };
+      });*/
+    });
+  };
 });
 
+///MENU OPCIONES FLOTANTE///////////////////////////////
+  function optionfloat(){
+    var limit = $(".cont-izq");
+    var menu = $(".options-menu");
+    var scrolldoc = $(document).scrollTop();
+
+    if($(window).width()>=1024){
+      if(limit.height() + limit.offset().top < scrolldoc){    
+        menu.css({      
+          position: 'fixed',
+          top: '45px',
+          left: limit.children('.file-browse').offset().left+'px',
+        });
+      }
+      else{
+        menu.css({
+          position: 'relative',
+          top: '0',
+          left: '0',
+        });
+      }   
+    }    
+    else{
+      menu.css({
+        position: 'relative',
+        top: '0',
+        left: '0',
+      });
+    } 
+  }
+////////////////////////////////////////////////////////

@@ -33,12 +33,13 @@ module.exports= Backbone.Model.extend({
     console.log('logout done!');
   },
 
-  verificate:function(event) {
+  verificate:function(event,username) {
     var msg = $("#verMSG");
     console.log("ESTOY DENTRO");
     $.ajax({
-        url: "/users/check_user",
+        url: "/users/check_user/",
         type: 'POST',
+        data: {"username": username},
         statusCode: {
           200:function(data){
             console.log("respuesta VERIFICACION POST:",data.responseText)
@@ -59,11 +60,11 @@ module.exports= Backbone.Model.extend({
         self=this;
 
     username.focusout(function(event) {
-      self.verificate(event);
+      self.verificate(event,username.val());
     });
     username.keypress(function(event) {      
       if(event.charCode === 13){
-        self.verificate(event);
+        self.verificate(event,username.val());
       }
     });
     console.log('#########\n login called.\n###########');

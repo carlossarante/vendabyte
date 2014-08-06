@@ -9,6 +9,33 @@ var Backbone = require('backbone'),
 $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
+
+  //SCROLL INFINITO //////////////////////////////
+  var element = $(".offers-sect");
+  element.scroll(function(event) {
+    //console.log("POSICION ACUTAL",element.scrollTop())
+    var elTop = element.scrollTop(),
+    elHeight = $(".products").height(),
+    winheight = $(".wrapper").height(),
+    scrolltrigger = 0.95;
+    //console.log("RESULTADO: ",elTop/(elHeight-winheight));
+    if  ((elTop/(elHeight-winheight)) > scrolltrigger) {
+      var products = Backbone.app.products;
+      if(products.nextPage === null)
+      {
+        return;
+      }
+      else
+      {
+        products.url = products.nextPage;
+        //console.log("URL NEXT: ", products.nextPage);
+        products.fetch(); 
+      }
+    }  
+  });
+  
+  ////////////////////////////////////////////////////////
+
   
   FileReader.prototype.id = 0;
   FileList.prototype.cont = 0;

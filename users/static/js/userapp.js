@@ -16342,7 +16342,40 @@ module.exports= Backbone.Model.extend({
     console.log('logout done!');
   },
 
+  verificate:function(event,username) {
+    var msg = $("#verMSG");
+    console.log("ESTOY DENTRO");
+    $.ajax({
+        url: "/users/check_user/",
+        type: 'POST',
+        data: {"username": username},
+        statusCode: {
+          200:function(data){
+            console.log("respuesta VERIFICACION POST:",data.responseText)
+            msg.html("Disponible");
+            msg.removeClass('none');
+          },
+          409:function(data){
+            console.log("respuesta VERIFICACION POST:",data.responseText)
+            msg.html("Usuario ya existe");
+            msg.removeClass('none');
+          },
+        },
+    }); 
+  },
+
   login: function (opts) {
+    var username = $("#username"),
+        self=this;
+
+    username.focusout(function(event) {
+      self.verificate(event,username.val());
+    });
+    username.keypress(function(event) {      
+      if(event.charCode === 13){
+        self.verificate(event,username.val());
+      }
+    });
     console.log('#########\n login called.\n###########');
     //console.log(opts);
 
@@ -16405,16 +16438,11 @@ module.exports= Backbone.Model.extend({
 
               $("#registerUser").removeClass('none');
 
-              form.onsubmit = function(){
-                var username = $("#username");
+              form.onsubmit = function(){                
                 //json.birthday = $("#year").val()+"-"+$("#month").val()+"-"+$("#day").val();
                 json.birthday = $("#datepicker").val();
                 json.city = $(".city-select").val();
-                json.username = $("#username").val();
-
-                username.keypress(function(event) {
-                  console.log("ESTOY TECLEANDO :", event);
-                });
+                json.username = $("#username").val();               
 
                 $.ajax({
                     url: "/api/user/",
@@ -16554,9 +16582,9 @@ var Backbone 		= require('backbone'),
 	FormView 		= require('../views/form');
 
 module.exports = Backbone.Router.extend({
-	routes: {
-		":users/osiris/"	: "userProfile",
-		":users/:id/"	: "user",
+	routes: {		
+		":users/:username/"	: "user",
+		":users/:username/profile/"	: "userProfile",
 		"lonuevo/" 		: "loNuevo",
 		"siguiendo/" 	: "siguiendo",
 		"seguidores/" 	: "seguidores",
@@ -16599,6 +16627,12 @@ module.exports = Backbone.Router.extend({
 
 		this.formView = new FormView({ model : new FormModel({}) });
 		//this.formView.render();
+
+
+
+	/////ALTURA PANTALLA COMPLETA///////////////////
+		$(".offers-sect").css('min-height', $(window).height()-45+'px');
+	////////////////////////////////////////////////
 
 		Backbone.history.start({ 
     		pushState: true, 
@@ -16800,15 +16834,15 @@ module.exports = Backbone.Router.extend({
 	},
 
 	user : function(){
-		var products = $('.products')
-		var fileBrowse = $('.file-browse');
-		var optionMenu = $('.options-menu');
-		var badgets = $('.badgets-cont');
-		var followerSect = $('.followers-sect');
-		var formulario=$('.upload-box');
-		var perfil = $('.user-cont');
-		var portada = $('.portada-cont');
-		var item = $("#newest");
+		var products = $('.products'),
+		fileBrowse = $('.file-browse'),
+		optionMenu = $('.options-menu'),
+		badgets = $('.badgets-cont'),
+		followerSect = $('.followers-sect'),
+		formulario=$('.upload-box'),
+		perfil = $('.user-cont'),
+		portada = $('.portada-cont'),
+		item = $("#newest");
 		this.activeOpt(item);
 
 		portada.addClass('none');
@@ -16819,8 +16853,6 @@ module.exports = Backbone.Router.extend({
 		optionMenu.addClass('none');
 		badgets.removeClass('none');
 		followerSect.addClass('none');
-
-
 
 		this.loNuevo();
 		console.log("ENTRE A USERS JJSJJSJSJSJJ");
@@ -16843,7 +16875,7 @@ module.exports = Backbone.Router.extend({
 		fileBrowse.addClass('none');
 		optionMenu.addClass('none');
 		badgets.removeClass('none');
-		followerSect.addClass('none');	
+		followerSect.addClass('none');
 	},
 
 	activeOpt : function(el){
@@ -16897,20 +16929,40 @@ $(function(){
   Backbone.app = new Router();
   window.vendabyte = Backbone.app;
 
-  var element = $(window);
+  $(window).resize(function(event) {
+  /////ALTURA PANTALLA COMPLETA///////////////////
+    $(".offers-sect").css('min-height', $(window).height()-45+'px');
+  ////////////////////////////////////////////////
+    optionfloat();
+  });
+
+  //SCROLL INFINITO //////////////////////////////
+  var element = $(document);
   element.scroll(function(event) {
-    var elTop = $(window).scrollTop(),
-    elHeight = $(document).height(),
+    //console.log("POSICION ACUTAL",element.scrollTop())
+    var elTop = element.scrollTop(),
+    elHeight = $(".products").height(),
     winheight = $(window).height(),
     scrolltrigger = 0.95;
-
+   // console.log("RESULTADO: ",elTop/(elHeight-winheight));
     if  ((elTop/(elHeight-winheight)) > scrolltrigger) {
       var products = Backbone.app.products;
-      products.url = products.nextPage;
-      products.fetch();
+      if(products.nextPage === null)
+      {
+        return;
+      }
+      else
+      {
+        products.url = products.nextPage;
+        //console.log("URL NEXT: ", products.nextPage);
+        products.fetch(); 
+      }
     }  
+    optionfloat();
   });
   
+  ////////////////////////////////////////////////////////
+
   FileReader.prototype.id = 0;
   FileList.prototype.cont = 0;
   //document.getElementById('selectIn').addEventListener('change', handleFileSelect, false);
@@ -16948,46 +17000,76 @@ $(function(){
   });
 
 
-(function (d) {
-        var js, id = 'facebook-jssdk',
-          ref = d.getElementsByTagName('script')[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement('script');
-        js.id = id;
-        js.async = true;
-        js.src = "//connect.facebook.net/en_US/all.js";
-        ref.parentNode.insertBefore(js, ref);
-      }(document));
+  (function (d) {
+    var js, id = 'facebook-jssdk',
+      ref = d.getElementsByTagName('script')[0];
+    if (d.getElementById(id)) {
+      return;
+    }
+    js = d.createElement('script');
+    js.id = id;
+    js.async = true;
+    js.src = "//connect.facebook.net/en_US/all.js";
+    ref.parentNode.insertBefore(js, ref);
+  }(document));
 
-      window.fbAsyncInit = function () {
-        FB.init({
-          appId: '212602532249853',
-          channelUrl: '',
-          status: true, // check login status
-          cookie: true, // enable cookies to allow the server to access the session
-          xfbml: true // parse XFBML
-        });
+  window.fbAsyncInit = function () {
+    FB.init({
+      appId: '212602532249853',
+      channelUrl: '',
+      status: true, // check login status
+      cookie: true, // enable cookies to allow the server to access the session
+      xfbml: true // parse XFBML
+    });
 
-        FB.getLoginStatus(function (response) {
-          console.log('FB resp:', response, response.status);
-          /* Bind event handler only after Facebook SDK had a nice cup of coffee */
-         /*$('.icon-cog').on('click', function () {
-            Backbone.app.activeSession.login({
-              before: function () {
-                console.log('before login()')
-              },
-              after: function () {
-                console.log('after login()')
-              }
-            });
-          });*/
+    FB.getLoginStatus(function (response) {
+      console.log('FB resp:', response, response.status);
+      /* Bind event handler only after Facebook SDK had a nice cup of coffee */
+     /*$('.icon-cog').on('click', function () {
+        Backbone.app.activeSession.login({
+          before: function () {
+            console.log('before login()')
+          },
+          after: function () {
+            console.log('after login()')
+          }
         });
-      };
+      });*/
+    });
+  };
 });
 
+///MENU OPCIONES FLOTANTE///////////////////////////////
+  function optionfloat(){
+    var limit = $(".cont-izq");
+    var menu = $(".options-menu");
+    var scrolldoc = $(document).scrollTop();
 
+    if($(window).width()>=1024){
+      if(limit.height() + limit.offset().top < scrolldoc){    
+        menu.css({      
+          position: 'fixed',
+          top: '45px',
+          left: limit.children('.file-browse').offset().left+'px',
+        });
+      }
+      else{
+        menu.css({
+          position: 'relative',
+          top: '0',
+          left: '0',
+        });
+      }   
+    }    
+    else{
+      menu.css({
+        position: 'relative',
+        top: '0',
+        left: '0',
+      });
+    } 
+  }
+////////////////////////////////////////////////////////
 },{"./routers/userrouter":34,"backbone":2,"jquery":21}],36:[function(require,module,exports){
 var Backbone 	= require('backbone'),
 	Handlebars 	= require('handlebars'),
@@ -17375,7 +17457,7 @@ module.exports = Backbone.View.extend({
 		return this;
 	},
 	home : function() {
-		var url = "/users/"+this.model.attributes[0].id+"/";
+		var url = "/users/"+this.model.attributes[0].username+"/";
 		var products = $('.products')
 		var fileBrowse = $('.file-browse');
 		var optionMenu = $('.options-menu');
@@ -17397,14 +17479,17 @@ module.exports = Backbone.View.extend({
 		Backbone.app.fileSelectView.render();
 		FileList.prototype.cont = 0;
 
+		$(".horizontal-line").css('display', 'block');
+
 		this.navigate(url);
 	},
 
 	perfil : function() {
 		$("body").scrollTop(0);
+		$(".horizontal-line").css('display', 'none');
 
-		//var url = "/users/"+this.model.attributes[0].id+"/";
-		var url = "/users/osiris/";
+		var url = "/users/"+this.model.attributes[0].username+"/profile/";
+		//var url = "/users/osiris/";
 		
 		Backbone.app.formView.render();
 		Backbone.app.fileSelectView.render();
