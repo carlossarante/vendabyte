@@ -3,7 +3,7 @@
 from rest_framework import viewsets,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.decorators import action,link
+from rest_framework.decorators import detail_route
 
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404,redirect
@@ -96,7 +96,7 @@ class UserSet(viewsets.ModelViewSet):
 		if kwargs.get('pk') == 'me' and request.user:
 			kwargs['pk'] = request.user.pk
 		return super(UserSet, self).dispatch(request, *args, **kwargs)
-	@action(methods=['POST',])
+	@detail_route(methods=['POST',])
 	def add_follower(self,request,pk=None):
 		try:
 			user = self.get_object() #get the requested user.
@@ -104,7 +104,7 @@ class UserSet(viewsets.ModelViewSet):
 			return Response({'Success':'True'})
 		except:
 			 return Response({'status':'Error doing this query.'},status=status.HTTP_400_BAD_REQUEST)
-	@action(methods=['DELETE',])
+	@detail_route(methods=['DELETE',])
 	def remove_follower(self,request,pk=None):
 		try:
 			user = self.get_object()

@@ -24,14 +24,14 @@ class BrandModelSerializer(serializers.HyperlinkedModelSerializer):
 		fields = ('id','url','brand','model_name')
 
 class BrandSerializer(serializers.HyperlinkedModelSerializer):
-	brandmodel_set = serializers.RelatedField(many=True)
+	brandmodel_set = serializers.RelatedField(read_only=True)
 	class Meta:
 		model = Brand
 		fields = ('id','url','device','brand','brandmodel_set')
 
 
 class DeviceSerializer(serializers.HyperlinkedModelSerializer):
-	brand_set = serializers.RelatedField(many=True)
+	brand_set = serializers.RelatedField(read_only=True)
 	class Meta:
 		model = Device
 		fields = ('id','url','device_detail','brand_set')
