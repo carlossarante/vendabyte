@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import status
 from rest_framework import filters 
-from rest_framework.decorators import action
+from rest_framework.decorators import detail_route
 
 from django.shortcuts import render,get_object_or_404
 from django.db.models import Count,Q
@@ -34,7 +34,7 @@ class ArticleSet(viewsets.ModelViewSet):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 	
-	@action(methods=['DELETE',])
+	@detail_route(methods=['DELETE',])
 	def delete_like(self,request,pk=None):
 		try:
 			article = self.get_object()
@@ -44,7 +44,7 @@ class ArticleSet(viewsets.ModelViewSet):
 			return Response({'response':'deleted'}, status=status.HTTP_200_OK)
 		except:
 			return Response({'response':'Error in transaction'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-	@action(methods=['DELETE',])
+	@detail_route(methods=['DELETE',])
 	def delete_interesting(self,request,pk=None):
 		try:
 			article = self.get_object()

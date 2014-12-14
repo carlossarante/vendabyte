@@ -47,7 +47,6 @@ INSTALLED_APPS = (
     'geographics',
     'articles',
     'rest_framework',
-    #'django_filter'
 )
 
 REST_FRAMEWORK = {

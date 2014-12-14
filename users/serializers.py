@@ -38,7 +38,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 	contact = ContactSerializer(read_only=True)
 	#followers = ShortUserSerializer(read_only=True)
 	date_joined = serializers.Field(source='date_joined')
-	average_rating = serializers.Field('average_rating')
+	average_rating = serializers.ReadOnlyField()
 	user_following = serializers.SerializerMethodField('is_following')
 	quantity_followers = serializers.SerializerMethodField('cant_followers')
 	quantity_following = serializers.SerializerMethodField('cant_following')
