@@ -13,8 +13,6 @@ from articles.forms import ArticleForm
 from articles.models import Article,ArticlePicture,Interested,Like,BrandModel,Brand,Device,Comment,Like
 from articles.serializers import ArticleSerializer, BrandModelSerializer,BrandSerializer,DeviceSerializer,ArticlePictureSerializer,LikeSerializer,CommentSerializer,InterestingSerializer
 
-#import django_filters
-
 def articleIndex(request):
 	if bool(request.user.is_anonymous()):
 		return render(request,'index.html')
