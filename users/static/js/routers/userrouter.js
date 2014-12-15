@@ -70,7 +70,7 @@ module.exports = Backbone.Router.extend({
 
 
 	/////ALTURA PANTALLA COMPLETA///////////////////
-		$(".offers-sect").css('min-height', $(window).height()-45+'px');
+		//$(".offers-sect").css('min-height', $(window).height()-45+'px');
 	////////////////////////////////////////////////
 
 		Backbone.history.start({ 

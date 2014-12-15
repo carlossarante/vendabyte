@@ -12,7 +12,7 @@ $(function(){
 
   $(window).resize(function(event) {
   /////ALTURA PANTALLA COMPLETA///////////////////
-    $(".offers-sect").css('min-height', $(window).height()-45+'px');
+    //$(".offers-sect").css('min-height', $(window).height()-45+'px');
   ////////////////////////////////////////////////
     optionfloat();
   });

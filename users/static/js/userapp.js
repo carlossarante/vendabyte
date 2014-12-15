@@ -1059,8 +1059,8 @@
 
 }());
 
-}).call(this,require("C:\\xampp\\htdocs\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
-},{"C:\\xampp\\htdocs\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":5}],2:[function(require,module,exports){
+}).call(this,require("E:\\CONUCO\\PROJECTS\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js"))
+},{"E:\\CONUCO\\PROJECTS\\vendabyte\\users\\node_modules\\browserify\\node_modules\\insert-module-globals\\node_modules\\process\\browser.js":5}],2:[function(require,module,exports){
 //     Backbone.js 1.1.2
 
 //     (c) 2010-2014 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -16631,7 +16631,7 @@ module.exports = Backbone.Router.extend({
 
 
 	/////ALTURA PANTALLA COMPLETA///////////////////
-		$(".offers-sect").css('min-height', $(window).height()-45+'px');
+		//$(".offers-sect").css('min-height', $(window).height()-45+'px');
 	////////////////////////////////////////////////
 
 		Backbone.history.start({ 
@@ -16931,7 +16931,7 @@ $(function(){
 
   $(window).resize(function(event) {
   /////ALTURA PANTALLA COMPLETA///////////////////
-    $(".offers-sect").css('min-height', $(window).height()-45+'px');
+    //$(".offers-sect").css('min-height', $(window).height()-45+'px');
   ////////////////////////////////////////////////
     optionfloat();
   });
