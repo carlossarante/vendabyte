@@ -1,8 +1,8 @@
-import json
+import json,time
 from rest_framework import serializers
 #from articles.serializers import ShortUserSerializer
+from datetime import time
 from django.db.models import Q
-
 from geographics.serializers import CitySerializer
 from users.models import User,Badgets,Contact
 
@@ -34,10 +34,8 @@ class BadgetSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-	medals = BadgetSerializer(source='medals',read_only=True)
-	contact = ContactSerializer(read_only=True)
 	#followers = ShortUserSerializer(read_only=True)
-	date_joined = serializers.Field(source='date_joined')
+	date_joined = serializers.SerializerMethodField('formattedTime')
 	average_rating = serializers.ReadOnlyField()
 	user_following = serializers.SerializerMethodField('is_following')
 	quantity_followers = serializers.SerializerMethodField('cant_followers')
@@ -79,7 +77,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 			return q_following
 		except:
 			return 0
-
+	def formattedTime(self,obj):
+		return obj.date_joined.strftime("%d/%m/%Y a las %X")
 
 
 	def is_following(self,obj):
