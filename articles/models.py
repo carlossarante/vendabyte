@@ -38,10 +38,10 @@ class Article(models.Model):
 	def __unicode__(self):
 		return (('%s by %s') % (self.model.model_name,smart_text(self.user.email)))
 	
-	def getLikeCount(self):
+	def like_count(self):
 		return self.like_set.all().count()
 
-	def getInterestedCount(self):
+	def interested_count(self):
 		return self.interested_set.all().count() 
 
 class ArticlePicture(models.Model):

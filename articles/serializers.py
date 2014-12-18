@@ -7,7 +7,6 @@ from users.models import User
 from django.utils import timezone
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
-	date_posted = serializers.Field(source='date_posted')
 	user = ShortUserSerializer(read_only=True)
 	class Meta:	
 		model = Comment
@@ -18,38 +17,33 @@ class ArticlePictureSerializer(serializers.HyperlinkedModelSerializer):
 		model = ArticlePicture
 
 class BrandModelSerializer(serializers.HyperlinkedModelSerializer):
-	#brand = BrandModelSerializer()
 	class Meta:
 		model = BrandModel
 		fields = ('id','url','brand','model_name')
 
 class BrandSerializer(serializers.HyperlinkedModelSerializer):
-	brandmodel_set = serializers.RelatedField(read_only=True)
+	brandmodel_set= serializers.StringRelatedField(many=True)
 	class Meta:
 		model = Brand
 		fields = ('id','url','device','brand','brandmodel_set')
 
 
 class DeviceSerializer(serializers.HyperlinkedModelSerializer):
-	brand_set = serializers.RelatedField(read_only=True)
+	brand_set = serializers.StringRelatedField(many=True)
 	class Meta:
 		model = Device
 		fields = ('id','url','device_detail','brand_set')
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
-	date_posted = serializers.Field(source='date_posted')
-	comment_set = CommentSerializer(read_only=True)
-	articlepicture_set = ArticlePictureSerializer(read_only=True)
+	articlepicture_set = ArticlePictureSerializer(read_only=True,many=True)
 	user = ShortUserSerializer(read_only=True)
-	model_name = serializers.Field(source='model.model_name')
-	like_count = serializers.Field(source='getLikeCount')
+	model_name = serializers.StringRelatedField(source='model.model_name')
 	interested = serializers.SerializerMethodField('is_interested')
 	liked = serializers.SerializerMethodField('is_liked')
-	interested_count = serializers.Field(source='getInterestedCount')
 	class Meta:
 		model = Article
-		fields = ('id','url','model','model_name','user','short_description','price','specs','date_posted','articlepicture_set','comment_set','like_count','interested_count','liked','interested')		
+		fields = ('id','url','model','model_name','user','short_description','articlepicture_set','price','specs','date_posted','comment_set','interested_count','like_count','liked','interested')		
 	
 	def is_interested(self,obj):
 		if obj is None:
