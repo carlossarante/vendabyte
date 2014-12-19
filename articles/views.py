@@ -29,8 +29,7 @@ class ArticleSet(viewsets.ModelViewSet):
 		user = request.user
 		serializer = ArticleSerializer(data=request.DATA,context={'request':request})
 		if serializer.is_valid():
-			serializer.object.user = user
-			serializer.object.save()
+			serializer.save(user=user)
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 	
