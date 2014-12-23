@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import status
 from rest_framework import filters 
 from rest_framework.decorators import detail_route
+from rest_framework.parsers import FormParser,MultiPartParser
 
 from django.shortcuts import render,get_object_or_404
 from django.db.models import Count,Q
@@ -82,13 +83,11 @@ class ArticlePictureSet(viewsets.ModelViewSet):
 	queryset = ArticlePicture.objects.all()
 	serializer_class = ArticlePictureSerializer
 	permission_classes = (IsAuthenticatedOrReadOnly,)
+	parser_classes = (MultiPartParser,FormParser)
 	def create(self,request):
-		user = request.user
-		serializer = ArticlePictureSerializer(data=request.DATA,files=request.FILES)
+		serializer = ArticlePictureSerializer(data=request.data,context={'request':request})
 		if serializer.is_valid():
-			if not (serializer.object.article.user.id == request.user.id):
-				return Response(status.HTTP_403_FORBIDDEN)
-			serializer.object.save()
+			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

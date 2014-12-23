@@ -15,6 +15,8 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 class ArticlePictureSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = ArticlePicture
+		fields = ('art_img','article','cover')
+
 
 class BrandModelSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
@@ -35,9 +37,10 @@ class DeviceSerializer(serializers.HyperlinkedModelSerializer):
 		fields = ('id','url','device_detail','brand_set')
 
 
+
+
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 	articlepicture_set = ArticlePictureSerializer(read_only=True,many=True)
-	user = ShortUserSerializer(read_only=True)
 	model_name = serializers.StringRelatedField(source='model.model_name')
 	interested = serializers.SerializerMethodField('is_interested')
 	liked = serializers.SerializerMethodField('is_liked')
