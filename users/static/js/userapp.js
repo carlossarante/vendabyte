@@ -17559,7 +17559,7 @@ module.exports = Backbone.View.extend({
 		'click #selling' 	: 'selling',
 	},
 
-	template : _.template($("#product-template").html()),
+	//template : _.template($("#product-template").html()),
 
 	initialize : function () {
 		this.listenTo(this.model, "change", this.render, this);		
