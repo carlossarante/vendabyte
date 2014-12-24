@@ -13,22 +13,23 @@
 
 	<script type="text/javascript" src="/static/js/lib/angular.min.js"></script>
     <script type="text/javascript" src="/static/js/lib/angular-route.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/angular-cookies.min.js"></script>
     <script type="text/javascript" src="/static/js/lib/angular-animate.min.js"></script>    
     <script type="text/javascript" src="/static/js/lib/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="/static/js/lib/angular-easyfb.min.js"></script>  
 </head>
 <body ng-controller="MainController">
 	<header class="header fixed">		
-		<figure class="logo-cont">
+		<figure class="logo-cont" ng-click="navigate('users/{{user.username}}')">
 			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
 		</figure>
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
 		<!--<div class="log-in">Iniciar Seción</div>-->
 		<div class="notif-bar inline-block">
 			<span class="icon-bell"><span class="notifications none">2</span></span>
-			<span class="user-name">{{user.first_name}} {{user.last_name}}</span>
+			<span class="user-name" ng-click="navigate('users/profile')">{{user.first_name}} {{user.last_name}}</span>
 			<div class="user-deco inline-block">
-				<img src="{{photo}}" alt="{{user.first_name}} {{user.last_name}}" class="user-pict">
+				<img src="{{photo}}" alt="{{user.first_name}} {{user.last_name}}" class="user-pict" ng-click="navigate('users/profile')">
 			</div>
 			<span class="icon-cog"></span>
 		</div>	
@@ -203,5 +204,6 @@
 	<script type="text/javascript" src="/static/js/user/app.js"></script>
     <script type="text/javascript" src="/static/js/user/controllers.js"></script>
     <script type="text/javascript" src="/static/js/user/services.js"></script>
+    <script type="text/javascript" src="/static/js/user/directives.js"></script>
 </body>
 </html>

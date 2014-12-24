@@ -3,11 +3,17 @@
 	var app = angular.module('vendabyte',[
 		'ngRoute',
     'ngSanitize',
-    'ngAnimate',
+    //'ngAnimate',
+    'ngCookies',
     'ezfb',
 		'vendabyte.controllers',
-		'vendabyte.services' 
+		'vendabyte.services',
+    'vendabyte.directives'
 	]);
+
+  app.run(function($http, $cookies) {
+    $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
+  });
 
 	app.config(['$locationProvider', function ($locationProvider) {
 
@@ -66,34 +72,5 @@
       ezfbProvider.setInitParams({
         appId: '386469651480295'
       });
-    }]);
-
-    /*app.directive('resize', function ($window) {
-        return function (scope, element) {
-            var w = angular.element($window);
-            scope.getWindowDimensions = function () {
-                return {
-                    'h': w.height(),
-                    'w': w.width()
-                };
-            };
-            scope.$watch(scope.getWindowDimensions, function (newValue, oldValue) {
-                scope.windowHeight = newValue.h;
-                scope.windowWidth = newValue.w;
-
-                scope.style = function () {
-                    return {
-                        'height': (newValue.h - 100) + 'px',
-                            'width': (newValue.w - 100) + 'px'
-                    };
-                };
-
-            }, true);
-
-            w.bind('resize', function () {
-                scope.$apply();
-            });
-        }
-    });*/
-    
+    }]);    
 })();

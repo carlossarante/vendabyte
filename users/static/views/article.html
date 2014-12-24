@@ -49,27 +49,27 @@
             </form>
         </div>
         <ul class="options-menu inline-block">
-            <li id="newest" class="options inline-block">
+            <li id="newest" class="options inline-block" ng-click="navigate('nuevo')">
                 <div class="icon">Iconos</div>
                 <span class="option">Nuevo</span>
             </li>
-            <li id="following" class="options inline-block">
+            <li id="following" class="options inline-block" ng-click="navigate('siguiendo')">
                 <div class="icon">Iconos</div>
                 <span class="option">Siguiendo</span>
             </li>
-            <li id="followers" class="options inline-block">
+            <li id="followers" class="options inline-block" ng-click="navigate('seguidores')">
                 <div class="icon">Iconos</div>
                 <span class="option">Seguidores</span>
             </li>
-            <li id="popular" class="options inline-block">
+            <li id="popular" class="options inline-block" ng-click="navigate('popular')">
                 <div class="icon">Iconos</div>
                 <span class="option">Popular</span>
             </li>
-            <li id="interesting" class="options inline-block">
+            <li id="interesting" class="options inline-block" ng-click="navigate('meinteresa')">
                 <div class="icon">Iconos</div>
                 <span class="option">Me interesa</span>
             </li>
-            <li id="selling" class="options inline-block">
+            <li id="selling" class="options inline-block" ng-click="navigate('lovendo')">
                 <div class="icon">Iconos</div>
                 <span class="option">Lo vendo</span>
             </li>
@@ -77,12 +77,12 @@
     </section>
     <section class="offers-sect inline-block">          
         <section class="products">   
-            <article class="product" ng-repeat="product in articles track by $id(product)">
+            <article class="product" ng-repeat="product in articles track by $id(product)" ng-controller="ProductController" ng-init="setProduct(product)">
                 <div class="user inline-block">
                     <div class="user-deco">
                         <img src="{{product.user.photo}}" alt="{{product.user.name}}" class="user-pict block">
                     </div>
-                    <div class="follow block">Seguir</div>  
+                    <div class="follow block" ng-click="followToggle(product)">Seguir</div>  
                 </div>                  
                 <section class="art-cont inline-block">
                     <span class="user-name block">{{product.user.first_name}} {{product.user.last_name}}</span>
@@ -95,31 +95,34 @@
                         <span class="precio absolute">RD${{product.price}}</span>
                         <span class="add-cart absolute icon-plus"></span>   
                         <div class="actions">
-                            <span class="interest">Me interesa</span>   
-                            <span class="action icon-heart"></span> 
-                            <span class="action icon-bubble" alt="hola"></span> 
+                            <span class="interest" ng-click="interestedToggle(product)">Me interesa</span>   
+                            <span class="action icon-heart" ng-click="likedToggle(product)"></span> 
+                            <span class="action icon-bubble" ng-click="commentToggle()"></span> 
                             <span class="action icon-share"></span>     
                         </div>                  
                     </section>
-                    <div class="comment-box">
-                        <textarea class="comment-text inline-block" cols="40" rows="5"></textarea>
-                        <div class="acept button inline-block">Comentar</div>
-                        <div class="decline button inline-block">Cancelar</div>
-                    </div>              
-                    <section class="comment-cont"> 
-                        <article class="comment" ng-repeat="comment in product.comment_set track by $id(comment)">
-                            <div class="user inline-block">
-                                <img src="{{comment.user.photo}}" alt="{{comment.user.first_name}} {{comment.user.last_name}}" class="user-pict">
-                            </div>
-                            <div class="inline-block">
-                                <a class="person" href="{{comment.user.url}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">{{comment.user.first_name}} {{comment.user.last_name}}</a>
-                                <span class="fecha">{{comment.date_posted}}</span>
-                                <p class="opinion">
-                                    {{comment.comment}}
-                                </p>
-                            </div>
-                        </article>                                       
-                    </section>
+                    <div ng-controller="CommentsController" ng-init="fetchComments(product)">
+                        <form name="commentsForm" class="comment-box" role="form" ng-submit="addComment()" ng-if="commentActive" novalidate>
+                            <textarea class="comment-text inline-block" cols="40" rows="5" ng-model="comment.comment" required></textarea>
+                            <button type="submit" class="acept button inline-block">Comentar</button>
+                            <div class="decline button inline-block">Cancelar</div>
+                        </form>              
+                        <section class="comment-cont"> 
+                           <!--  <article class="comment" ng-repeat="comment in product.comment_set track by $id(comment)"> -->
+                            <article class="comment" ng-repeat="comment in comments track by $id(comment)">
+                                <div class="user inline-block">
+                                    <img src="{{comment.user.photo}}" alt="{{comment.user.first_name}} {{comment.user.last_name}}" class="user-pict">
+                                </div>
+                                <div class="inline-block">
+                                    <a class="person" href="{{comment.user.url}}" title="{{comment.user.first_name}} {{comment.user.last_name}}">{{comment.user.first_name}} {{comment.user.last_name}}</a>
+                                    <span class="fecha">{{comment.date_posted}}</span>
+                                    <p class="opinion">
+                                        {{comment.comment}}
+                                    </p>
+                                </div>
+                            </article>                                       
+                        </section>    
+                    </div>                    
                 </section>                    
             </article>                    
         </section>

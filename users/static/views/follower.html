@@ -14,7 +14,8 @@
                         Buscar el Archivo
                     </div>
                 </div>          
-            </div>            
+            </div>
+            
             <form action="" id="articleUpload" class="upload-box none" onsubmit="return false">
                 <ul class="thumbnail-cont">
                     <li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
@@ -48,27 +49,27 @@
             </form>
         </div>
         <ul class="options-menu inline-block">
-            <li id="newest" class="options inline-block">
+            <li id="newest" class="options inline-block" ng-click="navigate('nuevo')">
                 <div class="icon">Iconos</div>
                 <span class="option">Nuevo</span>
             </li>
-            <li id="following" class="options inline-block">
+            <li id="following" class="options inline-block" ng-click="navigate('siguiendo')">
                 <div class="icon">Iconos</div>
                 <span class="option">Siguiendo</span>
             </li>
-            <li id="followers" class="options inline-block">
+            <li id="followers" class="options inline-block" ng-click="navigate('seguidores')">
                 <div class="icon">Iconos</div>
                 <span class="option">Seguidores</span>
             </li>
-            <li id="popular" class="options inline-block">
+            <li id="popular" class="options inline-block" ng-click="navigate('popular')">
                 <div class="icon">Iconos</div>
                 <span class="option">Popular</span>
             </li>
-            <li id="interesting" class="options inline-block">
+            <li id="interesting" class="options inline-block" ng-click="navigate('meinteresa')">
                 <div class="icon">Iconos</div>
                 <span class="option">Me interesa</span>
             </li>
-            <li id="selling" class="options inline-block">
+            <li id="selling" class="options inline-block" ng-click="navigate('lovendo')">
                 <div class="icon">Iconos</div>
                 <span class="option">Lo vendo</span>
             </li>
