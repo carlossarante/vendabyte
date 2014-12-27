@@ -1,32 +1,47 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="vendabyte">
 <head>
 	<!--{% load staticfiles %}-->
+	<base href="/">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Vendabyte</title>
+
 	<link rel="stylesheet" href="/static/css/user.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/ng-img-crop.css">
+
+	<script  type="text/javascript" src="/static/lib/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<script type="text/javascript" src="/static/lib/jquery.js"></script>	
+
+	<script type="text/javascript" src="/static/js/lib/angular.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/angular-route.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/angular-animate.min.js"></script>    
+    <script type="text/javascript" src="/static/js/lib/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/angular-easyfb.min.js"></script>  
+	<script type="text/javascript" src="/static/js/lib/ng-img-crop.js"></script>
 </head>
-<body>
+<body ng-controller="MainController">
 	<header class="header fixed">		
-		<!--<figure class="logo-cont">
+		<figure class="logo-cont" ng-click="navigate('users/{{user.username}}')">
 			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
 		</figure>
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
-		<!--<div class="log-in">Iniciar Seción</div>
+		<!--<div class="log-in">Iniciar Seción</div>-->
 		<div class="notif-bar inline-block">
-			<span class="icon-bell"><span class="notifications"></span></span>
-			<span class="user-name">Ramiro Fernandez</span>
-			<img src="" alt="Usuario" class="user-pict inline block">
+			<span class="icon-bell"><span class="notifications none">2</span></span>
+			<span class="user-name" ng-click="navigate('users/{{user.username}}/profile')">{{user.first_name}} {{user.last_name}}</span>
+			<div class="user-deco inline-block">
+				<img src="media/{{user.photo}}" alt="{{user.first_name}} {{user.last_name}}" class="user-pict" ng-click="navigate('users/{{user.username}}/profile')">
+			</div>
 			<span class="icon-cog"></span>
-		</div>		-->
+		</div>	
 	</header><!-- /header -->	
-	<section class="wrapper relative">		
+	<section class="wrapper relative" ng-view>		
 		<figure class="portada-cont relative none">
 			<img src="/static/img/portada.png" alt="Vendabyte" class="portada">
 		</figure>
 		<div class="wrapper2 relative">		
-			<div class="horizontal-line"></div>	
 			<section class="load-sect relative inline-block">
 				<div class="cont-izq">
 					<div class="user-cont inline-block relative none">
@@ -64,7 +79,7 @@
 					</div>
 					
 					<form action="" id="articleUpload" class="upload-box none" onsubmit="return false">
-					<!--	<ul class="thumbnail-cont">
+						<ul class="thumbnail-cont">
 							<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
 							<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
 							<li id="thumbnail3" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
@@ -73,31 +88,26 @@
 						</ul>
 						
 						<div class="rb-container">
-							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Celular">Celular</div>
-							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Computadora">Computadora</div>
-							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Videojuego">Videojuego</div>
-							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="tipo" value="Otros">Otros</div>
+							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[0].device_detail)%>"><% print(this.model.attributes[0].device_detail)%></div>
+							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[1].device_detail)%>"><% print(this.model.attributes[1].device_detail)%></div>
+							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[2].device_detail)%>"><% print(this.model.attributes[2].device_detail)%></div>
+							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[3].device_detail)%>"><% print(this.model.attributes[3].device_detail)%></div>
 						</div>
 
 						<div class="select-cont">
-							<select class="brand-select inline-block">
-								<option value="volvo">Samsung</option>
-								<option value="volvo">BlackBerry</option>
-								<option value="volvo">HTC</option>
-								<option value="volvo">Apple</option>
-								<option value="volvo">Sony</option>
-								<option value="volvo">Toshiba</option>
+							<select class="brand-select inline-block" name="brand" form="articleUpload" required>
+								<option value="" selected disabled="true" label="Seleccionar marca"></option>
 							</select>
 
-							<select class="model-select inline-block">
-								<option value="volvo">Samsung</option>
-								<option value="volvo">BlackBerry</option>
-								<option value="volvo">HTC</option>
-								<option value="volvo">Apple</option>
-								<option value="volvo">Sony</option>
-								<option value="volvo">Toshiba</option>
+							<select class="model-select inline-block" name="model" form="articleUpload" required>
+								<option value="" selected disabled="true" label="Seleccionar modelo"></option>
 							</select>
-						</div>				-->
+
+							<textarea form="articleUpload" name="short_description" placeholder="Short description" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
+							<textarea form="articleUpload" name="specs" placeholder="Specs" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
+						</div>
+						<input type="number" name="price" min="0" style="font-size:1rem" placeholder="Precio" required>	
+						<button type="submit" id="submit" style="font-size:1rem;">Subir articulo</button>
 					</form>
 
 
@@ -194,170 +204,9 @@
 		</div>					
 	</section>
 
-	<script id="notification-template" type="text/template">
-		<figure class="logo-cont">
-			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
-		</figure>
-		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
-		<!--<div class="log-in">Iniciar Seción</div>-->
-		<div class="notif-bar inline-block">
-			<span class="icon-bell"><span class="notifications none">2</span></span>
-			<span class="user-name"><% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%></span>
-			<div class="user-deco inline-block">
-				<img src="/media/<% print(this.model.attributes[0].photo)%>" alt="<% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%>" class="user-pict">
-			</div>
-			<span class="icon-cog"></span>
-		</div>			
-  	</script>
-
-  	<script id="badgets-template" type="text/template">
-  		Iconos
-  	</script>
-
-  	<script id="fileSelect-template" type="text/template">
-  		<div id= "deco" class="deco">
-			<span class="">Arrastra las fotos de tu articulo aqui</span>
-			<br/>
-			<input type="file" id="dropIn" value="Submit" class="dropArea absolute">
-			<div class="load-button">
-				<input type="file" id="selectIn" value="Submit" class="button relative">
-				Buscar el Archivo
-			</div>
-		</div>		
-  	</script>
-
-  	<script id="form-template" type="text/template">	  	
-		<ul class="thumbnail-cont">
-			<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-			<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-			<li id="thumbnail3" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-			<li id="thumbnail4" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-			<li id="thumbnail5" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-		</ul>
-		
-		<div class="rb-container">
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[0].device_detail)%>"><% print(this.model.attributes[0].device_detail)%></div>
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[1].device_detail)%>"><% print(this.model.attributes[1].device_detail)%></div>
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[2].device_detail)%>"><% print(this.model.attributes[2].device_detail)%></div>
-			<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[3].device_detail)%>"><% print(this.model.attributes[3].device_detail)%></div>
-		</div>
-
-		<div class="select-cont">
-			<select class="brand-select inline-block" name="brand" form="articleUpload" required>
-				<option value="" selected disabled="true" label="Seleccionar marca"></option>
-			</select>
-
-			<select class="model-select inline-block" name="model" form="articleUpload" required>
-				<option value="" selected disabled="true" label="Seleccionar modelo"></option>
-			</select>
-
-			<textarea form="articleUpload" name="short_description" placeholder="Short description" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
-			<textarea form="articleUpload" name="specs" placeholder="Specs" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
-		</div>
-		<input type="number" name="price" min="0" style="font-size:1rem" placeholder="Precio" required>	
-		<button type="submit" id="submit" style="font-size:1rem;">Subir articulo</button>
-  	</script>
-  	<script id="cover-template" type="text/template">
-  		<img src="/media/<% print(this.model.attributes[0].cover)%>" alt="Vendabyte" class="portada">
-  	</script>
-
-  	<script id="user-template" type="text/template">
-  			<div class="inline-block">
-				<img src="/media/<% print(this.model.attributes[0].photo)%>" alt="Usuario" class="user-pict block">					
-			</div>					
-			<div class="inline-block">
-				<span class="user-name block"><% print(this.model.attributes[0].first_name," ",this.model.attributes[0].last_name)%></span>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>	
-				<br/>
-				<div id="deco1"class="deco-count">
-					<span class="following-count"><% print(this.model.attributes[0].quantity_following)%></span>
-					<span class="following">Siguiendo</span>
-				</div>
-				<div class="deco-count">
-					<span class="followers-count"><% print(this.model.attributes[0].quantity_followers)%></span>	
-					<span class="followers">Seguidores</span>
-				</div>
-			</div>
-  	</script>
-
-	<script id="product-template" type="text/template">
-			<div class="user inline-block">
-				<div class="user-deco">
-					<img src="/media/<%=user.photo%>" alt="<%=user.name%>" class="user-pict block">
-				</div>
-				<div class="follow block">Seguir</div>	
-			</div>					
-			<section class="art-cont inline-block">
-				<span class="user-name block"><%=user.first_name%> <%=user.last_name%></span>
-				<span class="product-name inline-block"><%=model_name%></span>
-				<p class="description inline-block"><%=short_description%></p>
-				<section class="art-desc relative">
-					<figure class="art-pict">
-						<img src="/media/<%=articlepicture_set[0].art_img%>" alt="model.model_name" class="">
-					</figure>
-					<span class="precio absolute">RD$<%=price%></span>
-					<span class="add-cart absolute icon-plus"></span>	
-					<div class="actions">
-						<span class="interest">Me interesa</span>	
-						<span class="action icon-heart"></span>	
-						<span class="action icon-bubble" alt="hola"></span>	
-						<span class="action icon-share"></span>		
-					</div>					
-				</section>
-				<div class="comment-box">
-					<textarea class="comment-text inline-block" cols="40" rows="5"></textarea>
-					<div class="acept button inline-block">Comentar</div>
-					<div class="decline button inline-block">Cancelar</div>
-				</div>				
-				<section class="comment-cont">					
-				</section>
-			</section>	
-  	</script>
-  	 <script id="comment-template" type="text/template">
-			<div class="user inline-block">
-				<img src="/media/<%=user.photo%>" alt="<%=user.first_name%> <%=user.last_name%>" class="user-pict">
-			</div>
-			<div class="inline-block">
-				<a class="person" href="<%=user.url%>" title="<%=user.first_name%> <%=user.last_name%>"><%=user.first_name%> <%=user.last_name%></a>
-				<span class="fecha"><%=date_posted%></span>
-				<p class="opinion">
-					<%=comment%>
-				</p>
-			</div>
-  	</script>
-	 <script id="follower-template" type="text/template">
-			<div class="inline-block">
-				<div class="user-deco block">
-					<img src="/media/<%=photo%>" alt="<%=first_name%> <%=last_name%>" class="user-pict">
-				</div>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>
-				<span class="icon-star"></span>	
-			</div>					
-			<div class="inline-block">
-				<span class="user-name"><%=first_name%> <%=last_name%></span>
-				<div class="deco-count">
-					<span class="following-count"><%=quantity_following%></span>
-					<span class="following">Siguiendo</span>
-				</div>
-				<div class="deco-count">
-					<span class="followers-count"><%=quantity_followers%></span>	
-					<span class="followers">Seguidores</span>
-				</div>						
-				<div class="follow-user">Seguir</div>
-			</div>
-  	</script>
-  	
-
-
-	<script src="/static/lib/modernizr-2.6.2-respond-1.1.0.min.js" type="text/javascript"></script>
-	<script src="/static/lib/jquery.js"></script>	
-	<script src="/static/js/userapp.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/static/js/user/app.js"></script>
+    <script type="text/javascript" src="/static/js/user/controllers.js"></script>
+    <script type="text/javascript" src="/static/js/user/services.js"></script>
+    <script type="text/javascript" src="/static/js/user/directives.js"></script>
 </body>
 </html>

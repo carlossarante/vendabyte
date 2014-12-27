@@ -1,68 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="vendabyte">
 <head>
+	<base href="/">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Vendabyte</title>
 	<link rel="stylesheet" href="/static/css/home.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+
+	<script  type="text/javascript" src="/static/lib/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	<script type="text/javascript" src="/static/lib/jquery.js"></script>	
+
+	<script type="text/javascript" src="/static/js/lib/angular.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/angular-route.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/angular-animate.min.js"></script>    
+    <script type="text/javascript" src="/static/js/lib/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="/static/js/lib/angular-easyfb.min.js"></script> 
 </head>
-<body>
+<body ng-controller="MainController">
 	<header class="header fixed">
 		<figure class="logo-cont">
 			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
 		</figure>
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
-		<div class="log-in inline-block">Iniciar Seción</div>
+		<div class="log-in inline-block" ng-click="login()">Iniciar Sesión</div>
 		</div>	
 	</header><!-- /header -->
-	<section class="wrapper relative">		
-		<section class="offers-sect absolute">				
-			<div class="sign-in caja">
-				<div class="deco">
-					<span class="">Descubre mucho más</span>
-					<span class="button"> login with facebook</span>			
-				</div>				
-			</div>				
-			<section class="products none">				
-			</section>
-		</section>
-		<section class="load-sect relative">			
-			<div class="file-browse caja none">	
-				<div id= "deco" class="deco">
-				<span class="">Arrastra las fotos de tu articulo aqui</span>
-				<br/>
-				<input type="file" id="dropIn" value="Submit" class="dropArea absolute">
-				<div class="load-button">
-					<input type="file" id="selectIn" value="Submit" class="button relative">
-					Buscar el Archivo
-				</div>
-			</div>			
-			</div>
-			<img src="../static/img/ima1.jpg" alt="Vende rapido" class="" style="width:100%;">
-			<!--<form action="/articles/api/article/" id="registerUser" class="register-box">
-
-				<div class="select-cont">
-					<select class="brand-select inline-block">
-						<option value="volvo">Samsung</option>
-						<option value="volvo">BlackBerry</option>
-						<option value="volvo">HTC</option>
-						<option value="volvo">Apple</option>
-						<option value="volvo">Sony</option>
-						<option value="volvo">Toshiba</option>
-					</select>
-
-					<select class="model-select inline-block">
-						<option value="volvo">Samsung</option>
-						<option value="volvo">BlackBerry</option>
-						<option value="volvo">HTC</option>
-						<option value="volvo">Apple</option>
-						<option value="volvo">Sony</option>
-						<option value="volvo">Toshiba</option>
-					</select>
-				</div>				
-			</form>-->
-		</section>				
+	<section class="wrapper relative" ng-view>		
+					
 	</section>
 
 	<form action="#" id="registerUser" class="none" onsubmit="return false" >
@@ -82,7 +47,7 @@
 			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
 		</figure>
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
-		<div class="log-in inline-block">Iniciar Seción</div>
+		<div class="log-in inline-block">Iniciar Sesión</div>
 		</div>		
   	</script>
   	<script id="fblogin-template" type="text/template">
@@ -149,11 +114,10 @@
 				</p>
 			</div>
   	</script>
-
-	<script src="/static/lib/modernizr-2.6.2-respond-1.1.0.min.js" type="text/javascript"></script>
-	<script src="/static/lib/jquery.js"></script>	
 	<script src="/static/lib/jquery-ui/jquery-ui.js"></script>
-	<script src="/static/js/homeapp.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/static/js/home/app.js"></script>
+    <script type="text/javascript" src="/static/js/home/controllers.js"></script>
+    <script type="text/javascript" src="/static/js/home/services.js"></script>
 	<script>
 	  $(function() {
 	    $("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });

@@ -1,0 +1,26 @@
+<section class="followers-sect">    
+    <li class="follower-cont inline-block relative" ng-repeat="follower in followers track by $id(follower)">
+        <div class="inline-block">
+            <div class="user-deco block">
+                <img src="{{follower.photo}}" alt="{{follower.first_name}} {{follower.last_name}}" class="user-pict">
+            </div>
+            <span class="icon-star"></span>
+            <span class="icon-star"></span>
+            <span class="icon-star"></span>
+            <span class="icon-star"></span>
+            <span class="icon-star"></span> 
+        </div>                  
+        <div class="inline-block">
+            <span class="user-name">{{follower.first_name}} {{follower.last_name}}</span>
+            <div class="deco-count">
+                <span class="following-count">{{follower.quantity_following}}</span>
+                <span class="following">Siguiendo</span>
+            </div>
+            <div class="deco-count">
+                <span class="followers-count">{{follower.quantity_followers}}</span>    
+                <span class="followers">Seguidores</span>
+            </div>                      
+            <div class="follow-user">Seguir</div>
+        </div>
+    </li>       
+</section>  
