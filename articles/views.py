@@ -97,10 +97,9 @@ class CommentSet(viewsets.ModelViewSet):
 	permission_classes = (IsAuthenticatedOrReadOnly,)
 	def create(self,request):
 		user = request.user
-		serializer = CommentSerializer(data=request.DATA)
+		serializer = CommentSerializer(data=request.DATA,context={'request':request})
 		if serializer.is_valid():
-			serializer.object.user = user
-			serializer.object.save()
+			serializer.save(user=user)
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -133,8 +132,7 @@ class LikeSet(viewsets.ModelViewSet):
 		if serializer.is_valid():
 			created = Like.objects.filter(Q(article=serializer.object.article),Q(user=user))
 			if not created:
-				serializer.object.user = user
-				serializer.object.save()
+				serializer.save(user=user)
 				return Response(serializer.data, status=status.HTTP_201_CREATED)
 			else:
 				return Response({'status':'Error, this like was created already'}, status=status.HTTP_409_CONFLICT)				
@@ -150,8 +148,7 @@ class InterestingSet(viewsets.ModelViewSet):
 		if serializer.is_valid():
 			created = Interested.objects.filter(Q(article=serializer.object.article),Q(user=user))
 			if not created:
-				serializer.object.user = user
-				serializer.object.save()
+				serializer.save(user=user)
 				return Response(serializer.data, status=status.HTTP_201_CREATED)
 			else:
 				return Response({'status':'Error, this interesting was created already'}, status=status.HTTP_409_CONFLICT)				
