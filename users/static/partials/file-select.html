@@ -1,0 +1,12 @@
+<div class="file-browse caja">
+    <div id= "deco" class="deco">
+        <span class="">Arrastra las fotos de tu articulo aqui</span>
+        <br/>
+        <input type="file" id="dropIn" class="dropArea absolute" ng-model="form" onchange="angular.element(this).scope().handleFileSelect(event)">
+        <div class="load-button">
+            <input type="file" id="selectIn" class="button relative" ng-model="form"  onchange="angular.element(this).scope().handleFileSelect(event)">
+            Buscar el Archivo
+        </div>           
+    </div>          
+</div>
+

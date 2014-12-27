@@ -1,0 +1,31 @@
+<form name="uploadForm" id="articleUpload" class="upload-box" ng-submit="sendArticle(me)" ng-show="active">
+    <div class="caja">                    
+        <div class="cropArea">
+            <img-crop image="myImage" area-min-size="50" result-image="myCroppedImage" result-image-size="200" area-type="square" as-ratio-x="1" as-ratio-y="1.1"></img-crop>
+        </div>
+        <div class="cropbtn" ng-click="cropImage(imgIndex)">Cortar</div>
+    </div>
+    <ul class="thumbnail-cont">
+        <li class="img-load" ng-repeat="image in cropedImages track by $id(image)"><figure class="thumb-fig" ><img src="{{image.url}}" alt="Vendabyte" class=""></figure></li>
+    </ul>
+    
+    <div class="rb-container">
+        <div class="rbDeco inline-block" ng-repeat="device in devices track by $id(device)" ng-click="getBrands(device)" ng-class="{active:device.device_detail === article.device}"><input class="radioBtn" type="radio" name="device" value="{{device.device_detail}}" ng-model="article.device" required>{{device.device_detail}}</div>
+    </div>
+
+    <div class="select-cont">
+        <select class="brand-select inline-block" name="brand" form="articleUpload" ng-model="article.brand" ng-options="brand.brand as brand.brand for brand in brands" ng-change="getModels(article.brand)" required>
+            <option value="" selected disabled="true" label="Seleccionar marca"></option>
+        </select>
+
+        <select class="model-select inline-block" name="model" form="articleUpload" ng-model="article.model" ng-options="model.url as model.model_name for model in models" required>
+            <option value="" selected disabled="true" label="Seleccionar modelo"></option>
+        </select>
+
+        <textarea form="articleUpload" name="short_description" placeholder="Short description" required style="font-size:1rem; display:block; width:100%; margin-top:10px" ng-model="article.short_description" required></textarea>
+        
+        <textarea form="articleUpload" name="specs" placeholder="Specs" required style="font-size:1rem; display:block; width:100%; margin-top:10px" ng-model="article.specs" required></textarea>
+    </div>
+    <input type="number" name="price" min="0" style="font-size:1rem" placeholder="Precio" ng-model="article.price" required> 
+    <button type="submit" id="submit" style="font-size:1rem;">Subir articulo</button>
+</form>

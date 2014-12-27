@@ -5,6 +5,7 @@
     'ngSanitize',
     //'ngAnimate',
     'ngCookies',
+    'ngImgCrop',
     'ezfb',
 		'vendabyte.controllers',
 		'vendabyte.services',
@@ -27,21 +28,25 @@
         templateUrl: '/static/views/home.html',
         //controller: 'NouvellesController'
       })
+      .when('/users/:user/profile', {
+        templateUrl: '/static/views/profile.html',
+        //controller: 'NewsSingleController'
+      })
       .when('/users/:user', {
         templateUrl: '/static/views/article.html',
-        //controller: 'NewsSingleController'
+        //controller: 'ArticleController'
       })
       .when('/nuevo', {
         templateUrl: '/static/views/article.html',
-        //controller: 'NewsSingleController'
+        controller: 'ArticleController'
       })     
       .when('/popular', {
         templateUrl: '/static/views/article.html',
-        //controller: 'NewsSingleController'
+        controller: 'ArticleController'
       })
       .when('/meinteresa', {
         templateUrl: '/static/views/article.html',
-        //controller: 'NewsSingleController'
+        controller: 'ArticleController'
       })
       .when('/lovendo', {
         templateUrl: '/static/views/article.html',
@@ -53,10 +58,6 @@
       })
       .when('/seguidores', {
         templateUrl: '/static/views/follower.html',
-        //controller: 'NewsSingleController'
-      })
-      .when('/profile', {
-        templateUrl: '/static/views/profile.html',
         //controller: 'NewsSingleController'
       })
       /*.when('/:coolsection', {
