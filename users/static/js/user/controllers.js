@@ -2,7 +2,9 @@
 (function () {
 	angular.module('vendabyte.controllers',[])
 		.controller('MainController',['$http','ezfb','$scope','$location','$filter','$window','$animate','$timeout','$routeParams','vendabyteService',function($http,ezfb,$scope,$location,$filter,$window,$animate,$timeout,$routeParams,vendabyteService){
-			
+			vendabyteService.mainScope=$scope;
+			$scope.articles = [];	
+			$scope.followers = [];		
 			
 			///OJO PUEDE QUE NO SEA NECESARIO ESTE GET
 			vendabyteService.getMe().then(function (data){
@@ -14,23 +16,48 @@
 				$scope.previous = data.previous;
 				$scope.articles = data.results.reverse();
 			});
+
+			$scope.addArticle = function (article){
+				var articles = $scope.articles;
+				articles.reverse().push(article);
+				$scope.articles = articles.reverse();
+				$scope.$apply();
+			}
 			////////////////////////////////////////////////////////
 
 			$scope.navigate = function (path){
 				$location.path("/"+path);
-			}
+			}			
 		}])	
-		.controller('ArticleController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
-		
+
+
+		.controller('ArticlesController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
+			vendabyteService.articlesScope=$scope;
+			var mainScope = vendabyteService.mainScope;
+			
 			vendabyteService.getArticles().then(function (data){
-				$scope.next = data.next;
-				$scope.previous = data.previous;
-				$scope.articles = data.results.reverse();
+				mainScope.next = data.next;
+				mainScope.previous = data.previous;
+				mainScope.articles = data.results.reverse();				
 			});
+			
         }])
-		.controller('ProductController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
+
+        .controller('FollowersController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
+			vendabyteService.followersScope=$scope;
+			var mainScope = vendabyteService.mainScope;
+			
+			vendabyteService.getFollowers().then(function (data){
+				mainScope.followers = data.reverse();				
+			});
+			
+        }])
+
+
+		.controller('ArticleController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
+			vendabyteService.articleScope = $scope;
 			$scope.commentActive = false;
-			$scope.comments = [];			
+			$scope.comments = [];
 
 			$scope.setProduct = function(product){
 				$scope.product = product;
@@ -86,66 +113,60 @@
 						console.log("NOT FALLOWING",data);
 					});
 				}
-			}		
+			}				
         }])
-        .controller('CommentsController',['$http','ezfb','$scope','$location','$filter','$window','$animate','$timeout','$routeParams','vendabyteService',function($http,ezfb,$scope,$location,$filter,$window,$animate,$timeout,$routeParams,vendabyteService){
 
-			$scope.comments = [];
+
+        .controller('CommentsController',['$http','ezfb','$scope','$location','$filter','$window','$animate','$timeout','$routeParams','vendabyteService',function($http,ezfb,$scope,$location,$filter,$window,$animate,$timeout,$routeParams,vendabyteService){
 			$scope.comment = {};
 			
-			$scope.fetchComments = function (product){
-				$scope.comments = product.comment_set;
-				$scope.product = product;
-			}
-
-			$scope.addComment = function (){
+			$scope.addComment = function (product){
 				var time=new Date();
 				
-				$scope.comment.article = $scope.product.url;
+				$scope.comment.article = product.url;
 				$scope.comment.date_posted = time.toISOString();
-				$scope.comment.user = $scope.product.user.url;
-				
-				
-				//console.log($scope.comments);
-				//console.log($scope.product);
-
+				$scope.comment.user = product.user.url;
+								
 				vendabyteService.setComment($scope.comment).then(function (data){
-					$scope.comments.push($scope.comment);
+					product.comment_set.push(JSON.parse(data));
 					$scope.comment = {};
+					$scope.commentToggle();
 				});		
-				//$scope.commentToggle();		
+						
 			}
         }])
+
+
 		.controller('ArticleUploadCtrl', ['$scope','$window','vendabyteService','$http',function($scope,$window,vendabyteService,$http){
 		    $scope.myImage='';
 		    $scope.myCroppedImage='';
 		    $scope.cropedImages = [];
 		    $scope.imgIndex = 0;
-		    $scope.blobs=[];
 		    $scope.article = {};
+		    $scope.articles = [];
 		    $scope.devices = [];		    
 		    $scope.brands = [];
 		    $scope.models = [];
 		    $scope.active = false;
+		    
+		    var mainScope = vendabyteService.mainScope;
 
-		    window.article = $scope.article;
 		    vendabyteService.getDevices().then(function (data){
 				$scope.devices = data;
 			});	
 
 			$scope.getBrands = function (device){
-				delete article.brand;
-				delete article.model;
+				delete $scope.article.brand;
+				delete $scope.article.model;
 
 				vendabyteService.getBrands(device.device_detail).then(function (data){
 					$scope.brands = data;
 				});
 			}
 			$scope.getModels = function (brand){
-				console.log("ARTICLE BRAND",$scope.article);
 				var models = [];
 				$scope.models = [];
-				delete article.model
+				delete $scope.article.model
 
 				for(i in $scope.brands){
 					if ($scope.brands[i].brand === brand)
@@ -156,19 +177,15 @@
 
 				for(i in models){
 					vendabyteService.getModel(models[i]).then(function (data){
-						console.log("MODELO",data);
 						$scope.models.push(data[0]);
 					});
 				}
-				//$scope.models=brand.brandmodel_set;
-				/*vendabyteService.getModel(model).then(function (data){
-					console.log("MODELO",data);
-					$scope.model = data;
-				});*/
 			}
 			//ENVIO DE FORMULARIO QUE CONTIENE EL ARTICULO
-			$scope.sendArticle = function (user){
-				console.log(user);
+			$scope.sendArticle = function (){
+
+				user = mainScope.me;
+
 				formData = new FormData();
 				formData.append("devie",$scope.article.device);
 				formData.append("brand",$scope.article.brand);
@@ -178,17 +195,13 @@
 				formData.append("price",$scope.article.price);
 				formData.append("user",window.location.origin+"/api/user/"+user.id+"/");
 				formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);
-				
-
-				/*vendabyteService.sendPicture(formData).then(function (data){
-					console.log(data);
-				});*/
 
 				var request = new XMLHttpRequest();
 				request.open("POST", "/api/article/");
 				request.onloadend = function(){	  
 					if(request.status === 201){
 						articulo = JSON.parse(request.response) ;
+						articulo.user = user;
 						$scope.sendPicture(articulo);
 					}
 		    	}
@@ -208,14 +221,16 @@
 					request.onloadend = function(){	  
 						if(request.status === 201){ 
 							$scope.cropedImages.pop(0);
+							articulo.articlepicture_set.push(JSON.parse(request.response));
 							$scope.sendPicture(articulo);
 						}
 			    	}
 					request.send(formData);
 				}
-				// else{
-				// 	$scope.setProduct(articulo);
-				// }		
+				else{
+					$scope.article={};
+					mainScope.addArticle(articulo);				 	
+				}		
 			}
 			//RECORTE DE IMAGENES Y POSICIONAMIENTO EN FORMULARIO
 			$scope.cropImage = function (index){
@@ -233,7 +248,6 @@
 						$scope.cropedImages.push(imagen);
 					}
 				}	
-				console.log($scope.cropedImages)
 				vendabyteService.getDirective("file-select.html").then(function (data){
 				 	angular.element("file-select").html(data);
 				});				
@@ -242,7 +256,6 @@
 
 		    //NG-IMAGE-CROP MANEJO DEL ARCHIVO SELECCIONADO
 		   	$scope.handleFileSelect=function(evt) {
-		   		console.log(evt);
 		      	var file=evt.target.files[0];
 		      	var reader = new FileReader();
 		      	reader.onload = function (evt) {

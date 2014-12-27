@@ -24,6 +24,12 @@
 	        templateUrl: '/static/partials/vendabyte-products.html'
 	      };
 	    })
+	    .directive('vendabyteFollowers', function () {
+	      return {
+	        restrict: 'E',
+	        templateUrl: '/static/partials/vendabyte-followers.html'
+	      };
+	    })
 
 		.directive('resize', function ($window) {
 	        return function (scope, element) {

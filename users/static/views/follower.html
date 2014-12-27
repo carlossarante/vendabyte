@@ -1,125 +1,18 @@
 <div class="wrapper2 relative">     
     <section class="load-sect relative inline-block">
         <div class="cont-izq">
-            <div class="file-browse caja">
-                <div id= "deco" class="deco">
-                    <span class="">Arrastra las fotos de tu articulo aqui</span>
-                    <br/>
-                    <input type="file" id="dropIn" value="Submit" class="dropArea absolute">
-                    <div class="load-button">
-                        <input type="file" id="selectIn" value="Submit" class="button relative">
-                        Buscar el Archivo
-                    </div>
-                </div>          
+            <div ng-controller="ArticleUploadCtrl">
+
+                <file-select></file-select>                
+
+                <article-form></article-form>
             </div>
-            
-            <form action="" id="articleUpload" class="upload-box none" onsubmit="return false">
-                <ul class="thumbnail-cont">
-                    <li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-                    <li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-                    <li id="thumbnail3" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-                    <li id="thumbnail4" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-                    <li id="thumbnail5" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-                </ul>
-                
-                <div class="rb-container">
-                    <div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[0].device_detail)%>"><% print(this.model.attributes[0].device_detail)%></div>
-                    <div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[1].device_detail)%>"><% print(this.model.attributes[1].device_detail)%></div>
-                    <div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[2].device_detail)%>"><% print(this.model.attributes[2].device_detail)%></div>
-                    <div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[3].device_detail)%>"><% print(this.model.attributes[3].device_detail)%></div>
-                </div>
-
-                <div class="select-cont">
-                    <select class="brand-select inline-block" name="brand" form="articleUpload" required>
-                        <option value="" selected disabled="true" label="Seleccionar marca"></option>
-                    </select>
-
-                    <select class="model-select inline-block" name="model" form="articleUpload" required>
-                        <option value="" selected disabled="true" label="Seleccionar modelo"></option>
-                    </select>
-
-                    <textarea form="articleUpload" name="short_description" placeholder="Short description" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
-                    <textarea form="articleUpload" name="specs" placeholder="Specs" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
-                </div>
-                <input type="number" name="price" min="0" style="font-size:1rem" placeholder="Precio" required> 
-                <button type="submit" id="submit" style="font-size:1rem;">Subir articulo</button>
-            </form>
         </div>
-        <ul class="options-menu inline-block">
-            <li id="newest" class="options inline-block" ng-click="navigate('nuevo')">
-                <div class="icon">Iconos</div>
-                <span class="option">Nuevo</span>
-            </li>
-            <li id="following" class="options inline-block" ng-click="navigate('siguiendo')">
-                <div class="icon">Iconos</div>
-                <span class="option">Siguiendo</span>
-            </li>
-            <li id="followers" class="options inline-block" ng-click="navigate('seguidores')">
-                <div class="icon">Iconos</div>
-                <span class="option">Seguidores</span>
-            </li>
-            <li id="popular" class="options inline-block" ng-click="navigate('popular')">
-                <div class="icon">Iconos</div>
-                <span class="option">Popular</span>
-            </li>
-            <li id="interesting" class="options inline-block" ng-click="navigate('meinteresa')">
-                <div class="icon">Iconos</div>
-                <span class="option">Me interesa</span>
-            </li>
-            <li id="selling" class="options inline-block" ng-click="navigate('lovendo')">
-                <div class="icon">Iconos</div>
-                <span class="option">Lo vendo</span>
-            </li>
-        </ul>
+
+        <options-menu></options-menu>
+
     </section>
     <section class="offers-sect inline-block">          
-        <section class="followers-sect none">
-            <li class="follower-cont inline-block relative">
-                <div class="inline-block">
-                    <img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
-                    <span class="icon-star"></span>
-                    <span class="icon-star"></span>
-                    <span class="icon-star"></span>
-                    <span class="icon-star"></span>
-                    <span class="icon-star"></span> 
-                </div>                  
-                <div class="inline-block">
-                    <span class="user-name">Ramiro Fernandez</span>
-                    <div class="deco-count">
-                        <span class="following-count">200</span>
-                        <span class="following">Siguiendo</span>
-                    </div>
-                    <div class="deco-count">
-                        <span class="followers-count">20</span> 
-                        <span class="followers">Seguidores</span>
-                    </div>                      
-                    <div class="follow-user">Seguir</div>
-                </div>
-            </li>       
-            <li class="follower-cont inline-block relative">
-                <div class="inline-block">
-                    <div class="user-deco block">
-                        <img src="<%=photo%>" alt="<%=first_name%> <%=last_name%>" class="user-pict">
-                    </div>
-                    <span class="icon-star"></span>
-                    <span class="icon-star"></span>
-                    <span class="icon-star"></span>
-                    <span class="icon-star"></span>
-                    <span class="icon-star"></span> 
-                </div>                  
-                <div class="inline-block">
-                    <span class="user-name"><%=first_name%> <%=last_name%></span>
-                    <div class="deco-count">
-                        <span class="following-count"><%=quantity_following%></span>
-                        <span class="following">Siguiendo</span>
-                    </div>
-                    <div class="deco-count">
-                        <span class="followers-count"><%=quantity_followers%></span>    
-                        <span class="followers">Seguidores</span>
-                    </div>                      
-                    <div class="follow-user">Seguir</div>
-                </div>
-            </li>       
-        </section>  
+        <vendabyte-followers></vendabyte-followers>
     </section>
 </div>                  

@@ -38,27 +38,27 @@
       })
       .when('/nuevo', {
         templateUrl: '/static/views/article.html',
-        controller: 'ArticleController'
+        controller: 'ArticlesController'
       })     
       .when('/popular', {
         templateUrl: '/static/views/article.html',
-        controller: 'ArticleController'
+        controller: 'ArticlesController'
       })
       .when('/meinteresa', {
         templateUrl: '/static/views/article.html',
-        controller: 'ArticleController'
+        controller: 'ArticlesController'
       })
       .when('/lovendo', {
         templateUrl: '/static/views/article.html',
-        //controller: 'NewsSingleController'
+        controller: 'ArticlesController'
       })
       .when('/siguiendo', {
         templateUrl: '/static/views/follower.html',
-        //controller: 'NewsSingleController'
+        controller: 'FollowersController'
       })
       .when('/seguidores', {
         templateUrl: '/static/views/follower.html',
-        //controller: 'NewsSingleController'
+        controller: 'FollowersController'
       })
       /*.when('/:coolsection', {
         templateUrl: function(params){return '/static/views/'+params.coolsection+'.html'},

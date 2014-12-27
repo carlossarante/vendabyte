@@ -165,17 +165,17 @@
 
         return deferred.promise;
       };
-       function sendArticle(object) {
-        console.log(object);
+       function getFollowers() {
         var deferred = $q.defer();
 
-        $http.post('/api/article/',object)
+        $http.get("/api/user/?format=json&list=following")
           .success(function (data) {
             deferred.resolve(data);
           });
 
         return deferred.promise;
       };
+      
       return {
         getUser : getUser,
         getMe : getMe,
@@ -193,7 +193,7 @@
         setFollower : setFollower,
         unsetFollower : unsetFollower,
         getDirective : getDirective,
-        sendArticle : sendArticle,
+        getFollowers : getFollowers,
       };
 
     }])
