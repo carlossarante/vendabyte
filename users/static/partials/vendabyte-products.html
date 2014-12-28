@@ -22,9 +22,9 @@
                 <span class="precio absolute">{{product.price | currency:'RD$':2}}</span>
                 <span class="add-cart absolute icon-plus"></span>   
                 <div class="actions">
-                    <span class="interest" ng-click="interestedToggle(product)">Me interesa</span>   
-                    <span class="action icon-heart" ng-click="likedToggle(product)"></span> 
-                    <span class="action icon-bubble" ng-click="commentToggle()"></span> 
+                    <span class="interest" ng-click="interestedToggle(product)" ng-class="{active:product.interested}">Me interesa</span>   
+                    <span class="action icon-heart" ng-click="likedToggle(product)" ng-class="{active:product.liked}"></span> 
+                    <span class="action icon-bubble" ng-click="commentBoxToggle()"></span> 
                     <span class="action icon-share"></span>     
                 </div>                  
             </section>
@@ -33,7 +33,7 @@
             <form name="commentsForm" class="comment-box" role="form" ng-submit="addComment(product)" ng-if="commentActive" ng-controller="CommentsController">
                 <textarea class="comment-text inline-block" cols="40" rows="5" ng-model="comment.comment" required></textarea>
                 <button type="submit" class="acept button inline-block">Comentar</button>
-                <div class="decline button inline-block">Cancelar</div>
+                <button class="button inline-block" ng-click="hideCommentBox(comment)">Cancelar</button>
             </form>  
             <!-- COMMENTS ADDED -->
             <section class="comment-cont">                 

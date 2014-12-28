@@ -108,7 +108,11 @@
       function unsetLiked(object) {
         var deferred = $q.defer();
 
-        $http.delete(object.article +"delete_like/")
+        $http.delete(object.article +"delete_like/",{
+          headers: {
+              'X-CSRFToken': $http.defaults.headers.post['X-CSRFToken']
+          }
+        })
           .success(function (data) {
             deferred.resolve(data);
           });
@@ -128,7 +132,11 @@
       function unsetInterested(object) {
         var deferred = $q.defer();
 
-        $http.delete(object.article+"delete_interesting/")
+        $http.delete(object.article+"delete_interesting/",{
+          headers: {
+              'X-CSRFToken': $http.defaults.headers.post['X-CSRFToken']
+          }
+        })
           .success(function (data) {
             deferred.resolve(data);
           });

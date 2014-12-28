@@ -135,32 +135,38 @@
 					return true;
 			}
 
-			$scope.commentToggle = function (){
+			$scope.commentBoxToggle = function (){
 				$scope.commentActive = !$scope.commentActive;
+			}
+			$scope.hideCommentBox = function (comment){
+				comment = {};
+				$scope.commentActive = false;
 			}
 
 			$scope.likedToggle = function (product){
-				var object = {"article":product.url, "user":window.location.origin+"/api/user/"+product.user.id+"/"}
+				var object = {"article":product.url};
 				if(!product.liked){
 					vendabyteService.setLiked(object).then(function (data){
+						product.liked = true;
 					});
 				}
 				else{
 					vendabyteService.unsetLiked(object).then(function (data){
+						product.liked = false;
 					});
 				}
 			}	
 
 			$scope.interestedToggle = function (product){
-				var object = {"article":product.url, "user":window.location.origin+"/api/user/"+product.user.id+"/"}
+				var object = {"article":product.url}
 				if(!product.interested){
 					vendabyteService.setInterested(object).then(function (data){
-					
+						product.interested = true;
 					});
 				}
 				else{
 					vendabyteService.unsetInterested(object).then(function (data){
-						
+						product.interested = false;
 					});
 				}
 			}		
@@ -196,8 +202,7 @@
 								
 				vendabyteService.setComment($scope.comment).then(function (data){
 					product.comment_set.push(data);
-					$scope.comment = {};
-					$scope.commentToggle();
+					$scope.hideCommentBox($scope.comment);
 					$scope.$parent.$parent.index +=1;	//articleScope		
 				});							
 			}
