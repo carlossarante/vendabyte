@@ -157,7 +157,7 @@ a
 	
 	.badgets-cont
 		width 96%
-		margin 80px 0px 20px 0px
+		margin 60px 0px 20px 0px
 		padding 0
 		box-shadow 0px 0px 5px gris-medio
 		font-size 1rem
@@ -239,7 +239,6 @@ a
 .user-cont
 	width 96%
 	text-align right
-	top 10px
 
 	div
 		width 57.5%
@@ -259,7 +258,7 @@ a
 		.user-name
 			font-size 1.5rem
 			font-weight bold
-			margin-top 15px
+			margin-top 5px
 		.icon-star
 				margin-right 0.2rem
 				font-size 1rem
@@ -424,7 +423,7 @@ a
 .products
 	width 96%
 	margin 0 auto
-	padding-top 60px
+	padding-top 65px
 	//margin-top 20px
 	.product
 		text-align left
@@ -441,13 +440,15 @@ a
 				height 70px
 				overflow hidden
 				border 3px solid crema
+				cursor pointer
 
 		.art-cont
 			width 81%
 			//float right
 			color verde-titulos
 			margin-left 3%
-
+			.user-name
+				cursor pointer
 			.description 
 				margin 0
 				font-size 1rem
@@ -524,39 +525,50 @@ a
 					margin-bottom 5px
 					cursor pointer
 					font-size 1rem
-			.comment
-				background-color gris-claro
-				margin-bottom 3px
+			.comment-cont
 				font-size 1rem
-
-				.user
-					width 10%
-					width 40px
-					height 40px
-					margin 2% 0% 2% 2%
-					border 1px solid crema
-					vertical-align top
-				div
-					margin-top 2%
-					width 86%
-					padding-bottom 5px
-					.person
+				.comment
+					background-color gris-claro
+					margin-bottom 3px
+					.user
+						width 10%
+						width 40px
+						height 40px
+						margin 2% 0% 2% 2%
+						border 1px solid crema
+						vertical-align top
+						cursor pointer
+					div
+						margin-top 2%
+						width 86%
+						padding-bottom 5px
+						.person
+							color verde-titulos
+							cursor pointer
+						.fecha
+							color gris-medio
+							position relative
+							font-size 0.8rem
+						.opinion
+							margin 0
+							color gris-oscuro
+							word-wrap break-word
+				.show-more-box
+					background-color gris-claro
+					padding 5px 10px
+					border-radius 20px 0 0 20px
+					.show-more
 						color verde-titulos
-					.fecha
-						color gris-medio
-						position relative
-						top 5px
-					.opinion
-						margin 0
-						color gris-oscuro
-						word-wrap break-word
+						cursor pointer
+					
+					
 
 .followers-sect
 	font-size 0rem
 	text-align left
 	width 30.72rem
 	margin 0 auto
-	padding-top 45px
+	padding-top 65px
 	//margin-top 20px
 
 	.follower-cont
@@ -586,6 +598,7 @@ a
 				overflow hidden
 				border 2px solid crema
 				margin 1% 0 5% 1%
+				cursor pointer
 
 			.icon-star
 				font-size 0.65rem
@@ -602,6 +615,7 @@ a
 				font-size 1rem
 				margin-bottom 2px
 				font-weight bold
+				cursor pointer
 
 			.deco-count
 				width 47.5%		

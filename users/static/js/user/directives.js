@@ -30,6 +30,12 @@
 	        templateUrl: '/static/partials/vendabyte-followers.html'
 	      };
 	    })
+	    .directive('userProfile', function () {
+	      return {
+	        restrict: 'E',
+	        templateUrl: '/static/partials/user-profile.html'
+	      };
+	    })
 
 		.directive('resize', function ($window) {
 	        return function (scope, element) {

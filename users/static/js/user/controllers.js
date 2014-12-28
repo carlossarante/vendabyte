@@ -9,18 +9,13 @@
 			///OJO PUEDE QUE NO SEA NECESARIO ESTE GET
 			vendabyteService.getMe().then(function (data){
 				$scope.me = data[0];
+				$scope.me.url = window.location.origin+"/api/user/"+$scope.me.id+"/";
 			});
 			////////////////////////////////
-			vendabyteService.getArticles().then(function (data){
-				$scope.next = data.next;
-				$scope.previous = data.previous;
-				$scope.articles = data.results.reverse();
-			});
-
 			$scope.addArticle = function (article){
 				var articles = $scope.articles;
-				articles.reverse().push(article);
-				$scope.articles = articles.reverse();
+				articles.push(article);
+				$scope.articles = articles;
 				$scope.$apply();
 			}
 			////////////////////////////////////////////////////////
@@ -28,50 +23,116 @@
 			$scope.navigate = function (path){
 				$location.path("/"+path);
 			}			
-		}])	
-
-
-		.controller('ArticlesController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
-			vendabyteService.articlesScope=$scope;
-			var mainScope = vendabyteService.mainScope;
-			
-			vendabyteService.getArticles().then(function (data){
-				mainScope.next = data.next;
-				mainScope.previous = data.previous;
-				mainScope.articles = data.results.reverse();				
-			});
-			
-        }])
+		}])			
 
         .controller('FollowersController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
 			vendabyteService.followersScope=$scope;
 			var mainScope = vendabyteService.mainScope;
+			var param = "";
 			
-			vendabyteService.getFollowers().then(function (data){
-				mainScope.followers = data.reverse();				
+			switch ($location.path()) {
+				case "/siguiendo":
+					param = "following";
+					break;
+				case "/seguidores":
+					param = "followers";
+					break;
+				default:
+					param = "";
+			}
+
+			mainScope.followers = [];	
+
+			vendabyteService.getFollowers(param).then(function (data){
+				mainScope.followers = data;				
 			});
+        }])
+		.controller('FollowerController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
+			vendabyteService.followerScope=$scope;
+			$scope.user ={};
+			//$scope.user.user_following = true;
 			
+			$scope.followToggle = function (follower){
+				follower.url = window.location.origin+"/api/user/"+follower.id+"/";
+
+				
+				if(!follower.user_following){
+					vendabyteService.setFollower(follower.url).then(function (data){						
+						if(data.Success){
+							follower.user_following = true;
+							$scope.user=follower;
+						}
+					});
+				}
+				else{
+					vendabyteService.unsetFollower(follower.url).then(function (data){						
+						if(data.Success){
+							follower.user_following = false;
+							$scope.user=follower;
+						}
+					});
+				}
+			}	
+
+        }])
+
+        .controller('ArticlesController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
+			vendabyteService.articlesScope=$scope;
+			var mainScope = vendabyteService.mainScope;
+			var param = "";
+
+			switch ($location.path()) {
+				case "/nuevo":
+					param = "new";
+					break;
+				case "/popular":
+					param = "popular";
+					break;
+				case "/meinteresa":
+					param = "interesting";
+					break;
+				case "/lovendo":
+					param = "selling"
+					break;
+				default:
+					param = "";
+			}
+
+			mainScope.articles = [];		
+
+			vendabyteService.getArticles(param).then(function (data){
+				mainScope.next = data.next;
+				mainScope.previous = data.previous;
+				mainScope.articles = data.results;				
+			});
         }])
 
 
 		.controller('ArticleController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
 			vendabyteService.articleScope = $scope;
 			$scope.commentActive = false;
-			$scope.comments = [];
+			//$scope.comments = [];
+			$scope.index = 2;
+			$scope.showMore = false;
 
-			$scope.setProduct = function(product){
-				$scope.product = product;
-				vendabyteService.getUser($scope.product.user).then(function (data){
-					var url = $scope.product.user;
-					$scope.product.user = data;
-					$scope.product.user.url = url;
-				});
-				for(i in product.comment_set){
-					vendabyteService.getComment(product.comment_set[i]).then(function (data){
-						$scope.comments.push(data);
-					});
+			var product = $scope.$parent.product;
+
+			if(product.comment_set.length > 2)
+			{
+				$scope.showMore = true;
+			}
+
+			$scope.setIndex = function (product){
+				$scope.index = product.comment_set.length;
+			}
+
+			$scope.verify = function (product){
+				if (product.user.id === $scope.me.id)
+				{
+					return false;
 				}
-				$scope.product.comment_set=$scope.comments;
+				else
+					return true;
 			}
 
 			$scope.commentToggle = function (){
@@ -79,38 +140,45 @@
 			}
 
 			$scope.likedToggle = function (product){
+				var object = {"article":product.url, "user":window.location.origin+"/api/user/"+product.user.id+"/"}
 				if(!product.liked){
-					vendabyteService.setLiked(product).then(function (data){
-						console.log("ME GUSTA ACTIVO",data);
+					vendabyteService.setLiked(object).then(function (data){
 					});
 				}
 				else{
-					vendabyteService.unsetLiked(product).then(function (data){
-						console.log("ME GUSTA DESACTIVADO",data);
+					vendabyteService.unsetLiked(object).then(function (data){
 					});
 				}
-			}		
+			}	
+
 			$scope.interestedToggle = function (product){
+				var object = {"article":product.url, "user":window.location.origin+"/api/user/"+product.user.id+"/"}
 				if(!product.interested){
-					vendabyteService.setInterested(product).then(function (data){
-						console.log("INTERESTED ACTIVO",data);
+					vendabyteService.setInterested(object).then(function (data){
+					
 					});
 				}
 				else{
-					vendabyteService.unsetInterested(product).then(function (data){
-						console.log("INTERESTED DESACTIVADO",data);
+					vendabyteService.unsetInterested(object).then(function (data){
+						
 					});
 				}
 			}		
+
 			$scope.followToggle = function (product){
 				if(!product.user.user_following){
-					vendabyteService.setFollower(product).then(function (data){
-						console.log("FALLOWING",data);
+					vendabyteService.setFollower(window.location.origin+"/api/user/"+product.user.id+"/").then(function (data){
+						if(data.Success){
+							product.user.user_following = true;
+						}
+
 					});
 				}
 				else{
-					vendabyteService.unsetFollower(product).then(function (data){
-						console.log("NOT FALLOWING",data);
+					vendabyteService.unsetFollower(window.location.origin+"/api/user/"+product.user.id+"/").then(function (data){
+						if(data.Success){
+							product.user.user_following = false;
+						}
 					});
 				}
 			}				
@@ -119,20 +187,19 @@
 
         .controller('CommentsController',['$http','ezfb','$scope','$location','$filter','$window','$animate','$timeout','$routeParams','vendabyteService',function($http,ezfb,$scope,$location,$filter,$window,$animate,$timeout,$routeParams,vendabyteService){
 			$scope.comment = {};
-			
+
 			$scope.addComment = function (product){
 				var time=new Date();
 				
 				$scope.comment.article = product.url;
 				$scope.comment.date_posted = time.toISOString();
-				$scope.comment.user = product.user.url;
 								
 				vendabyteService.setComment($scope.comment).then(function (data){
-					product.comment_set.push(JSON.parse(data));
+					product.comment_set.push(data);
 					$scope.comment = {};
 					$scope.commentToggle();
-				});		
-						
+					$scope.$parent.$parent.index +=1;	//articleScope		
+				});							
 			}
         }])
 
@@ -205,7 +272,13 @@
 						$scope.sendPicture(articulo);
 					}
 		    	}
-				request.send(formData);
+		    	if($scope.cropedImages.length > 0)
+		    	{
+		    		request.send(formData);	
+		    	}
+		    	else{
+		    		alert("Recorte la imagen");
+		    	}				
 			}
 			//ENVIO SECUENCIAL DE LAS IMAGENES DEL FORMULARIO DEL ARTICULO
 			$scope.sendPicture = function (articulo){					
@@ -213,7 +286,7 @@
 				if($scope.cropedImages.length > 0){
 					formData = new FormData();
 					formData.append("article",articulo.url);
-					formData.append("art_img",$scope.cropedImages[0].blob);
+					formData.append("art_img",$scope.cropedImages[0].blob,chance.string({pool:'abcdefghijklmnopqrstxyz'})+".png");
 					formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);	
 					
 					var request = new XMLHttpRequest();				
@@ -227,9 +300,10 @@
 			    	}
 					request.send(formData);
 				}
-				else{
-					$scope.article={};
-					mainScope.addArticle(articulo);				 	
+				else{								
+					$scope.article={};		
+					$scope.active = false;
+					mainScope.addArticle(articulo);	
 				}		
 			}
 			//RECORTE DE IMAGENES Y POSICIONAMIENTO EN FORMULARIO
