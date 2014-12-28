@@ -20,6 +20,7 @@
     <script type="text/javascript" src="/static/js/lib/angular-sanitize.min.js"></script>
     <script type="text/javascript" src="/static/js/lib/angular-easyfb.min.js"></script>  
 	<script type="text/javascript" src="/static/js/lib/ng-img-crop.js"></script>
+	<script type="text/javascript" src="/static/js/lib/chance.min.js"></script>
 </head>
 <body ng-controller="MainController">
 	<header class="header fixed">		
@@ -37,176 +38,13 @@
 			<span class="icon-cog"></span>
 		</div>	
 	</header><!-- /header -->	
-	<section class="wrapper relative" ng-view>		
-		<figure class="portada-cont relative none">
-			<img src="/static/img/portada.png" alt="Vendabyte" class="portada">
-		</figure>
-		<div class="wrapper2 relative">		
-			<section class="load-sect relative inline-block">
-				<div class="cont-izq">
-					<div class="user-cont inline-block relative none">
-						<div class="inline-block">
-							<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">					
-						</div>					
-						<div class="inline-block">
-							<span class="user-name block">Ramiro Fernandez</span>
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>	
-							<br/>
-							<div id="deco1"class="deco-count">
-								<span class="following-count">200</span>
-								<span class="following">Siguiendo</span>
-							</div>
-							<div class="deco-count">
-								<span class="followers-count">20</span>	
-								<span class="followers">Seguidores</span>
-							</div>
-						</div>
-					</div>		
-					<div class="file-browse caja none">
-						<!--<div id= "deco" class="deco">
-							<span class="">Arrastra las fotos de tu articulo aqui</span>
-							<br/>
-							<input type="file" id="dropIn" value="Submit" class="dropArea absolute">
-							<div class="load-button">
-								<input type="file" id="selectIn" value="Submit" class="button relative">
-								Buscar el Archivo
-							</div>
-						</div>	-->			
-					</div>
-					
-					<form action="" id="articleUpload" class="upload-box none" onsubmit="return false">
-						<ul class="thumbnail-cont">
-							<li id="thumbnail1" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-							<li id="thumbnail2" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-							<li id="thumbnail3" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-							<li id="thumbnail4" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-							<li id="thumbnail5" class="img-load"><figure class="thumb-fig" ><img src="" alt="Vendabyte" class=""></figure></li>
-						</ul>
-						
-						<div class="rb-container">
-							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[0].device_detail)%>"><% print(this.model.attributes[0].device_detail)%></div>
-							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[1].device_detail)%>"><% print(this.model.attributes[1].device_detail)%></div>
-							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[2].device_detail)%>"><% print(this.model.attributes[2].device_detail)%></div>
-							<div class="rbDeco inline-block"><input class="radioBtn" type="radio" name="device" required value="<% print(this.model.attributes[3].device_detail)%>"><% print(this.model.attributes[3].device_detail)%></div>
-						</div>
-
-						<div class="select-cont">
-							<select class="brand-select inline-block" name="brand" form="articleUpload" required>
-								<option value="" selected disabled="true" label="Seleccionar marca"></option>
-							</select>
-
-							<select class="model-select inline-block" name="model" form="articleUpload" required>
-								<option value="" selected disabled="true" label="Seleccionar modelo"></option>
-							</select>
-
-							<textarea form="articleUpload" name="short_description" placeholder="Short description" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
-							<textarea form="articleUpload" name="specs" placeholder="Specs" required style="font-size:1rem; display:block; width:100%; margin-top:10px"></textarea>
-						</div>
-						<input type="number" name="price" min="0" style="font-size:1rem" placeholder="Precio" required>	
-						<button type="submit" id="submit" style="font-size:1rem;">Subir articulo</button>
-					</form>
-
-
-					<ul class="badgets-cont inline-block relative none">
-						<span class="badget-tittle">Mis Badgets</span>
-						<li class="badget">iconos</li>
-						<li class="badget">iconos</li>
-						<li class="badget">iconos</li>
-						<li class="badget">iconos</li>
-						<li class="badget">iconos</li>
-						<li class="badget">iconos</li>
-						<li class="badget">iconos</li>
-						<li class="badget">iconos</li>
-						<li class="badget">iconos</li>
-					</ul>
-				</div>
-				<ul class="options-menu inline-block none">
-					<li id="newest" class="options inline-block">
-						<div class="icon">Iconos</div>
-						<span class="option">Nuevo</span>
-					</li>
-					<li id="following" class="options inline-block">
-						<div class="icon">Iconos</div>
-						<span class="option">Siguiendo</span>
-					</li>
-					<li id="followers" class="options inline-block">
-						<div class="icon">Iconos</div>
-						<span class="option">Seguidores</span>
-					</li>
-					<li id="popular" class="options inline-block">
-						<div class="icon">Iconos</div>
-						<span class="option">Popular</span>
-					</li>
-					<li id="interesting" class="options inline-block">
-						<div class="icon">Iconos</div>
-						<span class="option">Me interesa</span>
-					</li>
-					<li id="selling" class="options inline-block">
-						<div class="icon">Iconos</div>
-						<span class="option">Lo vendo</span>
-					</li>
-				</ul>
-			</section>
-			<section class="offers-sect inline-block">			
-				<section class="followers-sect none">
-					<li class="follower-cont inline-block relative">
-						<div class="inline-block">
-							<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>	
-						</div>					
-						<div class="inline-block">
-							<span class="user-name">Ramiro Fernandez</span>
-							<div class="deco-count">
-								<span class="following-count">200</span>
-								<span class="following">Siguiendo</span>
-							</div>
-							<div class="deco-count">
-								<span class="followers-count">20</span>	
-								<span class="followers">Seguidores</span>
-							</div>						
-							<div class="follow-user">Seguir</div>
-						</div>
-					</li>		
-					<li class="follower-cont inline-block relative">
-						<div class="inline-block">
-							<img src="/static/img/persona.jpg" alt="Usuario" class="user-pict block">
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>
-							<span class="icon-star"></span>	
-						</div>					
-						<div class="inline-block">
-							<span class="user-name">Ramiro Fernandez</span>
-							<div class="deco-count">
-								<span class="following-count">200</span>
-								<span class="following">Siguiendo</span>
-							</div>
-							<div class="deco-count">
-								<span class="followers-count">20</span>	
-								<span class="followers">Seguidores</span>
-							</div>						
-							<div class="follow-user">Seguir</div>
-						</div>
-					</li>		
-				</section>	
-				<section class="products none">				
-				</section>
-			</section>
-		</div>					
+	<section class="wrapper relative" ng-view>			
 	</section>
 
 	<script type="text/javascript" src="/static/js/user/app.js"></script>
     <script type="text/javascript" src="/static/js/user/controllers.js"></script>
     <script type="text/javascript" src="/static/js/user/services.js"></script>
     <script type="text/javascript" src="/static/js/user/directives.js"></script>
+    <script type="text/javascript" src="/static/js/user/filters.js"></script>
 </body>
 </html>

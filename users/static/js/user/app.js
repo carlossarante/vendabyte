@@ -9,7 +9,8 @@
     'ezfb',
 		'vendabyte.controllers',
 		'vendabyte.services',
-    'vendabyte.directives'
+    'vendabyte.directives',
+    'vendabyte.customFilters'
 	]);
 
   app.run(function($http, $cookies) {
@@ -34,7 +35,7 @@
       })
       .when('/users/:user', {
         templateUrl: '/static/views/article.html',
-        //controller: 'ArticleController'
+        controller: 'ArticlesController'
       })
       .when('/nuevo', {
         templateUrl: '/static/views/article.html',

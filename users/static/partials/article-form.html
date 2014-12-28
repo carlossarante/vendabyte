@@ -1,7 +1,7 @@
 <form name="uploadForm" id="articleUpload" class="upload-box" ng-submit="sendArticle()" ng-show="active">
     <div class="caja">                    
         <div class="cropArea">
-            <img-crop image="myImage" area-min-size="50" result-image="myCroppedImage" result-image-size="800" area-type="square" as-ratio-x="1" as-ratio-y="1.1"></img-crop>
+            <img-crop image="myImage" area-min-size="50" result-image="myCroppedImage" result-image-size="800" result-image-format="image/png" area-type="square" as-ratio-x="1" as-ratio-y="1.1"></img-crop>
         </div>
         <div class="cropbtn" ng-click="cropImage(imgIndex)">Cortar</div>
     </div>
@@ -26,6 +26,6 @@
         
         <textarea form="articleUpload" name="specs" placeholder="Specs" required style="font-size:1rem; display:block; width:100%; margin-top:10px" ng-model="article.specs" required></textarea>
     </div>
-    <input type="number" name="price" min="0" style="font-size:1rem" placeholder="Precio" ng-model="article.price" required> 
+    <input type="number" name="price" min="0" step="any" style="font-size:1rem" placeholder="Precio" ng-model="article.price" required> 
     <button type="submit" id="submit" style="font-size:1rem;">Subir articulo</button>
 </form>

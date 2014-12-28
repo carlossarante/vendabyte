@@ -1,5 +1,5 @@
 <section class="followers-sect">    
-    <li class="follower-cont inline-block relative" ng-repeat="follower in followers track by $id(follower)">
+    <li class="follower-cont inline-block relative" ng-repeat="follower in followers track by $id(follower)" ng-controller="FollowerController">
         <div class="inline-block">
             <div class="user-deco block">
                 <img src="{{follower.photo}}" alt="{{follower.first_name}} {{follower.last_name}}" class="user-pict">
@@ -20,7 +20,8 @@
                 <span class="followers-count">{{follower.quantity_followers}}</span>    
                 <span class="followers">Seguidores</span>
             </div>                      
-            <div class="follow-user">Seguir</div>
+            <div class="follow-user" ng-click="followToggle(follower)" ng-if="!follower.user_following">Seguir</div>
+            <div class="follow-user" ng-click="followToggle(follower)" ng-if="follower.user_following">No seguir</div>
         </div>
     </li>       
 </section>  

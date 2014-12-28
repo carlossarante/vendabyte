@@ -24,10 +24,10 @@
 
         return deferred.promise;
       };
-      function getArticles() {
+      function getArticles(param) {
         var deferred = $q.defer();
 
-        $http.get('/api/article/')
+        $http.get('/api/article/?format=json&list='+param)
           .success(function (data) {
             deferred.resolve(data);
           });
@@ -95,60 +95,64 @@
 
         return deferred.promise;
       };
-      function setLiked(product) {
+      function setLiked(object) {
         var deferred = $q.defer();
 
-        $http.post('/api/likes/',{"article":product.url})
+        $http.post('/api/likes/', object)
           .success(function (data) {
             deferred.resolve(data);
           });
 
         return deferred.promise;
       };
-      function unsetLiked(product) {
+      function unsetLiked(object) {
         var deferred = $q.defer();
 
-        $http.delete(product.url+"delete_like/")
+        $http.delete(object.article +"delete_like/")
           .success(function (data) {
             deferred.resolve(data);
           });
 
         return deferred.promise;
       };
-      function setInterested(product) {
+      function setInterested(object) {
         var deferred = $q.defer();
 
-        $http.post('/api/interesting/',{"article":product.url})
+        $http.post('/api/interesting/',object)
           .success(function (data) {
             deferred.resolve(data);
           });
 
         return deferred.promise;
       };
-      function unsetInterested(product) {
+      function unsetInterested(object) {
         var deferred = $q.defer();
 
-        $http.delete(product.url+"delete_interesting/")
+        $http.delete(object.article+"delete_interesting/")
           .success(function (data) {
             deferred.resolve(data);
           });
 
         return deferred.promise;
       };
-      function setFollower(product) {
+      function setFollower(url) {
         var deferred = $q.defer();
 
-        $http.post(product.user.url+'add_follower/',{})
+        $http.post(url+'add_follower/',{})
           .success(function (data) {
             deferred.resolve(data);
           });
 
         return deferred.promise;
       };
-      function unsetFollower(product) {
+      function unsetFollower(url) {
         var deferred = $q.defer();
 
-        $http.delete(product.user.url+"remove_follower/")
+        $http.delete(url+"remove_follower/",{ 
+          headers: {
+              'X-CSRFToken': $http.defaults.headers.post['X-CSRFToken']
+          }
+        })
           .success(function (data) {
             deferred.resolve(data);
           });
@@ -165,10 +169,10 @@
 
         return deferred.promise;
       };
-       function getFollowers() {
+       function getFollowers(param) {
         var deferred = $q.defer();
 
-        $http.get("/api/user/?format=json&list=following")
+        $http.get("/api/user/?format=json&list="+param)
           .success(function (data) {
             deferred.resolve(data);
           });
