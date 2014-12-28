@@ -1,3 +1,4 @@
+from rest_framework.validators import UniqueTogetherValidator
 from rest_framework import serializers
 import json
 import decimal
@@ -10,7 +11,7 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 	user = ShortUserSerializer(read_only=True)
 	class Meta:	
 		model = Comment
-		fields = ('id','url','date_posted','user','comment','article')
+		fields = ('url','date_posted','user','comment','article')
 
 class ArticlePictureSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
@@ -21,32 +22,34 @@ class ArticlePictureSerializer(serializers.HyperlinkedModelSerializer):
 class BrandModelSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = BrandModel
-		fields = ('id','url','brand','model_name')
+		fields = ('url','brand','model_name')
 
 class BrandSerializer(serializers.HyperlinkedModelSerializer):
 	brandmodel_set= serializers.StringRelatedField(many=True)
 	class Meta:
 		model = Brand
-		fields = ('id','url','device','brand','brandmodel_set')
+		fields = ('url','device','brand','brandmodel_set')
 
 
 class DeviceSerializer(serializers.HyperlinkedModelSerializer):
 	brand_set = serializers.StringRelatedField(many=True)
 	class Meta:
 		model = Device
-		fields = ('id','url','device_detail','brand_set')
+		fields = ('url','device_detail','brand_set')
 
 
 
 
 class ArticleSerializer(serializers.HyperlinkedModelSerializer):
+	user = UserSerializer(read_only=True)
 	articlepicture_set = ArticlePictureSerializer(read_only=True,many=True)
 	model_name = serializers.StringRelatedField(source='model.model_name')
 	interested = serializers.SerializerMethodField('is_interested')
 	liked = serializers.SerializerMethodField('is_liked')
+	comment_set = CommentSerializer(read_only=True,many=True)
 	class Meta:
 		model = Article
-		fields = ('id','url','model','model_name','user','short_description','articlepicture_set','price','specs','date_posted','comment_set','interested_count','like_count','liked','interested')		
+		fields = ('url','model','model_name','user','short_description','articlepicture_set','price','specs','date_posted','comment_set','interested_count','like_count','liked','interested')		
 	
 	def is_interested(self,obj):
 		if obj is None:
@@ -74,11 +77,23 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 class LikeSerializer(serializers.HyperlinkedModelSerializer):
 	user = ShortUserSerializer(read_only=True)
 	class Meta:
+		validators = [
+		UniqueTogetherValidator(
+			queryset = Like.objects.all(),
+			fields = ('article','user')
+			)
+		]
 		model = Like
-		fields = ('id','article','user')
+		fields = ('article','user')
 
 
 class InterestingSerializer(serializers.HyperlinkedModelSerializer):
-	user = ShortUserSerializer(read_only=True)
+	#user = ShortUserSerializer(read_only=True)
 	class Meta:
+		validators = [
+		UniqueTogetherValidator(
+			queryset = Interested.objects.all(),
+			fields = ('article','user')
+			)
+		]
 		model = Interested

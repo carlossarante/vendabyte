@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -128,14 +129,12 @@ class LikeSet(viewsets.ModelViewSet):
 	permission_classes = (IsAuthenticatedOrReadOnly,)
 	def create(self,request):
 		user = request.user
-		serializer = LikeSerializer(data=request.DATA)
+		serializer = LikeSerializer(data=request.DATA,context={'request':request})
 		if serializer.is_valid():
-			created = Like.objects.filter(Q(article=serializer.object.article),Q(user=user))
-			if not created:
-				serializer.save(user=user)
-				return Response(serializer.data, status=status.HTTP_201_CREATED)
-			else:
-				return Response({'status':'Error, this like was created already'}, status=status.HTTP_409_CONFLICT)				
+			serializer.save(user=user)
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		else:
+			return Response({'status':'Error, this like instance was created already,because %s' % serializer.errors}, status=status.HTTP_409_CONFLICT)				
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class InterestingSet(viewsets.ModelViewSet):
@@ -144,12 +143,10 @@ class InterestingSet(viewsets.ModelViewSet):
 	permission_classes = (IsAuthenticatedOrReadOnly,)
 	def create(self,request):
 		user = request.user
-		serializer = InterestingSerializer(data=request.DATA)
+		serializer = InterestingSerializer(data=request.DATA,context={'request':request})
 		if serializer.is_valid():
-			created = Interested.objects.filter(Q(article=serializer.object.article),Q(user=user))
-			if not created:
-				serializer.save(user=user)
-				return Response(serializer.data, status=status.HTTP_201_CREATED)
-			else:
-				return Response({'status':'Error, this interesting was created already'}, status=status.HTTP_409_CONFLICT)				
+			instance = serializer.save(user=user)
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		else:
+			return Response({'status':'Error, this like instance was created already,because %s' % serializer.errors}, status=status.HTTP_409_CONFLICT)				
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
