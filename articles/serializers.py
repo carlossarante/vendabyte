@@ -75,7 +75,7 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LikeSerializer(serializers.HyperlinkedModelSerializer):
-	user = ShortUserSerializer(read_only=True)
+	user = ShortUserSerializer(read_only=True,default=serializers.CurrentUserDefault())
 	class Meta:
 		validators = [
 		UniqueTogetherValidator(
@@ -88,8 +88,9 @@ class LikeSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class InterestingSerializer(serializers.HyperlinkedModelSerializer):
-	user = ShortUserSerializer(read_only=True)
+	user = ShortUserSerializer(read_only=True,default=serializers.CurrentUserDefault())
 	class Meta:
+
 		validators = [
 		UniqueTogetherValidator(
 			queryset = Interested.objects.all(),
@@ -97,3 +98,4 @@ class InterestingSerializer(serializers.HyperlinkedModelSerializer):
 			)
 		]
 		model = Interested
+		fields = ('url','article','user')
