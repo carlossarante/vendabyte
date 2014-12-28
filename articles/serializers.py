@@ -16,7 +16,7 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 class ArticlePictureSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = ArticlePicture
-		fields = ('art_img','article','cover')
+		fields = ('url','art_img','article','cover')
 
 
 class BrandModelSerializer(serializers.HyperlinkedModelSerializer):
@@ -84,11 +84,11 @@ class LikeSerializer(serializers.HyperlinkedModelSerializer):
 			)
 		]
 		model = Like
-		fields = ('article','user')
+		fields = ('url','article','user')
 
 
 class InterestingSerializer(serializers.HyperlinkedModelSerializer):
-	#user = ShortUserSerializer(read_only=True)
+	user = ShortUserSerializer(read_only=True)
 	class Meta:
 		validators = [
 		UniqueTogetherValidator(

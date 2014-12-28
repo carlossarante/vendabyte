@@ -81,21 +81,21 @@ class UserSet(viewsets.ModelViewSet):
 	def create(self,request):
 		serializer = UserSerializer(data=request.DATA,files=request.FILES,context={'request':request})
 		if serializer.is_valid():
-			serializer.save()
-			u = User.objects.get(id = serializer.data['id'])
+			u = serializer.save()
 			u.set_enc_password()
-			#return HttpResponse(status=500)
 			getUserPictures.delay(u,request.POST['photo_url'], request.POST['cover_url'])
 			u.save()
 			loginFacebookUser(request)
 			return HttpResponse('/users/%s'%serializer.data['username']) #Retorna la url del usuario.
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)		
-
+		else:
+			return HttpResponse('Error: %s' % serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+		
 
 	def dispatch(self, request, *args, **kwargs):
 		if kwargs.get('pk') == 'me' and request.user:
 			kwargs['pk'] = request.user.pk
 		return super(UserSet, self).dispatch(request, *args, **kwargs)
+	
 	@detail_route(methods=['POST',])
 	def add_follower(self,request,pk=None):
 		try:
