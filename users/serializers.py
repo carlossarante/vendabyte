@@ -12,7 +12,7 @@ class ShortUserSerializer(serializers.HyperlinkedModelSerializer):
 	user_following = serializers.SerializerMethodField('is_following')
 	class Meta:
 		model =User
-		fields = ('id','url','first_name','last_name','photo','user_following')
+		fields = ('url','first_name','last_name','photo','user_following')
 	
 	def is_following(self,obj):
 		request = self.context.get('request',None)
