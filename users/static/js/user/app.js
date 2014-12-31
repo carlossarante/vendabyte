@@ -2,11 +2,13 @@
 
 	var app = angular.module('vendabyte',[
 		'ngRoute',
-    'ngSanitize',
+    //'ngSanitize',
     //'ngAnimate',
     'ngCookies',
     'ngImgCrop',
     'ezfb',
+    'infinite-scroll',
+    'ngLoad',
 		'vendabyte.controllers',
 		'vendabyte.services',
     'vendabyte.directives',

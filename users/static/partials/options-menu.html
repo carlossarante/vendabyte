@@ -1,25 +1,25 @@
 <ul class="options-menu inline-block">
-    <li id="newest" class="options inline-block" ng-click="navigate('nuevo')">
+    <li id="newest" class="options inline-block" ng-click="navigate('nuevo',1)" ng-class="{active:(option === 1)}">
         <div class="icon">Iconos</div>
         <span class="option">Nuevo</span>
     </li>
-    <li id="following" class="options inline-block" ng-click="navigate('siguiendo')">
+    <li id="following" class="options inline-block" ng-click="navigate('siguiendo',2)" ng-class="{active:(option === 2)}">
         <div class="icon">Iconos</div>
         <span class="option">Siguiendo</span>
     </li>
-    <li id="followers" class="options inline-block" ng-click="navigate('seguidores')">
+    <li id="followers" class="options inline-block" ng-click="navigate('seguidores',3)" ng-class="{active:(option === 3)}">
         <div class="icon">Iconos</div>
         <span class="option">Seguidores</span>
     </li>
-    <li id="popular" class="options inline-block" ng-click="navigate('popular')">
+    <li id="popular" class="options inline-block" ng-click="navigate('popular',4)" ng-class="{active:(option === 4)}">
         <div class="icon">Iconos</div>
         <span class="option">Popular</span>
     </li>
-    <li id="interesting" class="options inline-block" ng-click="navigate('meinteresa')">
+    <li id="interesting" class="options inline-block" ng-click="navigate('meinteresa',5)" ng-class="{active:(option === 5)}">
         <div class="icon">Iconos</div>
         <span class="option">Me interesa</span>
     </li>
-    <li id="selling" class="options inline-block" ng-click="navigate('lovendo')">
+    <li id="selling" class="options inline-block" ng-click="navigate('lovendo',6)" ng-class="{active:(option === 6)}">
         <div class="icon">Iconos</div>
         <span class="option">Lo vendo</span>
     </li>

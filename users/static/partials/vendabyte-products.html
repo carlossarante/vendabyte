@@ -1,6 +1,6 @@
 <section class="products"> 
     <!-- ARTICLES -->
-    <article class="product" ng-repeat="product in articles | orderBy:'-date_posted'" ng-controller="ArticleController">
+    <article class="product" ng-repeat="product in articles | orderBy:'+date_posted'" ng-controller="ArticleController">
         <!-- ARTICLE USER -->
         <div class="user inline-block">
             <div class="user-deco">

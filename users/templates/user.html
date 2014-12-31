@@ -16,13 +16,15 @@
 	<script type="text/javascript" src="/static/js/lib/angular.min.js"></script>
     <script type="text/javascript" src="/static/js/lib/angular-route.min.js"></script>
     <script type="text/javascript" src="/static/js/lib/angular-cookies.min.js"></script>
-    <script type="text/javascript" src="/static/js/lib/angular-animate.min.js"></script>    
-    <script type="text/javascript" src="/static/js/lib/angular-sanitize.min.js"></script>
+    <!-- <script type="text/javascript" src="/static/js/lib/angular-animate.min.js"></script>    --> 
+    <!-- <script type="text/javascript" src="/static/js/lib/angular-sanitize.min.js"></script> -->
     <script type="text/javascript" src="/static/js/lib/angular-easyfb.min.js"></script>  
 	<script type="text/javascript" src="/static/js/lib/ng-img-crop.js"></script>
 	<script type="text/javascript" src="/static/js/lib/chance.min.js"></script>
+	<script type="text/javascript" src="/static/js/lib/ng-infinite-scroll.min.js"></script>
+	<script type="text/javascript" src="/static/js/lib/ng-load.js"></script>
 </head>
-<body ng-controller="MainController">
+<body ng-controller="MainController" onscroll="angular.element('body').scope().handleScroll(event)">
 	<header class="header fixed">		
 		<figure class="logo-cont" ng-click="navigate('users/{{user.username}}')">
 			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
@@ -38,7 +40,7 @@
 			<span class="icon-cog"></span>
 		</div>	
 	</header><!-- /header -->	
-	<section class="wrapper relative" ng-view>			
+	<section class="wrapper" infinite-scroll="articlesPagin(next)" infinite-scroll-disabled="busy" ng-view>			
 	</section>
 
 	<script type="text/javascript" src="/static/js/user/app.js"></script>
