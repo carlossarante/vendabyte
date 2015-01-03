@@ -34,6 +34,16 @@
 
         return deferred.promise;
       };
+      function getPageArticles(url) {
+        var deferred = $q.defer();
+
+        $http.get(url)
+          .success(function (data) {
+            deferred.resolve(data);
+          });
+
+        return deferred.promise;
+      };
       function getArticle(url) {
         var deferred = $q.defer();
 
@@ -193,6 +203,7 @@
         getMe : getMe,
         getArticles : getArticles,
         getArticle : getArticle,
+        getPageArticles : getPageArticles,
         getDevices : getDevices,
         getBrands : getBrands,
         getModel : getModel,

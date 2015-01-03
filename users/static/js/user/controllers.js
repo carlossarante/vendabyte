@@ -2,31 +2,72 @@
 (function () {
 	angular.module('vendabyte.controllers',[])
 		.controller('MainController',['$http','ezfb','$scope','$location','$filter','$window','$animate','$timeout','$routeParams','vendabyteService',function($http,ezfb,$scope,$location,$filter,$window,$animate,$timeout,$routeParams,vendabyteService){
-			vendabyteService.mainScope=$scope;
-			$scope.articles = [];	
-			$scope.followers = [];		
+			vendabyteService.mainScope=$scope;	
+			$scope.users = [];
+			$scope.followers = [];	
+			$scope.option = 0;	
+			scrolled = true;
+			offset = 0;
 			
 			///OJO PUEDE QUE NO SEA NECESARIO ESTE GET
 			vendabyteService.getMe().then(function (data){
 				$scope.me = data[0];
 				$scope.me.url = window.location.origin+"/api/user/"+$scope.me.id+"/";
+				$scope.users.push($scope.me);
 			});
 			////////////////////////////////
-			$scope.addArticle = function (article){
-				var articles = $scope.articles;
-				articles.push(article);
-				$scope.articles = articles;
-				$scope.$apply();
-			}
-			////////////////////////////////////////////////////////
+			
 
-			$scope.navigate = function (path){
+			////////////////////////////////////////////////////////
+			$scope.setOptAct = function(opt){
+				$scope.option = opt;
+			}
+
+			$scope.navigate = function (path,opt){
 				$location.path("/"+path);
-			}			
-		}])			
+				$scope.setOptAct(opt)
+			}	
+			$scope.handleScroll = function(event){
+				var menu = angular.element('.options-menu');
+				var browser = angular.element('.file-browse');
+				var element = angular.element(event.target);
+
+				console.log(menu.offset().top, element.scrollTop());
+				if(menu.offset().top <= element.scrollTop() && scrolled){
+					console.log("HAY PAPA")
+					offset = menu.offset().top;
+					menu.css({
+						position: 'fixed',
+						top: 45,
+						left: menu.offset().left
+					});
+					browser.css({
+						position: 'fixed',
+						top: 370,
+						left: browser.offset().left
+					});	
+					scrolled = false;
+				}
+				else if(offset > element.scrollTop() && !scrolled){
+					scrolled = true;
+					menu.css({
+						position: 'relative',
+						top: 'initial',
+						left: 'initial',
+					});
+					browser.css({
+						position: 'relative',
+						top: 'initial',
+						left: 'initial'
+					});
+					
+				}
+			}
+
+		}])
 
         .controller('FollowersController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
-			vendabyteService.followersScope=$scope;
+			//vendabyteService.followersScope=$scope;
 			var mainScope = vendabyteService.mainScope;
 			var param = "";
 			
@@ -48,7 +89,7 @@
 			});
         }])
 		.controller('FollowerController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
-			vendabyteService.followerScope=$scope;
+			//vendabyteService.followerScope=$scope;
 			$scope.user ={};
 			//$scope.user.user_following = true;
 			
@@ -78,6 +119,11 @@
 
         .controller('ArticlesController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
 			vendabyteService.articlesScope=$scope;
+			$scope.next = '';
+			$scope.previous = '';
+			$scope.articles = [];
+			$scope.busy = true;
+			
 			var mainScope = vendabyteService.mainScope;
 			var param = "";
 
@@ -101,15 +147,58 @@
 			mainScope.articles = [];		
 
 			vendabyteService.getArticles(param).then(function (data){
-				mainScope.next = data.next;
-				mainScope.previous = data.previous;
-				mainScope.articles = data.results;				
+				// mainScope.next = data.next;
+				// mainScope.previous = data.previous;
+				//$scope.busy = true;
+				$scope.next = data.next;
+				$scope.previous = data.previous;
+				$scope.articles = data.results;
+				angular.forEach($scope.articles,function (value,key){
+					$scope.modelUsers(value);
+				})				
+				$scope.busy = false;
 			});
+			$scope.addArticle = function (article){	
+				$scope.modelUsers(article);
+				var articles = $scope.articles;		
+				articles.push(article);
+				$scope.articles = articles;
+				$scope.$apply();
+			}
+			////////////////////////////////////////////////////////
+			$scope.modelUsers = function (article){
+				if(mainScope.users.length > 0)
+				{
+					var push = true;
+					angular.forEach(mainScope.users,function (value,key){
+						if(article.user.id === value.id){
+							article.user = value;
+							push = false;
+						}
+												
+					})
+					if(push){
+							mainScope.users.push(article.user);	
+						}
+				}
+				else{
+					mainScope.users.push(article.user);
+				}	
+			}
+			$scope.articlesPagin = function (url){
+				vendabyteService.getPageArticles(url).then(function (data){
+					$scope.next = data.next;
+					$scope.previous = data.previous;
+					$scope.articles=$scope.articles.concat(data.results);
+					console.log($scope.articles,data.results);
+					console.log($scope.next,$scope.busy = false);
+				})
+			}
         }])
 
 
 		.controller('ArticleController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
-			vendabyteService.articleScope = $scope;
+			//vendabyteService.articleScope = $scope;
 			$scope.commentActive = false;
 			//$scope.comments = [];
 			$scope.index = 2;
@@ -308,7 +397,7 @@
 				else{								
 					$scope.article={};		
 					$scope.active = false;
-					mainScope.addArticle(articulo);	
+					$scope.addArticle(articulo);	
 				}		
 			}
 			//RECORTE DE IMAGENES Y POSICIONAMIENTO EN FORMULARIO
@@ -344,6 +433,10 @@
 		      	};
 		      	reader.readAsDataURL(file);
 		      	$scope.active = true;
+
+		      	angular.element('body').animate({
+                	scrollTop: 0
+                }, 500);
 		    };
 		 //   angular.element(document.querySelector('#selectIn')).on('change',handleFileSelect);
 		 //   angular.element(document.querySelector('#dropIn')).on('change',handleFileSelect);
