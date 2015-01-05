@@ -1,5 +1,8 @@
 from tornado import ioloop, web,websocket
 
+clients = []
+counter = 0
+
 class MainHandler(web.RequestHandler):
 	def get(self):
 		if self.current_user is not None:
@@ -10,14 +13,23 @@ class MainHandler(web.RequestHandler):
 
 
 class ChatSocketHandler(websocket.WebSocketHandler):
+	counter = 0
 	def open(self):
 		print "Abierto"
+		clients.append(self)
+		counter+=1
 
 	def on_message(self,message):
-		self.write_message(u'Dijiste esto: ' + message)
+		structure_message = u"user%s said: %s"%(self.counter,message)
+		print structure_message 
+		for c in clients:
+			c.write_message(structure_message)
 
 	def on_close(self):
 		print "Websocket se ha cerrado"
+
+
+
 '''
 class StaticHandler(web.WebSocketHandler):
 	def open 
