@@ -33,7 +33,7 @@
       })
       .when('/users/:user/profile', {
         templateUrl: '/static/views/profile.html',
-        //controller: 'NewsSingleController'
+        controller: 'ArticlesController'
       })
       .when('/users/:user', {
         templateUrl: '/static/views/article.html',
@@ -74,7 +74,7 @@
 
     app.config(['ezfbProvider', function (ezfbProvider) {
       ezfbProvider.setInitParams({
-        appId: '386469651480295'
+        appId: '212602532249853'
       });
-    }]);    
+    }]);  
 })();
