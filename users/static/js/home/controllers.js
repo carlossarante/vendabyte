@@ -10,7 +10,7 @@
 			//offset = 0;
 
 			//FUCNIONES EZFB INICIO DE SESION/////////////////////////////////////////////////
-			$scope.login = function (){
+			$scope.logIn = function (){
 				ezfb.login(function (res) {
 			      /**
 			       * no manual $scope.$apply, I got that handled
@@ -202,60 +202,16 @@
 				else
 					return true;
 			}
-
-			$scope.commentBoxToggle = function (){
-				$scope.commentActive = !$scope.commentActive;
+			$scope.showCommentBox = function (){
+				$scope.commentActive = true;
 			}
+			/*$scope.commentBoxToggle = function (){
+				$scope.commentActive = !$scope.commentActive;
+			}*/
 			$scope.hideCommentBox = function (comment){
 				comment = {};
 				$scope.commentActive = false;
-			}
-
-			$scope.likedToggle = function (product){
-				var object = {"article":product.url};
-				if(!product.liked){
-					vendabyteService.setLiked(object).then(function (data){
-						product.liked = true;
-					});
-				}
-				else{
-					vendabyteService.unsetLiked(object).then(function (data){
-						product.liked = false;
-					});
-				}
-			}	
-
-			$scope.interestedToggle = function (product){
-				var object = {"article":product.url}
-				if(!product.interested){
-					vendabyteService.setInterested(object).then(function (data){
-						product.interested = true;
-					});
-				}
-				else{
-					vendabyteService.unsetInterested(object).then(function (data){
-						product.interested = false;
-					});
-				}
 			}		
-
-			$scope.followToggle = function (product){
-				if(!product.user.user_following){
-					vendabyteService.setFollower(window.location.origin+"/api/user/"+product.user.id+"/").then(function (data){
-						if(data.Success){
-							product.user.user_following = true;
-						}
-
-					});
-				}
-				else{
-					vendabyteService.unsetFollower(window.location.origin+"/api/user/"+product.user.id+"/").then(function (data){
-						if(data.Success){
-							product.user.user_following = false;
-						}
-					});
-				}
-			}				
         }])
         .controller('CommentsController',['$http','ezfb','$scope','$location','$filter','$window','$animate','$timeout','$routeParams','vendabyteService',function($http,ezfb,$scope,$location,$filter,$window,$animate,$timeout,$routeParams,vendabyteService){
 			$scope.comment = {};

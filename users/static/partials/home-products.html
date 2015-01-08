@@ -1,0 +1,61 @@
+<section class="products"> 
+    <!-- ARTICLES -->
+    <article class="product" ng-repeat="product in articles | orderBy:'+date_posted'" ng-controller="ArticleController">
+        <!-- ARTICLE USER -->
+        <div class="user inline-block">
+            <div class="user-deco">
+                <img src="{{product.user.photo}}" alt="{{product.user.name}}" class="user-pict block">
+            </div>
+            <div class="follow block" ng-click="logIn()">Seguir</div> 
+        </div>   
+        <!-- END ARTICLE USER  -->
+        <!-- ARTICLE BODY -->
+        <section class="art-cont inline-block">
+            <span class="user-name block">{{product.user.first_name |capitalize:'first'}} {{product.user.last_name |capitalize:'first'}}</span>
+            <span class="product-name inline-block">{{product.model_name}}</span>
+            <p class="description inline-block">{{product.short_description |capitalize:'first'}}</p>
+            <section class="art-desc relative">
+                <figure class="art-pict">
+                    <img src="{{product.articlepicture_set[0].art_img}}" alt="model.model_name" class="">
+                </figure>
+                <span class="precio absolute">{{product.price | currency:'RD$':2}}</span>
+                <span class="add-cart absolute icon-plus" ng-click="logIn()"></span>   
+                <div class="actions">
+                    <span class="interest" ng-click="logIn()" ng-class="{active:product.interested}">Me interesa</span>   
+                    <span class="action icon-heart" ng-click="logIn()" ng-class="{active:product.liked}"></span> 
+                    <span class="action icon-bubble" ng-click="logIn()"></span> 
+                    <span class="action icon-share"></span>     
+                </div>                  
+            </section>
+            <!-- COMMENTS -->
+            <!--ADD COMMENT-->
+            <div class="comment-box" ng-if="commentActive" ng-controller="CommentsController">
+                <span class="button" ng-click="logIn()">Inicia sesión con facebook</span>
+            </div>  
+            <!-- COMMENTS ADDED -->
+            <section class="comment-cont">                 
+                <article class="comment" ng-repeat="comment in product.comment_set | orderBy : '-date_posted'" ng-show="$index<index">
+                    <!-- COMMENT USER -->
+                    <div class="user inline-block">
+                        <img src="{{comment.user.photo}}" alt="{{comment.user.first_name}} {{comment.user.last_name}}" class="user-pict">
+                    </div>
+                    <!-- COMMENT BODY -->
+                    <div class="inline-block">
+                        <span class="person" title="{{comment.user.first_name}} {{comment.user.last_name}}">{{comment.user.first_name | capitalize:'first'}} {{comment.user.last_name | capitalize:'first'}}</span>
+                        <span class="fecha">{{comment.date_posted | date:'dd/MM/yyyy HH:mma' | lowercase}}</span>
+                        <p class="opinion">
+                            {{comment.comment}}
+                        </p>
+                    </div>
+                </article>  
+                <div class="show-more-box" ng-if="showMore">
+                    <span class="show-more" ng-click="setIndex(product)">
+                        Mostrar mas
+                    </span>    
+                </div>                                     
+            </section>   
+            <!-- END COMMENTS -->
+        </section>  
+        <!-- END ARTICLE BODY -->
+    </article>                    
+</section>

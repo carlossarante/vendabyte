@@ -1,42 +1,11 @@
 (function (){
 	angular.module('vendabyte.directives',[])
-		.directive('fileSelect', function () {
+	    .directive('homeProducts', function () {
 	      return {
 	        restrict: 'E',
-	        templateUrl: '/static/partials/file-select.html'
+	        templateUrl: '/static/partials/home-products.html'
 	      };
 	    })
-	    .directive('articleForm', function () {
-	      return {
-	        restrict: 'E',
-	        templateUrl: '/static/partials/article-form.html'
-	      };
-	    })
-	    .directive('optionsMenu', function () {
-	      return {
-	        restrict: 'E',
-	        templateUrl: '/static/partials/options-menu.html'
-	      };
-	    })
-	    .directive('vendabyteProducts', function () {
-	      return {
-	        restrict: 'E',
-	        templateUrl: '/static/partials/vendabyte-products.html'
-	      };
-	    })
-	    .directive('vendabyteFollowers', function () {
-	      return {
-	        restrict: 'E',
-	        templateUrl: '/static/partials/vendabyte-followers.html'
-	      };
-	    })
-	    .directive('userProfile', function () {
-	      return {
-	        restrict: 'E',
-	        templateUrl: '/static/partials/user-profile.html'
-	      };
-	    })
-
 		.directive('resize', function ($window) {
 	        return function (scope, element) {
 	            var w = angular.element($window);

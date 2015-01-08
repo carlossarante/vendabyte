@@ -4,14 +4,13 @@
 @import url(http://fonts.googleapis.com/css?family=Ultra);
 
 azul-oscuro = rgb(0,0,255)
-verde-claro = rgb(79,216,0)
-verde-titulos= rgb(145,180,64)
-verde-oscuro = rgb(29,118,60)
-verde-deco = rgb(200,216,0)
-gris-claro = rgb(236,242,238)
-gris-medio = rgb(148,158,147)
-gris-oscuro = rgb(66,68,65)
-mamei = rgb(255,206,0)
+verde-titulos= #91b440
+verde-oscuro = #1d763e
+verde-claro = #91b440
+gris-claro = #ecf2ee
+gris-medio = #949e93
+gris-oscuro = #424441
+mamei = #e2aa0f
 crema = rgb(249,234,216)
 opaco = rgba(255,255,255,0.3)
 
@@ -77,72 +76,8 @@ a
 		margin-top 5px
 		margin-right 20px
 		&:focus
-			outline red none 1px
-	.notif-bar
-		vertical-align top
-		.icon-bell
-			line-height 45px
-			font-size 1.7rem
-			display inline-block
-			vertical-align top
-			color white
-			padding 0 10px
-			border-right 1px solid opaco
-			border-left 1px solid opaco
-			position relative
-			cursor pointer
-			.notifications
-				border-radius 50%
-				background-color red
-				position absolute
-				color white
-				font-size 0.7rem
-				padding 2px
-				line-height 1rem
-		.user-name
-			display inline-block
-			font-size 1.2rem
-			color white
-			line-height 45px
-			vertical-align top
-			padding 0 10px
-			border-right 1px solid opaco
-			cursor pointer
-		.user-deco	
-			width 35px
-			height 35px
-			overflow hidden
-			border 2px solid crema	
-			margin 3px 10px 0 10px	
-			vertical-align top
-			cursor pointer
-		.icon-cog
-			line-height 45px
-			font-size 1.7rem
-			display inline-block
-			vertical-align top
-			color white
-			padding 0 10px
-			border-right 1px solid opaco
-			border-left 1px solid opaco
-			cursor pointer
+			outline red none 1px			
 			
-
-.portada-cont
-	position relative
-	//display table-caption
-	//display table-header-group 
-	//padding-top 45px
-	max-width 1280px
-	height 210px
-	z-index 1
-	border-bottom 1px solid gris-medio
-	overflow hidden
-	background-color gris-oscuro
-
-	.portada
-		width 100%
-		height 210px
 .wrapper
 	display table
 	padding-top 45px
@@ -174,130 +109,7 @@ a
 	.home-img
 		position fixed
 		right 50%
-		width 511px
-	.badgets-cont
-		width 96%
-		margin 60px 0px 20px 0px
-		padding 0
-		box-shadow 0px 0px 5px gris-medio
-		font-size 1rem
-
-		.badget-tittle
-			position absolute
-			color verde-titulos
-			font-size 2.5rem
-			font-weight bold
-			bottom 100%
-
-
-		.badget
-			width 6.144rem
-			height 6.144rem
-			background-color verde-claro
-			color white
-			line-height 6.144rem
-			border-radius 50%
-			margin 1rem 1.8432rem
-			display inline-block
-			vertical-align top
-			cursor pointer
-
-
-	.options-menu
-		margin 0
-		margin-top 20px
-		max-width 491px
-		padding 0
-		.options
-			display inline-block
-			font-size 1.2rem
-			height 170px
-			width 157px
-			background-color gris-claro
-			box-shadow 0px 0px 5px gris-medio
-			margin-right 2%
-			margin-bottom 2%
-			cursor pointer
-			transition all 0.2s
-			&:nth-child(3n+3)
-				margin-right 0px
-			&:hover
-				background-color verde-claro
-				box-shadow 0px 0px 0px gris-medio
-				color white
-				.icon
-					background-color white
-					color verde-claro
-				.option 
-					color white
-			.icon
-				width 100px
-				height 100px
-				line-height 100px
-				border-radius 50%
-				background-color verde-claro
-				color white
-				margin 0 auto
-				margin-top 28.6432px
-				transition all 0.3s
-			.option
-				position relative
-				color verde-claro
-				top 15px
-				font-weight bold
-				transition all 0.3s
-		.active
-			background-color verde-claro
-			box-shadow 0px 0px 0px gris-medio
-			color white
-			.icon
-				background-color white
-				color verde-claro
-			.option 
-				color white
-.user-cont
-	width 96%
-	text-align right
-
-	div
-		width 57.5%
-		font-size 0rem	
-		text-align left	
-
-		&:first-child
-			width 172px
-			height 172px
-			overflow hidden
-			position absolute
-			bottom 0%
-			left 0
-			z-index 100
-			border 10px solid crema
-
-		.user-name
-			font-size 1.5rem
-			font-weight bold
-			margin-top 5px
-		.icon-star
-				margin-right 0.2rem
-				font-size 1rem
-				cursor pointer
-				&:hover
-					color yellow
-		#deco1
-			margin-right 1%
-		.deco-count
-			width 48.5%	
-			padding 0.5% 
-			padding-bottom 0
-			margin-top 5px
-			.following-count
-			.followers-count
-			.following
-			.followers
-				font-size 1.5rem
-				line-height normal
-					
+		width 511px					
 .caja
 	box-shadow 0 0 5px gris-medio
 	margin-top 20px 
@@ -315,111 +127,6 @@ a
 		right 5px
 		margin 0
 		position absolute
-
-		#dropIn
-			top 0
-			left 0
-			width 100%
-			height 100%
-			opacity 0
-			padding 0
-
-
-.file-browse
-	margin-top 20px
-	height 150px
-	text-align center
-	font-size 1rem
-	
-	span
-		width 100%
-		line-height 140px
-		text-align center
-		font-size 1.2rem
-
-	.load-button
-		position relative
-		display inline-block
-		background-color verde-claro
-		width 200px
-		height 30px
-		top -50px
-		color white
-		line-height 30px			
-		overflow hidden
-		input
-			font-size 0.5rem;
-			width 100%
-			color white
-			top -20px
-			left 0px
-			bottom 0px
-			position absolute
-			opacity 0
-			padding 0
-			cursor pointer
-.upload-box
-	height auto
-	margin-top 20px
-	width 96%
-	background-color gris-claro
-	display inline-block
-	box-shadow 0 0 5px gris-medio
-	padding-bottom 20px
-	.thumbnail-cont
-		width 100%
-		padding 5px 0
-		.img-load
-			display inline-block
-			width 16%
-			margin-right 3%
-			height auto
-			border 2px solid gris-medio
-			border-style dashed
-			&:nth-child(5)
-				margin-right 0
-			.thumb-fig
-				background-color white
-				padding 5%
-				img
-					width 100%
-	.rb-container
-		width 100%
-		background-color white
-		height 40px		
-		.rbDeco
-			font-size 1.1rem
-			position relative
-			text-align center
-			width 25%
-			height 100%
-			color gris-medio
-			line-height 40px
-			&:hover
-				background-color mamei
-				color white
-			.radioBtn
-				position absolute
-				top 0
-				left 0 
-				width 100%
-				height 100%
-				opacity 0
-			&.active
-				background-color verde-claro
-				color white
-
-	.select-cont
-		margin 30px auto
-		width 90%	
-
-		.brand-select
-			width 48%
-			margin-right 4%
-			font-size 1rem
-		.model-select
-			width 48%
-			font-size 1rem
 
 .offers-sect
 	display table-cell
@@ -546,27 +253,15 @@ a
 				text-align center
 				transition all 3s
 				font-size 1rem
-				.comment-text
-					width 96%
-					padding 0.8%
-					height 100px
-					margin-bottom 5px
-					margin-top 5px
-					font-size 1rem
+				padding 20px 0px
 				.button
-					border 2px solid verde-claro
 					color white
 					padding 5px
-					margin-bottom 5px
+					border-radius 10px
 					cursor pointer
-					font-size 1rem					
-					&:active
-						border-style solid
-					&:focus
-						border-color mamei
-						border-style solid
-						outline none
-						
+					font-size 1rem	
+					background-color azul-oscuro
+											
 			.comment-cont
 				font-size 1rem
 				.comment
@@ -601,102 +296,7 @@ a
 					border-radius 20px 0 0 20px
 					.show-more
 						color verde-titulos
-						cursor pointer
-					
-					
-
-.followers-sect
-	font-size 0rem
-	text-align left
-	width 30.72rem
-	margin 0 auto
-	padding-top 20px
-	//margin-top 20px
-
-	.follower-cont
-		width 15.04rem
-		font-size 1rem
-		margin-right 0.64rem
-		margin-bottom .64rem
-		background-color gris-claro
-		vertical-align top
-		padding-bottom 1%
-
-		&:nth-child(2n)
-			margin-right 0rem
-		
-		div
-			width 71%
-			font-size 0px
-			vertical-align top
-
-			&:first-child
-				width 25%
-				margin-top 1%
-				margin-left 1%
-			.user-deco
-				width 56px
-				height 56px
-				overflow hidden
-				border 2px solid crema
-				margin 1% 0 5% 1%
-				cursor pointer
-
-			.icon-star
-				font-size 0.65rem
-				margin-right 0.1rem
-				cursor pointer
-				&:last-child
-					margin-right 0rem
-				&:hover
-					color yellow
-
-			.user-name
-				display block
-				border-bottom 1px solid gris-oscuro
-				font-size 1rem
-				margin-bottom 2px
-				font-weight bold
-				cursor pointer
-
-			.deco-count
-				width 47.5%		
-				padding 1% 
-				padding-bottom 0
-				.following-count
-				.followers-count
-				.following
-				.followers
-					font-size 1rem
-			.follow-user
-				font-size 1.1rem 
-				width 49.5%
-				background-color verde-titulos
-				color white
-				text-align center
-				float right
-				margin-top 1%
-				cursor pointer
-
-.deco-count
-	background-color verde-deco
-	display inline-block
-	vertical-align top
-	&:nth-child(3)					
-		margin-left 1%
-
-	.following-count
-	.followers-count
-		background-color gris-claro
-		color verde-claro
-		display block
-		text-align center
-		line-height 1rem
-	.following
-	.followers
-		display block
-		text-align center
-
+						cursor pointer				
 
 .user-pict
 	width 100%
