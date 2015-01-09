@@ -43,6 +43,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = User
 		fields = (
+			'url',
 			'id',
 			'email',
 			'first_name',
@@ -53,7 +54,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 			'cover',
 			'city',
 			'medals',
-			'contact',
 			'rating_set',
 			'sex',
 			'date_joined',
@@ -79,7 +79,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 			return 0
 	def formattedTime(self,obj):
 		return obj.date_joined.strftime("%d/%m/%Y a las %X")
-
 
 	def is_following(self,obj):
 		request = self.context.get('request',None)

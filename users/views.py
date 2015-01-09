@@ -3,6 +3,7 @@
 from rest_framework import viewsets,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.parsers import MultiPartParser,FormParser
 from rest_framework.decorators import detail_route
 
 from django.views.decorators.csrf import csrf_exempt
@@ -63,6 +64,7 @@ def loginFacebookUser(request,response='html'):
 
 class UserSet(viewsets.ModelViewSet):
 	serializer_class = UserSerializer
+	parser_classes = (MultiPartParser,FormParser)
 	def get_queryset(self):
 		try:
 			requested_query = self.request.GET['list'] 
@@ -79,7 +81,7 @@ class UserSet(viewsets.ModelViewSet):
 	
 
 	def create(self,request):
-		serializer = UserSerializer(data=request.DATA,files=request.FILES,context={'request':request})
+		serializer = UserSerializer(data=request.DATA,context={'request':request})
 		if serializer.is_valid():
 			u = serializer.save()
 			u.set_enc_password()
