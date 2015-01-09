@@ -187,10 +187,20 @@
 
         return deferred.promise;
       };
-       function getFollowers(param) {
+      function getFollowers(param) {
         var deferred = $q.defer();
 
         $http.get("/api/user/?format=json&list="+param)
+          .success(function (data) {
+            deferred.resolve(data);
+          });
+
+        return deferred.promise;
+      };
+      function logout() {
+        var deferred = $q.defer();
+
+        $http.get("/users/logout/")
           .success(function (data) {
             deferred.resolve(data);
           });
@@ -217,6 +227,7 @@
         unsetFollower : unsetFollower,
         getDirective : getDirective,
         getFollowers : getFollowers,
+        logout : logout,
       };
 
     }])

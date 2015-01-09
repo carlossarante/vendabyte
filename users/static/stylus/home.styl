@@ -3,22 +3,37 @@
 @import "nib"
 @import url(http://fonts.googleapis.com/css?family=Ultra);
 
-verde-claro = rgb(79,216,0)
-verde-titulos= rgb(145,180,64)
-verde-oscuro = rgb(29,118,60)
-gris-claro = rgb(236,242,238)
-gris-medio = rgb(148,158,147)
-gris-oscuro = rgb(66,68,65)
-mamei = rgb(255,206,0)
+azul-fb = #3a5795
+verde-titulos= #91b440
+verde-oscuro = #1d763e
+verde-claro = #91b440
+gris-claro = #ecf2ee
+gris-medio = #949e93
+gris-oscuro = #424441
+mamei = #e2aa0f
 crema = rgb(249,234,216)
 opaco = rgba(255,255,255,0.3)
-azulfb = blue
 
+.cropArea
+	background gris-medio
+	overflow hidden
+	width 100%
+	height 250px
+.cropbtn
+	background-color mamei
+	color white
+	font-size 1.5rem
+	cursor pointer
+	padding 10px 0px
+
+html
+body
+	width 100%
+	height 100%
 body 
 	background gris-claro
 	font-size 16px
 	font-family: 'Ultra', 'serif';
-
 a 
 	text-decoration none
 
@@ -33,17 +48,21 @@ a
 	
 	.logo-cont
 		display inline-block
+		cursor pointer
 		
 		.logo 
 			width 200px
 	.log-in
+		cursor pointer
+		display inline-block
+		position relative
 		vertical-align top
-		background-color azulfb
+		background-color azul-fb
 		color white
 		padding 10px 5px 5px 5px
 		box-shadow 0px 0px 5px black
+		border-radius 0px 0px 5px 5px
 		font-size 1.2rem
-		cursor pointer
 	.search
 		background-color opaco
 		border 0
@@ -58,122 +77,44 @@ a
 		margin-top 5px
 		margin-right 20px
 		&:focus
-			outline red none 1px
-	.notif-bar
-		vertical-align top
-		.icon-bell
-			line-height 45px
-			font-size 1.7rem
-			display inline-block
-			vertical-align top
-			color white
-			padding 0 10px
-			border-right 1px solid opaco
-			border-left 1px solid opaco
-			position relative
-			.notifications
-				border-radius 50%
-				background-color red
-				position absolute
-				color white
-				font-size 0.7rem
-				padding 2px
-				line-height 1rem
-		.user-name
-			display inline-block
-			font-size 1.2rem
-			color white
-			line-height 45px
-			vertical-align top
-			padding 0 3px
-			border-right 1px solid opaco
-		.user-pict
-			display inline-block
-			width 35px
-			height 35px
-			padding 2px
-			vertical-align top
-			margin 3px 10px 0 10px
-		.icon-cog
-			line-height 45px
-			font-size 1.7rem
-			display inline-block
-			vertical-align top
-			color white
-			padding 0 10px
-			border-right 1px solid opaco
-			border-left 1px solid opaco
-
-
+			outline red none 1px			
+			
 .wrapper
-	top 45px
+	display table
+	padding-top 45px
+	//min-height 100% //elimiado por el uso de infinite-scroll
+	height 100%
 	width 100%
 	max-width 1024px
 	margin 0 auto	
-	border-right 1px solid gris-medio
 	background-color gris-claro
 	font-size 0rem
 	z-index 4
-	overflow hidden
-
+	position relative
+.wrapper2
+	display table
+	position relative
+	//min-height 100%
+	height 100%
+	width 100%
+	//border-right 1px solid gris-medio
+	z-index 5
 .load-sect
-	width 50%
-	border-right 1px solid gris-medio
+	z-index 1
+	width 511px
 	background-color gris-claro
 	text-align center
-
-	img
-		width 100%
-	.options-menu
-		display inline-block
-		width 96%
-		margin 0
-		padding 0
-		.options
-			display inline-block
-			font-size 1.2rem
-			height 170px
-			width 157.2864px
-			background-color gris-claro
-			box-shadow 0px 0px 5px gris-medio
-			margin-right 2%
-			margin-bottom 2%
-			cursor pointer
-			transition all 0.3s
-			&:nth-child(3n+3)
-				margin-right 0px
-			&:hover
-				background-color verde-claro
-				box-shadow 0px 0px 0px gris-medio
-				color white
-				.icon
-					background-color white
-					color verde-claro
-				.option 
-					color white
-			.icon
-				width 100px
-				height 100px
-				line-height 100px
-				border-radius 50%
-				background-color verde-claro
-				color white
-				margin 0 auto
-				margin-top 28.6432px
-				transition all 0.3s
-			.option
-				position relative
-				color verde-claro
-				top 15px
-				font-weight bold
-				transition all 0.3s
-.register-box
-	width 96%
-						
+	display table-cell
+	position relative
+	//min-height	850px
+	.home-img
+		position fixed
+		right 50%
+		width 511px					
 .caja
 	box-shadow 0 0 5px gris-medio
-	margin 20px 0px
-	width 96%
+	margin-top 20px 
+	width 492px
 	display inline-block
 	position relative
 	background-color gris-claro
@@ -188,58 +129,19 @@ a
 		margin 0
 		position absolute
 
-		#dropIn
-			top 0
-			left 0
-			width 100%
-			height 100%
-			opacity 0
-			padding 0
-
-.file-browse
-	height 150px
-	text-align center
-	font-size 1rem
-	
-	span
-		width 100%
-		line-height 150px
-		text-align center
-		font-size 1.2rem
-
-	.load-button
-		position relative
-		display inline-block
-		background-color verde-claro
-		width 200px
-		height 30px
-		top -50px
-		color white
-		line-height 30px			
-		overflow hidden
-		input
-			font-size 0.5rem;
-			width 100%
-			color white
-			top -20px
-			left 0px
-			bottom 0px
-			position absolute
-			opacity 0
-			padding 0
-			cursor pointer
-			
 .offers-sect
-	top 0
-	right 0
+	display table-cell
+	position relative
+	z-index 2
+	border-right 1px solid gris-medio
+	border-left 1px solid gris-medio
+	//outline gris-medio solid thin
 	font-size 1rem
-	height 100%
 	text-align center
-	width 50%
+	width 511px
+	min-height 100%
 	vertical-align top
 	background-color white
-	overflow auto
-
 
 .sign-in
 	height 75px
@@ -247,11 +149,17 @@ a
 
 	span
 		line-height 65px
+	.button
+		background-color azul-fb
+		color white
+		border-radius 10px
+		padding 5px
 
 .products
 	width 96%
 	margin 0 auto
-	margin-top 20px
+	padding-top 20px
+	//margin-top 20px
 	.product
 		text-align left
 		//overflow hidden
@@ -267,13 +175,15 @@ a
 				height 70px
 				overflow hidden
 				border 3px solid crema
+				cursor pointer
 
 		.art-cont
 			width 81%
 			//float right
 			color verde-titulos
 			margin-left 3%
-
+			.user-name
+				cursor pointer
 			.description 
 				margin 0
 				font-size 1rem
@@ -287,9 +197,11 @@ a
 
 				.art-pict
 					width 100%
+					height 438px
 
 					img
 						width 100%
+						height 100%
 				
 				.actions
 					width 100%
@@ -304,14 +216,19 @@ a
 						margin 0 10px
 						float right
 						cursor pointer
+						&.active
+							color mamei
 					.interest
+						background-color white
+						color verde-claro
 						cursor pointer
 						font-size 1rem
 						padding 2px 5px
 						margin-left 10px
-						//background-color white
 						line-height 30px
-						//color verde-claro
+						&.active
+							background-color mamei
+							color white
 					
 				.precio
 					font-size 1rem
@@ -331,59 +248,65 @@ a
 					cursor pointer
 			.comment-box
 				width 100%
-				display none
 				overflow hidden
 				background-color gris-claro
 				margin-bottom 3px
 				text-align center
 				transition all 3s
 				font-size 1rem
-				.comment-text
-					width 96%
-					padding 0.8%
-					height 100px
-					margin-bottom 5px
-					margin-top 5px
-					font-size 1rem
+				padding 20px 0px
 				.button
 					color white
 					padding 5px
-					margin-bottom 5px
+					border-radius 10px
 					cursor pointer
-					font-size 1rem
-			.comment
-				background-color gris-claro
-				margin-bottom 3px
+					font-size 1rem	
+					background-color azul-fb
+											
+			.comment-cont
 				font-size 1rem
-
-				.user
-					width 10%
-					width 40px
-					height 40px
-					margin 2% 0% 2% 2%
-					border 1px solid crema
-					vertical-align top
-				div
-					margin-top 2%
-					width 86%
-					padding-bottom 5px
-					.person
+				.comment
+					background-color gris-claro
+					margin-bottom 3px
+					.user
+						width 10%
+						width 40px
+						height 40px
+						margin 2% 0% 2% 2%
+						border 1px solid crema
+						vertical-align top
+						cursor pointer
+					div
+						margin-top 2%
+						width 86%
+						padding-bottom 5px
+						.person
+							color verde-titulos
+							cursor pointer
+						.fecha
+							color gris-medio
+							position relative
+							font-size 0.8rem
+						.opinion
+							margin 0
+							color gris-oscuro
+							word-wrap break-word
+				.show-more-box
+					background-color gris-claro
+					padding 5px 10px
+					border-radius 20px 0 0 20px
+					.show-more
 						color verde-titulos
-					.fecha
-						color gris-medio
-						position relative
-						top 5px
-					.opinion
-						margin 0
-						color gris-oscuro
-						word-wrap break-word
+						cursor pointer				
 
 .user-pict
 	width 100%
+	//padding 5%
+	//background-color crema
 
 .user-name
 	color gris-medio
-	font-size 1rem
+	font-size 1.2rem
 
 .product-name
 	font-weight bold
@@ -398,21 +321,17 @@ a
 	padding 5%
 	margin-top 10px
 	color white
+	cursor pointer
 	font-size 1rem
 	
 
 .button
-	background azulfb
-	padding 5px
+	background verde-claro
+	padding 10px
 	cursor pointer
-	color white
-	border-radius 5px
 
 .block
 	display block
-
-.none
-	display none
 
 .inline-block
 	display inline-block
@@ -422,14 +341,22 @@ a
 
 .absolute
 	position absolute
-
 .fixed
 	position fixed
+.none
+	display none
 
-#registerUser
+.on-state
+	background-color mamei
+	color white
+.off-state
+	background-color white
+	color verde-claro	
+.vertical-line
+	height 100%
+	width 1px
+	background-color gris-medio
 	position absolute
 	top 0
-	width 100%
-	height 100%
+	left 50%
 	z-index 100
-	background-color verde-claro

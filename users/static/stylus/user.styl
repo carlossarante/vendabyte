@@ -3,14 +3,14 @@
 @import "nib"
 @import url(http://fonts.googleapis.com/css?family=Ultra);
 
-verde-claro = rgb(79,216,0)
-verde-titulos= rgb(145,180,64)
-verde-oscuro = rgb(29,118,60)
-verde-deco = rgb(200,216,0)
-gris-claro = rgb(236,242,238)
-gris-medio = rgb(148,158,147)
-gris-oscuro = rgb(66,68,65)
-mamei = rgb(255,206,0)
+azul-fb = #325795
+verde-titulos= #91b440
+verde-oscuro = #1d763e
+verde-claro = #91b440
+gris-claro = #ecf2ee
+gris-medio = #949e93
+gris-oscuro = #424441
+mamei = #e2aa0f
 crema = rgb(249,234,216)
 opaco = rgba(255,255,255,0.3)
 
@@ -83,19 +83,25 @@ a
 			font-size 1.7rem
 			display inline-block
 			vertical-align top
-			color white
+			color rgba(0,0,0,0.4)
 			padding 0 10px
 			border-right 1px solid opaco
 			border-left 1px solid opaco
 			position relative
 			cursor pointer
+			&.active
+					color white
 			.notifications
-				border-radius 50%
-				background-color red
+				border-radius 2px
+				box-shadow 0 1px 1px rgba(0,0,0,0.7)
+				background-color #dc0d17
 				position absolute
+				right 10px
+				top 5px
 				color white
-				font-size 0.7rem
-				padding 2px
+				text-shadow 0 -1px 0 rgba(0,0,0,0.4)
+				font-size 10px
+				padding 1px 3px
 				line-height 1rem
 		.user-name
 			display inline-block
@@ -114,31 +120,78 @@ a
 			margin 3px 10px 0 10px	
 			vertical-align top
 			cursor pointer
-		.icon-cog
-			line-height 45px
-			font-size 1.7rem
+		.config-icon
 			display inline-block
-			vertical-align top
-			color white
-			padding 0 10px
-			border-right 1px solid opaco
-			border-left 1px solid opaco
-			cursor pointer
+			position relative
+			.icon-cog
+				line-height 45px
+				font-size 1.7rem
+				display inline-block
+				vertical-align top
+				color rgba(0,0,0,0.4)
+				padding 0 10px
+				border-right 1px solid opaco
+				border-left 1px solid opaco
+				cursor pointer
+				&.active
+					color white
+			.triangle
+				display none
+				position absolute
+				bottom -1px
+				width 0 
+				height 0 
+				border-left 7px solid transparent
+				border-right 7px solid transparent
+				border-bottom 7px solid gris-claro
+				right 18px
+				z-index 2
+				&.active
+					display initial
+			.config-menu
+				display none
+				position absolute
+				background-color gris-claro
+				border 1px solid gris-medio
+				box-shadow 0px 3px 8px rgba(0,0,0,0.25)
+				top 45px
+				right 0px
+				width 215px
+				z-index 1
+				&.active
+					display initial
+				.config-item
+					padding 5px 0px
+					position relative
+					color verde-titulos
+					font-size 1rem
+					display block
+					cursor pointer
+					&:hover
+						background-color white
+						
 			
 
 .portada-cont
-	padding-top 45px
+	position relative
+	//display table-caption
+	//display table-header-group 
+	//padding-top 45px
 	max-width 1280px
 	height 210px
-	z-index 3
+	z-index 1
 	border-bottom 1px solid gris-medio
 	overflow hidden
+	background-color gris-oscuro
 
 	.portada
 		width 100%
+		height 210px
 .wrapper
 	display table
-	min-height 100% //elimiado por el uso de infinite-scroll
+	padding-top 45px
+	//min-height 100% //elimiado por el uso de infinite-scroll
+	height 100%
 	width 100%
 	max-width 1024px
 	margin 0 auto	
@@ -147,17 +200,20 @@ a
 	z-index 4
 	position relative
 .wrapper2
-	display table-cell
+	display table
 	position relative
-	min-height 100%
+	//min-height 100%
+	height 100%
 	width 100%
 	//border-right 1px solid gris-medio
 	z-index 5
 .load-sect
 	z-index 1
-	width 50%
+	width 511px
 	background-color gris-claro
 	text-align center
+	display table-cell
+	position relative
 	//min-height	850px
 	
 	.badgets-cont
@@ -189,7 +245,6 @@ a
 
 
 	.options-menu
-		width 96%
 		margin 0
 		margin-top 20px
 		max-width 491px
@@ -312,7 +367,7 @@ a
 
 
 .file-browse
-	margin-top 65px
+	margin-top 20px
 	height 150px
 	text-align center
 	font-size 1rem
@@ -408,14 +463,15 @@ a
 			font-size 1rem
 
 .offers-sect
+	display table-cell
 	position relative
 	z-index 2
-	//border-right 1px solid gris-medio
-	//border-left 1px solid gris-medio
-	outline gris-medio solid thin
+	border-right 1px solid gris-medio
+	border-left 1px solid gris-medio
+	//outline gris-medio solid thin
 	font-size 1rem
 	text-align center
-	width 50%
+	width 511px
 	min-height 100%
 	vertical-align top
 	background-color white
@@ -430,7 +486,7 @@ a
 .products
 	width 96%
 	margin 0 auto
-	padding-top 65px
+	padding-top 20px
 	//margin-top 20px
 	.product
 		text-align left
@@ -469,9 +525,11 @@ a
 
 				.art-pict
 					width 100%
+					height 438px
 
 					img
 						width 100%
+						height 100%
 				
 				.actions
 					width 100%
@@ -588,7 +646,7 @@ a
 	text-align left
 	width 30.72rem
 	margin 0 auto
-	padding-top 65px
+	padding-top 20px
 	//margin-top 20px
 
 	.follower-cont
@@ -657,7 +715,7 @@ a
 				cursor pointer
 
 .deco-count
-	background-color verde-deco
+	background-color verde-claro
 	display inline-block
 	vertical-align top
 	&:nth-child(3)					

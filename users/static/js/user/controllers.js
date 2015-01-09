@@ -6,6 +6,7 @@
 			$scope.users = [];
 			$scope.followers = [];	
 			$scope.option = 0;	
+			$scope.configActive = false
 			scrolled = true;
 			offset = 0;
 			
@@ -15,10 +16,47 @@
 				$scope.me.url = window.location.origin+"/api/user/"+$scope.me.id+"/";
 				$scope.users.push($scope.me);
 			});
-			////////////////////////////////
-			
 
+			$scope.bodyClick = function (){
+				$scope.hideConfig();
+			}
+
+			////////////////////////////////
+			//MENU HANDLER
+			$scope.configToggle = function ($event){
+				console.log($event);
+				$event.stopPropagation();
+				$scope.configActive = !$scope.configActive;
+
+			}
+			$scope.hideConfig = function (){
+				$scope.configActive = false;
+			}
+			//LOGOUT FUNCTIONS 
+			
+			$scope.logout = function(){
+				ezfb.logout(function () {
+			      updateLoginStatus(updateApiMe);
+			    });
+				vendabyteService.logout().then(function (data){
+					console.log(data);
+					window.location.href = '/';
+				});
+			}
+			function updateLoginStatus (more) {
+			   	ezfb.getLoginStatus(function (res) {
+			      	$scope.loginStatus = res;
+
+			    	(more || angular.noop)();
+				});
+			}
+			function updateApiMe () {
+			  	ezfb.api('/me', function (res) {
+			    	$scope.apiMe = res;
+				});
+			}
 			////////////////////////////////////////////////////////
+
 			$scope.setOptAct = function(opt){
 				$scope.option = opt;
 			}
@@ -27,14 +65,14 @@
 				$location.path("/"+path);
 				$scope.setOptAct(opt)
 			}	
+
+			//MANEJA LA POSICION DEL MENU DE OPCIONES Y EL FILE BROWSE CUANDO SE HACE SCROLL
 			$scope.handleScroll = function(event){
 				var menu = angular.element('.options-menu');
 				var browser = angular.element('.file-browse');
 				var element = angular.element(event.target);
 
-				console.log(menu.offset().top, element.scrollTop());
 				if(menu.offset().top <= element.scrollTop() && scrolled){
-					console.log("HAY PAPA")
 					offset = menu.offset().top;
 					menu.css({
 						position: 'fixed',
@@ -43,7 +81,7 @@
 					});
 					browser.css({
 						position: 'fixed',
-						top: 370,
+						top: 410,
 						left: browser.offset().left
 					});	
 					scrolled = false;
@@ -190,8 +228,6 @@
 					$scope.next = data.next;
 					$scope.previous = data.previous;
 					$scope.articles=$scope.articles.concat(data.results);
-					console.log($scope.articles,data.results);
-					console.log($scope.next,$scope.busy = false);
 				})
 			}
         }])
@@ -354,13 +390,15 @@
 				formData.append("short_description",$scope.article.short_description);
 				formData.append("specs",$scope.article.specs);
 				formData.append("price",$scope.article.price);
-				formData.append("user",window.location.origin+"/api/user/"+user.id+"/");
+				//formData.append("user",window.location.origin+"/api/user/"+user.id+"/");
 				formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);
 
 				var request = new XMLHttpRequest();
 				request.open("POST", "/api/article/");
 				request.onloadend = function(){	  
 					if(request.status === 201){
+						console.log(request)
+						console.log(request.response)
 						articulo = JSON.parse(request.response) ;
 						articulo.user = user;
 						$scope.sendPicture(articulo);
