@@ -3,7 +3,7 @@
 @import "nib"
 @import url(http://fonts.googleapis.com/css?family=Ultra);
 
-azul-oscuro = rgb(0,0,255)
+azul-fb = #325795
 verde-titulos= #91b440
 verde-oscuro = #1d763e
 verde-claro = #91b440
@@ -83,19 +83,25 @@ a
 			font-size 1.7rem
 			display inline-block
 			vertical-align top
-			color white
+			color rgba(0,0,0,0.4)
 			padding 0 10px
 			border-right 1px solid opaco
 			border-left 1px solid opaco
 			position relative
 			cursor pointer
+			&.active
+					color white
 			.notifications
-				border-radius 50%
-				background-color red
+				border-radius 2px
+				box-shadow 0 1px 1px rgba(0,0,0,0.7)
+				background-color #dc0d17
 				position absolute
+				right 10px
+				top 5px
 				color white
-				font-size 0.7rem
-				padding 2px
+				text-shadow 0 -1px 0 rgba(0,0,0,0.4)
+				font-size 10px
+				padding 1px 3px
 				line-height 1rem
 		.user-name
 			display inline-block
@@ -114,16 +120,50 @@ a
 			margin 3px 10px 0 10px	
 			vertical-align top
 			cursor pointer
-		.icon-cog
-			line-height 45px
-			font-size 1.7rem
+		.config-icon
 			display inline-block
-			vertical-align top
-			color white
-			padding 0 10px
-			border-right 1px solid opaco
-			border-left 1px solid opaco
-			cursor pointer
+			position relative
+			.icon-cog
+				line-height 45px
+				font-size 1.7rem
+				display inline-block
+				vertical-align top
+				color rgba(0,0,0,0.4)
+				padding 0 10px
+				border-right 1px solid opaco
+				border-left 1px solid opaco
+				cursor pointer
+				&.active
+					color white
+			.triangle
+				position absolute
+				bottom -1px
+				width 0 
+				height 0 
+				border-left 7px solid transparent
+				border-right 7px solid transparent
+				border-bottom 7px solid gris-claro
+				right 18px
+				z-index 2
+			.config-menu
+				position absolute
+				background-color gris-claro
+				border 1px solid gris-medio
+				box-shadow 0px 3px 8px rgba(0,0,0,0.25)
+				top 45px
+				right 0px
+				width 215px
+				z-index 1
+				.config-item
+					padding 5px 0px
+					position relative
+					color verde-titulos
+					font-size 1rem
+					display block
+					cursor pointer
+					&:hover
+						background-color white
+						
 			
 
 .portada-cont

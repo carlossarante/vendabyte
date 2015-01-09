@@ -6,6 +6,7 @@
 			$scope.users = [];
 			$scope.followers = [];	
 			$scope.option = 0;	
+			$scope.configActive = false
 			scrolled = true;
 			offset = 0;
 			
@@ -15,8 +16,22 @@
 				$scope.me.url = window.location.origin+"/api/user/"+$scope.me.id+"/";
 				$scope.users.push($scope.me);
 			});
-			////////////////////////////////
 
+			$scope.bodyClick = function (){
+				$scope.hideConfig();
+			}
+
+			////////////////////////////////
+			//MENU HANDLER
+			$scope.configToggle = function ($event){
+				console.log($event);
+				$event.stopPropagation();
+				$scope.configActive = !$scope.configActive;
+
+			}
+			$scope.hideConfig = function (){
+				$scope.configActive = false;
+			}
 			//LOGOUT FUNCTIONS 
 			
 			$scope.logout = function(){
