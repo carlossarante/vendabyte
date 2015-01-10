@@ -31,6 +31,10 @@
         templateUrl: '/static/views/home.html',
         controller: 'ArticlesController'
       })
+      .when('/register', {
+        templateUrl: '/static/views/register.html',
+        //controller: 'ArticlesController'
+      })
       .otherwise({
         redirectTo: '/'
       });

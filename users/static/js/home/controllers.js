@@ -30,75 +30,102 @@
 				});
 			}
 			function updateApiMe () {
-			    ezfb.api('/me', function (res) {
+			    ezfb.api('me?fields=id,first_name,last_name,email,username,cover,birthday,gender', function (res) {
 			    	$scope.apiMe = res;
 			    	$scope.apiMe.facebook_uid = res.id;
 
-			    	$.ajax({
-			          	url: "/users/login/",
-			          	type: 'POST',
-			          	data: $scope.apiMe,
-			          	/*success:function(data){
-			            	console.log("respuesta POST:",data);
-			            	//window.location.href = data;},
-			          	},*/
-			          	statusCode: {
-			            	200:function(data){
-			              		console.log("respuesta POST:",data);
-			              		window.location.href = data;
-			            	},
-			            	404:function(data){
-					            var form = document.forms[0]; 
-					            json={};
-					            json.email = _session.attributes.email;
-					            json.facebook_uid = _session.attributes.id;
-					            //json.csrfmiddlewaretoken=csrftoken;
-					            json.first_name = _session.attributes.first_name;
-					            json.last_name = _session.attributes.last_name;
-					            var split=_session.attributes.email.split("@",1);
-					            //json.username = split.join();
-					            json.photo_url = _session.attributes.picture.data.url;
-					            json.cover_url = _session.attributes.cover.source;
-					            json.sex = _session.attributes.gender;
-					            json.birthday = "1988-04-24";
-					            window.datos = _session.attributes;
-					            //split=  _session.attributes.location.name.split(",",1);
+			    	ezfb.api('me/picture?width=400&height=400&redirect=0',function (res){
+			    		$scope.apiMe.photo_url = res.data.url;
+			    		$scope.apiMe.cover_url = $scope.apiMe.cover.source;
+			    		$scope.apiMe.sex = $scope.apiMe.gender;
+			    		$scope.apiMe.city = 'http://localhost:8000/api/cities/2/';
+			    		delete $scope.apiMe.cover;
+			    		delete $scope.apiMe.id;
+			    		delete $scope.apiMe.gender;
+			    		$scope.apiMe.birthday = $scope.apiMe.birthday.split('/');
+			    		$scope.apiMe.birthday.reverse();
+			    		$scope.apiMe.birthday = $scope.apiMe.birthday.join('-');
 
-					            y = $('.city-select');
-					            $.get('/api/cities/?format=json', function(data) {
-					            	data.forEach(function(argument) {
-					                	y.append('<option value="'+argument.url+'" label= "'+argument.city_name+'"></option>');
-					                })
-					            });
 
-					            $("#registerUser").removeClass('none');
+			    		var formData = new FormData();
+								            						            		
+	            		formData.append('email',$scope.apiMe.email);
+	            		formData.append('facebook_uid',$scope.apiMe.facebook_uid);
+	            		formData.append('username',$scope.apiMe.username);
 
-					            form.onsubmit = function(){                
-					            	//json.birthday = $("#year").val()+"-"+$("#month").val()+"-"+$("#day").val();
-					                json.birthday = $("#datepicker").val();
-					                json.city = $(".city-select").val();
-					                json.username = $("#username").val();               
+			    		vendabyteService.vendabyteLogIn(formData).then(function (data){
+				    		if(data.status === 200){
+				    			window.location.href = data;
+				    		}
+				    		else if(data.status === 404)
+				    		{
+				    			vendabyteService.getFBImage($scope.apiMe.photo_url).then(function (data){
+    								console.log(data)
+    								var blob = new Blob([data.data],{type : "image/jpeg"})
+    								var blobUrl = URL.createObjectURL(blob);
+					    			$scope.apiMe.photo = blob;
 
-					                $.ajax({
-					                    url: "/api/user/",
-					                    type: 'POST',
-					                    data: json,
-					                    statusCode: {
-					                      200:function(data){
-					                        console.log("respuesta POST:",data);
-					                        window.location.href = data;
-					                      },
-					                      404:function(data){                        
-					                      },
-					                    },
-					                }); 
-					                return false;
-					            }                   
-				            },
-			          	},
-			      	}); 
+					    			vendabyteService.getFBImage($scope.apiMe.cover_url).then(function (data){
+	    								var blob = new Blob([data.data],{type : "image/jpeg"})
+	    								var blobUrl = URL.createObjectURL(blob);
+						    			$scope.apiMe.cover = blob;
+								    	
+								    	var formData = new FormData();
+								            		
+					            		formData.append('birthday',$scope.apiMe.birthday);
+					            		formData.append('city',$scope.apiMe.city);
+					            		formData.append('photo',$scope.apiMe.photo);
+					            		formData.append('cover',$scope.apiMe.cover);				            		
+					            		formData.append('email',$scope.apiMe.email);
+					            		formData.append('facebook_uid',$scope.apiMe.facebook_uid);
+					            		formData.append('first_name',$scope.apiMe.first_name);
+					            		formData.append('last_name',$scope.apiMe.last_name);
+					            		formData.append('sex',$scope.apiMe.sex);
+					            		formData.append('username',$scope.apiMe.username);
+					            		//formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);						    	
+						    			
+						    			/*vendabyteService.registerUser(formData).then(function (data){
+											window.location.href = data.data;
+										});*/
+						    		});
+					    		});	
+				    		}
+				    	});				    				    		
+			    	})			    	
 			    });
 			}
+			$scope.b64toBlob = function (b64Data, contentType, sliceSize) {
+			    contentType = contentType || '';
+			    sliceSize = sliceSize || 512;
+
+			    var byteCharacters = atob(b64Data);
+			    var byteArrays = [];
+
+			    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+			        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+			        var byteNumbers = new Array(slice.length);
+			        for (var i = 0; i < slice.length; i++) {
+			            byteNumbers[i] = slice.charCodeAt(i);
+			        }
+
+			        var byteArray = new Uint8Array(byteNumbers);
+
+			        byteArrays.push(byteArray);
+			    }
+
+			    var blob = new Blob(byteArrays, {type: contentType});
+			    return blob;
+			}
+			/*var blob = b64toBlob(b64Data, contentType);
+			var blobUrl = URL.createObjectURL(blob);
+
+			// window.location = blobUrl;*/
+
+
+			$scope.navigate = function (path){
+				$location.path(path);
+			}	
 		}])
 		.controller('ArticlesController',['$scope','$location','$animate','$routeParams','vendabyteService',function($scope,$location,$animate,$routeParams,vendabyteService){
 			vendabyteService.articlesScope=$scope;
@@ -229,173 +256,4 @@
 				});							
 			}
         }])
-		.controller('ArticleUploadCtrl', ['$scope','$window','vendabyteService','$http',function($scope,$window,vendabyteService,$http){
-		    $scope.myImage='';
-		    $scope.myCroppedImage='';
-		    $scope.cropedImages = [];
-		    $scope.imgIndex = 0;
-		    $scope.article = {};
-		    $scope.articles = [];
-		    $scope.devices = [];		    
-		    $scope.brands = [];
-		    $scope.models = [];
-		    $scope.active = false;
-		    
-		    var mainScope = vendabyteService.mainScope;
-
-		    vendabyteService.getDevices().then(function (data){
-				$scope.devices = data;
-			});	
-
-			$scope.getBrands = function (device){
-				delete $scope.article.brand;
-				delete $scope.article.model;
-
-				vendabyteService.getBrands(device.device_detail).then(function (data){
-					$scope.brands = data;
-				});
-			}
-			$scope.getModels = function (brand){
-				var models = [];
-				$scope.models = [];
-				delete $scope.article.model
-
-				for(i in $scope.brands){
-					if ($scope.brands[i].brand === brand)
-					{
-						models = $scope.brands[i].brandmodel_set;
-					}
-				}
-
-				for(i in models){
-					vendabyteService.getModel(models[i]).then(function (data){
-						$scope.models.push(data[0]);
-					});
-				}
-			}
-			//ENVIO DE FORMULARIO QUE CONTIENE EL ARTICULO
-			$scope.sendArticle = function (){
-
-				user = mainScope.me;
-
-				formData = new FormData();
-				formData.append("devie",$scope.article.device);
-				formData.append("brand",$scope.article.brand);
-				formData.append("model",$scope.article.model);
-				formData.append("short_description",$scope.article.short_description);
-				formData.append("specs",$scope.article.specs);
-				formData.append("price",$scope.article.price);
-				//formData.append("user",window.location.origin+"/api/user/"+user.id+"/");
-				formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);
-
-				var request = new XMLHttpRequest();
-				request.open("POST", "/api/article/");
-				request.onloadend = function(){	  
-					if(request.status === 201){
-						console.log(request)
-						console.log(request.response)
-						articulo = JSON.parse(request.response) ;
-						articulo.user = user;
-						$scope.sendPicture(articulo);
-					}
-		    	}
-		    	if($scope.cropedImages.length > 0)
-		    	{
-		    		request.send(formData);	
-		    	}
-		    	else{
-		    		alert("Recorte la imagen");
-		    	}				
-			}
-			//ENVIO SECUENCIAL DE LAS IMAGENES DEL FORMULARIO DEL ARTICULO
-			$scope.sendPicture = function (articulo){					
-				
-				if($scope.cropedImages.length > 0){
-					formData = new FormData();
-					formData.append("article",articulo.url);
-					formData.append("art_img",$scope.cropedImages[0].blob,chance.string({pool:'abcdefghijklmnopqrstxyz'})+".png");
-					formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);	
-					
-					var request = new XMLHttpRequest();				
-					request.open("POST", "/api/picture/");
-					request.onloadend = function(){	  
-						if(request.status === 201){ 
-							$scope.cropedImages.pop(0);
-							articulo.articlepicture_set.push(JSON.parse(request.response));
-							$scope.sendPicture(articulo);
-						}
-			    	}
-					request.send(formData);
-				}
-				else{								
-					$scope.article={};		
-					$scope.active = false;
-					$scope.addArticle(articulo);	
-				}		
-			}
-			//RECORTE DE IMAGENES Y POSICIONAMIENTO EN FORMULARIO
-			$scope.cropImage = function (index){
-				if(index<5)
-				{
-					var imagen={
-						id:index,
-						url : $scope.myCroppedImage,
-						blob : $scope.dataURItoBlob($scope.myCroppedImage),
-					}
-
-					if(index < $scope.cropedImages.length)
-						$scope.cropedImages[index](imagen);
-					else{
-						$scope.cropedImages.push(imagen);
-					}
-				}	
-				vendabyteService.getDirective("file-select.html").then(function (data){
-				 	angular.element("file-select").html(data);
-				});				
-				$scope.imgIndex ++;
-			}
-
-		    //NG-IMAGE-CROP MANEJO DEL ARCHIVO SELECCIONADO
-		   	$scope.handleFileSelect=function(evt) {
-		      	var file=evt.target.files[0];
-		      	var reader = new FileReader();
-		      	reader.onload = function (evt) {
-		        	$scope.$apply(function($scope){
-		          		$scope.myImage=evt.target.result;
-		        	});
-		      	};
-		      	reader.readAsDataURL(file);
-		      	$scope.active = true;
-
-		      	angular.element('body').animate({
-                	scrollTop: 0
-                }, 500);
-		    };
-		 //   angular.element(document.querySelector('#selectIn')).on('change',handleFileSelect);
-		 //   angular.element(document.querySelector('#dropIn')).on('change',handleFileSelect);
-
-		    $scope.dataURItoBlob = function(dataURI) {
-		      	// convert base64 to raw binary data held in a string
-		      	// doesn't handle URLEncoded DataURIs
-		      	var byteString = atob(dataURI.split(',')[1]);
-		     	/* var byteString;
-		      	if (dataURI.split(',')[0].indexOf('base64') >= 0)
-		        	byteString = atob(dataURI.split(',')[1]);
-		      	else
-		        	byteString = unescape(dataURI.split(',')[1]);*/
-
-		      	// separate out the mime component
-		      	var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-
-		      	// write the bytes of the string to an ArrayBuffer
-		      	var ab = new ArrayBuffer(byteString.length);
-		      	var ia = new Uint8Array(ab);
-		      	for (var i = 0; i < byteString.length; i++) {
-		          	ia[i] = byteString.charCodeAt(i);
-		      	}
-		      	// write the ArrayBuffer to a blob, and you're done
-		      	var blob = new Blob([ab],{"type":mimeString});
-		      	return blob
-			};
-		}])
 })();

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="vendabyte">
 <head>
-	<!--{% load staticfiles %}-->
 	<base href="/">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	
 	<title>Vendabyte</title>
 
 	<link rel="stylesheet" href="/static/css/user.css">
@@ -24,7 +24,7 @@
 	<script type="text/javascript" src="/static/js/lib/ng-infinite-scroll.min.js"></script>
 	<script type="text/javascript" src="/static/js/lib/ng-load.js"></script>
 </head>
-<body ng-controller="MainController" onscroll="angular.element('body').scope().handleScroll(event)">
+<body ng-controller="MainController" onscroll="angular.element('body').scope().handleScroll(event)" ng-click="bodyClick()">
 	<header class="header fixed">		
 		<figure class="logo-cont" ng-click="navigate('users/{{user.username}}')">
 			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
@@ -32,12 +32,18 @@
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
 		<!--<div class="log-in">Iniciar Seción</div>-->
 		<div class="notif-bar inline-block">
-			<span class="icon-bell"><span class="notifications none">2</span></span>
+			<span class="icon-bell"><span class="notifications">2</span></span>
 			<span class="user-name" ng-click="navigate('users/{{user.username}}/profile')">{{user.first_name}} {{user.last_name}}</span>
 			<div class="user-deco inline-block">
 				<img src="media/{{user.photo}}" alt="{{user.first_name}} {{user.last_name}}" class="user-pict" ng-click="navigate('users/{{user.username}}/profile')">
 			</div>
-			<span class="icon-cog"></span>
+			<div class="config-icon">
+				<span class="icon-cog" ng-click="configToggle($event)" ng-class="{active:configActive}"></span>
+				<div class="triangle" ng-class="{active:configActive}"></div>
+				<div class="config-menu" ng-class="{active:configActive}">
+					<div class="config-item" ng-click="logout()">Salir</div>
+				</div>
+			</div>			
 		</div>	
 	</header><!-- /header -->	
 	<section class="wrapper" infinite-scroll="articlesPagin(next)" infinite-scroll-disabled="busy" ng-view>			
