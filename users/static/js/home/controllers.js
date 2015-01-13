@@ -18,7 +18,7 @@
 			      if (res.authResponse) {
 			        updateLoginStatus(updateApiMe);
 			      }
-			    }, {scope: 'public_profile,email,user_birthday'});		
+			    }, {scope: 'user_about_me,public_profile,email,user_birthday,user_location'});		
 			}
 
 			//FUCNIONES EZFB ACUTALIZACION DE ESTADO DE CONEXION FB/////////////////////////////////////////////////
@@ -33,7 +33,7 @@
 			    ezfb.api('me?fields=id,first_name,last_name,email,username,location,cover,birthday,gender', function (res) {
 			    	$scope.apiMe = res;
 			    	$scope.apiMe.facebook_uid = res.id;
-			    	console.log(res)
+			    	console.log("ESTE ES CARLOS",res)
 
 			    	ezfb.api('me/picture?width=400&height=400&redirect=0',function (res){
 			    		var item1;
