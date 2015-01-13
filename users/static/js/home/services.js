@@ -38,7 +38,7 @@
       function getCity(city) {
         var deferred = $q.defer();
 
-        $http.get("/api/cities/?city_name="+city)
+        $http.get("/api/cities/?search="+city)
           .success(function(data, status, headers, config) {
             deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
           })
