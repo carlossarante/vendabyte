@@ -35,6 +35,16 @@
 
         return deferred.promise;
       };
+      function getCity(city) {
+        var deferred = $q.defer();
+
+        $http.get("/api/cities/?city_name="+city)
+          .success(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          })
+
+        return deferred.promise;
+      };
       function getFBImage(url) {
         var deferred = $q.defer();
 
@@ -111,6 +121,7 @@
       return {
         vendabyteLogIn : vendabyteLogIn,
         registerUser : registerUser,
+        getCity : getCity,
         getFBImage : getFBImage,
         getArticles : getArticles,
         getArticle : getArticle,

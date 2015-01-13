@@ -41,7 +41,16 @@
 			    		$scope.apiMe.photo_url = res.data.url;
 			    		$scope.apiMe.cover_url = $scope.apiMe.cover.source;
 			    		$scope.apiMe.sex = $scope.apiMe.gender;
-			    		$scope.apiMe.city = 'http://localhost:8000/api/cities/2/';
+			    		$scope.apiMe.city = $scope.apiMe.location.name.split(',')[0];
+			    		$scope.apiMe.province = $scope.apiMe.location.name.split(',')[1];
+			    		$scope.apiMe.country = $scope.apiMe.location.name.split(',')[2];
+
+			    		vendabyteService.getCity($scope.apiMe.city).then(function (res){
+			    			if(res.status === 200){
+		    					$scope.apiMe.city = res.data[0].url;
+		    				}
+			    		});
+			    		//$scope.apiMe.city = 'http://localhost:8000/api/cities/2/';
 			    		delete $scope.apiMe.cover;
 			    		delete $scope.apiMe.id;
 			    		delete $scope.apiMe.gender;
