@@ -41,13 +41,18 @@
 			    		$scope.apiMe.photo_url = res.data.url;
 			    		$scope.apiMe.cover_url = $scope.apiMe.cover.source;
 			    		$scope.apiMe.sex = $scope.apiMe.gender;
-			    		$scope.apiMe.city = $scope.apiMe.location.name.split(',')[0];
+			    		$scope.apiMe.city = $scope.apiMe.location.name.split(',')[0].split(' ').join("+");
 			    		$scope.apiMe.province = $scope.apiMe.location.name.split(',')[1];
 			    		$scope.apiMe.country = $scope.apiMe.location.name.split(',')[2];
 
 			    		vendabyteService.getCity($scope.apiMe.city).then(function (res){
 			    			if(res.status === 200){
-		    					$scope.apiMe.city = res.data[0].url;
+			    				if(res.data.length > 0){
+			    					$scope.apiMe.city = res.data[0].url;
+			    				}
+			    				else{
+			    					console.log("MANDAR A USUARIO A ELEGIR PROVINCIA")
+			    				}
 		    				}
 			    		});
 			    		//$scope.apiMe.city = 'http://localhost:8000/api/cities/2/';
@@ -115,29 +120,6 @@
 				    	});				    				    		
 			    	})			    	
 			    });
-			}
-			$scope.b64toBlob = function (b64Data, contentType, sliceSize) {
-			    contentType = contentType || '';
-			    sliceSize = sliceSize || 512;
-
-			    var byteCharacters = atob(b64Data);
-			    var byteArrays = [];
-
-			    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-			        var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-			        var byteNumbers = new Array(slice.length);
-			        for (var i = 0; i < slice.length; i++) {
-			            byteNumbers[i] = slice.charCodeAt(i);
-			        }
-
-			        var byteArray = new Uint8Array(byteNumbers);
-
-			        byteArrays.push(byteArray);
-			    }
-
-			    var blob = new Blob(byteArrays, {type: contentType});
-			    return blob;
 			}
 			/*var blob = b64toBlob(b64Data, contentType);
 			var blobUrl = URL.createObjectURL(blob);
