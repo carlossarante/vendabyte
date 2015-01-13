@@ -30,9 +30,10 @@
 				});
 			}
 			function updateApiMe () {
-			    ezfb.api('me?fields=id,first_name,last_name,email,username,cover,birthday,gender', function (res) {
+			    ezfb.api('me?fields=id,first_name,last_name,email,username,location,cover,birthday,gender', function (res) {
 			    	$scope.apiMe = res;
 			    	$scope.apiMe.facebook_uid = res.id;
+			    	console.log(res)
 
 			    	ezfb.api('me/picture?width=400&height=400&redirect=0',function (res){
 			    		var item1;
@@ -94,8 +95,10 @@
 					            		//formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);						    	
 						    			
 						    			vendabyteService.registerUser(formData).then(function (data){
-						    				console.log("USURAIO CREADO PAPA")
-											window.location.href = data.data;
+						    				if(data.status === 200){
+							    				console.log("USURAIO CREADO PAPA")
+												window.location.href = data.data;
+						    				}
 										});
 						    		});
 					    		});	
