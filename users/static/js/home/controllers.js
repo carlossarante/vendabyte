@@ -35,6 +35,8 @@
 			    	$scope.apiMe.facebook_uid = res.id;
 
 			    	ezfb.api('me/picture?width=400&height=400&redirect=0',function (res){
+			    		var item1;
+			    		var item2;
 			    		$scope.apiMe.photo_url = res.data.url;
 			    		$scope.apiMe.cover_url = $scope.apiMe.cover.source;
 			    		$scope.apiMe.sex = $scope.apiMe.gender;
@@ -44,6 +46,10 @@
 			    		delete $scope.apiMe.gender;
 			    		$scope.apiMe.birthday = $scope.apiMe.birthday.split('/');
 			    		$scope.apiMe.birthday.reverse();
+			    		item1 = $scope.apiMe.birthday[1];
+			    		item2 = $scope.apiMe.birthday[2];
+			    		$scope.apiMe.birthday[1]=item2;
+			    		$scope.apiMe.birthday[2]=item1;
 			    		$scope.apiMe.birthday = $scope.apiMe.birthday.join('-');
 
 
@@ -53,8 +59,11 @@
 	            		formData.append('facebook_uid',$scope.apiMe.facebook_uid);
 	            		formData.append('username',$scope.apiMe.username);
 
+	            		console.log($scope.apiMe)
+
 			    		vendabyteService.vendabyteLogIn(formData).then(function (data){
 				    		if(data.status === 200){
+				    			console.log("TE LOGEASTE PAPA PORQUE EXISTIA EL USUARIO")
 				    			window.location.href = data;
 				    		}
 				    		else if(data.status === 404)
@@ -84,9 +93,10 @@
 					            		formData.append('username',$scope.apiMe.username);
 					            		//formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);						    	
 						    			
-						    			/*vendabyteService.registerUser(formData).then(function (data){
+						    			vendabyteService.registerUser(formData).then(function (data){
+						    				console.log("USURAIO CREADO PAPA")
 											window.location.href = data.data;
-										});*/
+										});
 						    		});
 					    		});	
 				    		}
