@@ -82,17 +82,14 @@ class UserSet(viewsets.ModelViewSet):
 
 	def create(self,request):
 		serializer = UserSerializer(data=request.DATA,context={'request':request})
-		try:
-			getUserPictures.delay(serializer,request.POST['photo_url'], request.POST['cover_url'])
-		except:
-			if serializer.is_valid():
-				u = serializer.save()
-				u.set_enc_password()
-				u.save()
-				loginFacebookUser(request)
-				return HttpResponse('/users/%s'%serializer.data['username']) #Retorna la url del usuario.
-			else:
-				return HttpResponse('Error: %s' % serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+		if serializer.is_valid():
+			u = serializer.save()
+			u.set_enc_password()
+			u.save()
+			loginFacebookUser(request)
+			return HttpResponse('/users/%s'%serializer.data['username']) #Retorna la url del usuario.
+		else:
+			return HttpResponse('Errors: %s' % serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 		
 
 	def dispatch(self, request, *args, **kwargs):
