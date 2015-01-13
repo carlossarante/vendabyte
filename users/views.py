@@ -86,11 +86,12 @@ class UserSet(viewsets.ModelViewSet):
 			getUserPictures.delay(serializer,request.POST['photo_url'], request.POST['cover_url'])
 		except:
 			if serializer.is_valid():
+				import ipdb; ipdb.set_trace()
 				#serializer.set_enc_password()
 				#getUserPictures.delay(u,request.POST['photo_url'], request.POST['cover_url'])
 				u = serializer.save()
 				u.set_enc_password()
-
+				u.save()
 				loginFacebookUser(request)
 				return HttpResponse('/users/%s'%serializer.data['username']) #Retorna la url del usuario.
 			else:
