@@ -110,19 +110,22 @@
 			    		vendabyteService.vendabyteLogIn(formData).then(function (res){
 				    		if(res.status === 200){
 				    			console.log("TE LOGEASTE PAPA PORQUE EXISTIA EL USUARIO")
-				    			window.location.href = res.data;
+				    			//window.location.href = res.data;
 				    		}
 				    		else if(res.status === 404)
 				    		{
 				    			vendabyteService.getFBImage($scope.apiMe.photo_url).then(function (res){
-    								console.log(res)
-    								var blob = new Blob([res.data],{type : "image/jpeg"})
+    								var photoHeaders = res.headers()['content-type'];
+    								console.log(photoHeaders)
+    								var blob = new Blob([res.data],{type : photoHeaders})
     								var blobUrl = URL.createObjectURL(blob);
     								console.log(blobUrl);
 					    			$scope.apiMe.photo = blob;
 
 					    			vendabyteService.getFBImage($scope.apiMe.cover_url).then(function (res){
-	    								var blob = new Blob([res.data],{type : "image/jpeg"})
+					    				var coverHeaders = res.headers()['content-type'];
+					    				console.log(coverHeaders);
+	    								var blob = new Blob([res.data],{type : coverHeaders })
 	    								var blobUrl = URL.createObjectURL(blob);
 	    								console.log(blobUrl);
 						    			$scope.apiMe.cover = blob;
@@ -131,8 +134,8 @@
 								            		
 					            		formData.append('birthday',$scope.apiMe.birthday);
 					            		formData.append('city',$scope.apiMe.city);
-					            		formData.append('photo',$scope.apiMe.photo);
-					            		formData.append('cover',$scope.apiMe.cover);				            		
+					            		formData.append('photo',$scope.apiMe.photo,chance.string({pool:'abcdefghijklmnopqrstxyz'})+"."+photoHeaders.split('image/').join(''));
+					            		formData.append('cover',$scope.apiMe.cover,chance.string({pool:'abcdefghijklmnopqrstxyz'})+"."+coverHeaders.split('image/').join(''));				            		
 					            		formData.append('email',$scope.apiMe.email);
 					            		formData.append('facebook_uid',$scope.apiMe.facebook_uid);
 					            		formData.append('first_name',$scope.apiMe.first_name);
@@ -144,7 +147,7 @@
 						    			vendabyteService.registerUser(formData).then(function (res){
 						    				if(res.status === 200){
 							    				console.log("USURAIO CREADO PAPA")
-												window.location.href = res.data;
+												//window.location.href = res.data;
 						    				}
 										});
 						    		});

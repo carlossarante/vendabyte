@@ -22,7 +22,7 @@
       function registerUser(user) {
         var deferred = $q.defer();
 
-        $http.post('/api/user/',user,{
+        $http.post('/api/use/',user,{
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         })
