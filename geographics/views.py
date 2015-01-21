@@ -6,7 +6,6 @@ from rest_framework.filters import SearchFilter,DjangoFilterBackend
 
 from .models import Province,City
 from .serializers import CitySerializer,ProvinceSerializer
-from .filters import ProvinceFilter,CityFilter
 
 class ProvinceSet(viewsets.ModelViewSet):
 	queryset = Province.objects.all()
