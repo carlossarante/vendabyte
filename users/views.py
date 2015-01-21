@@ -3,19 +3,20 @@
 from rest_framework import viewsets,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.parsers import MultiPartParser,FormParser
+from rest_framework.parsers import MultiPartParser,FormParser,FileUploadParser
 from rest_framework.decorators import detail_route
 
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, HttpResponseRedirect,HttpResponse,get_object_or_404,redirect
 from django.contrib.auth import authenticate, login,logout
 from django.conf import settings
+from django.core.files.base import ContentFile
 from django.db.models import Count,Q
 
 from tasks import getUserPictures
 from users.serializers import UserSerializer,BadgetSerializer,ContactSerializer
 from users.models import User,Badgets,Contact
-
+from users.picturesHandler import get_a_uuid
 
 def userIndex(request,username=None):
 	if request.user.is_anonymous():
@@ -64,7 +65,7 @@ def loginFacebookUser(request,response='html'):
 
 class UserSet(viewsets.ModelViewSet):
 	serializer_class = UserSerializer
-	parser_classes = (MultiPartParser,FormParser)
+	parser_classes = (MultiPartParser,FormParser,FileUploadParser)
 	def get_queryset(self):
 		try:
 			requested_query = self.request.GET['list'] 
@@ -78,14 +79,23 @@ class UserSet(viewsets.ModelViewSet):
 		except: 
 			queryset = User.objects.all()
 		return queryset
-	
+
 
 	def create(self,request):
 		serializer = UserSerializer(data=request.DATA,context={'request':request})
 		if serializer.is_valid():
-			u = serializer.save()
-			u.set_enc_password()
-			u.save()
+			user = serializer.save()
+			user.set_enc_password()
+			user.save()
+			try:
+				photo = request.FILES['photo']
+				cover = request.FILES['cover']
+				user.photo.save("%s.jpg" % get_a_uuid(),photo)
+				user.cover.save("%s.jpg" % get_a_uuid(),cover)
+				user.save()
+			except ValueError:
+				user.delete()
+				
 			loginFacebookUser(request)
 			return HttpResponse('/users/%s'%serializer.data['username']) #Retorna la url del usuario.
 		else:
