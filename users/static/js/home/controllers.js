@@ -115,50 +115,39 @@
 				    		else if(res.status === 404)
 				    		{
 				    			vendabyteService.getFBImage($scope.apiMe.photo_url).then(function (res){
+    								console.log(res)
     								var blob = new Blob([res.data],{type : "image/jpeg"})
+    								var blobUrl = URL.createObjectURL(blob);
+    								console.log(blobUrl);
 					    			$scope.apiMe.photo = blob;
 
-							      	var reader = new FileReader();
-							      	reader.onload = function (evt) {
-							        	$scope.$apply(function($scope){
-							          		$scope.apiMe.photo= evt.target.result;
-							        	});
-						    			vendabyteService.getFBImage($scope.apiMe.cover_url).then(function (res){
-		    								var blob = new Blob([res.data],{type : "image/jpeg"})
-							    			$scope.apiMe.cover = blob;
-
-							    			var reader = new FileReader();
-									      	reader.onload = function (evt) {
-									        	$scope.$apply(function($scope){
-									          		console.log(evt.target.result);
-									          		$scope.apiMe.cover = evt.target.result;
-									        	});
-										    	var formData = new FormData();
-										            		
-							            		formData.append('birthday',$scope.apiMe.birthday);
-							            		formData.append('city',$scope.apiMe.city);
-							            		formData.append('photo',$scope.apiMe.photo);
-							            		formData.append('cover',$scope.apiMe.cover);				            		
-							            		formData.append('email',$scope.apiMe.email);
-							            		formData.append('facebook_uid',$scope.apiMe.facebook_uid);
-							            		formData.append('first_name',$scope.apiMe.first_name);
-							            		formData.append('last_name',$scope.apiMe.last_name);
-							            		formData.append('sex',$scope.apiMe.sex);
-							            		formData.append('username',$scope.apiMe.username);
-							            		//formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);						    	
-								    			
-								    			vendabyteService.registerUser(formData).then(function (res){
-								    				if(res.status === 200){
-									    				console.log("USURAIO CREADO PAPA")
-														window.location.href = res.data;
-								    				}
-												});
-									      	};
-									      	reader.readAsDataURL(blob);									    	
-							    		});
-							      	};
-							      	reader.readAsDataURL(blob);
-
+					    			vendabyteService.getFBImage($scope.apiMe.cover_url).then(function (res){
+	    								var blob = new Blob([res.data],{type : "image/jpeg"})
+	    								var blobUrl = URL.createObjectURL(blob);
+	    								console.log(blobUrl);
+						    			$scope.apiMe.cover = blob;
+								    	
+								    	var formData = new FormData();
+								            		
+					            		formData.append('birthday',$scope.apiMe.birthday);
+					            		formData.append('city',$scope.apiMe.city);
+					            		formData.append('photo',$scope.apiMe.photo);
+					            		formData.append('cover',$scope.apiMe.cover);				            		
+					            		formData.append('email',$scope.apiMe.email);
+					            		formData.append('facebook_uid',$scope.apiMe.facebook_uid);
+					            		formData.append('first_name',$scope.apiMe.first_name);
+					            		formData.append('last_name',$scope.apiMe.last_name);
+					            		formData.append('sex',$scope.apiMe.sex);
+					            		formData.append('username',$scope.apiMe.username);
+					            		//formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);						    	
+						    			
+						    			vendabyteService.registerUser(formData).then(function (res){
+						    				if(res.status === 200){
+							    				console.log("USURAIO CREADO PAPA")
+												window.location.href = res.data;
+						    				}
+										});
+						    		});
 					    		});	
 				    		}
 				    	});				    				    		
