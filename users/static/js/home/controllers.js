@@ -41,21 +41,52 @@
 			    		$scope.apiMe.photo_url = res.data.url;
 			    		$scope.apiMe.cover_url = $scope.apiMe.cover.source;
 			    		$scope.apiMe.sex = $scope.apiMe.gender;
-			    		$scope.apiMe.city = $scope.apiMe.location.name.split(',')[0].split(' ').join("+");
-			    		$scope.apiMe.province = $scope.apiMe.location.name.split(',')[1];
-			    		$scope.apiMe.country = $scope.apiMe.location.name.split(',')[2];
+			    		$scope.apiMe.city = $scope.apiMe.location.name.split(',')[0].split(' ');
+			    		console.log($scope.apiMe.city)
+			    		if($scope.apiMe.city[0] === ""){
+			    				$scope.apiMe.city.splice(0,1);
+			    				$scope.apiMe.city=$scope.apiMe.city.join("+");
+			    			}
+			    		else{
+			    			$scope.apiMe.city=$scope.apiMe.city.join("+");
+			    		}
 
-			    		vendabyteService.getCity($scope.apiMe.city).then(function (res){
+			    		$scope.apiMe.province = $scope.apiMe.location.name.split(',')[1].split(' ');
+			    		console.log($scope.apiMe.province)
+			    		if($scope.apiMe.province[0] === ""){
+			    				$scope.apiMe.province.splice(0,1);
+			    				
+			    				$scope.apiMe.province=$scope.apiMe.province.join("+");
+			    				console.log($scope.apiMe.province);
+			    			}
+			    		else{
+			    			$scope.apiMe.province=$scope.apiMe.province.join("+");
+			    		}
+			    		$scope.apiMe.country = $scope.apiMe.location.name.split(',')[2].split(' ').join("+");
+
+			    		//Verificar que exista la provincia y la ciudad en la base de datos
+			    		vendabyteService.getProvince($scope.apiMe.province).then(function (res){
 			    			if(res.status === 200){
-			    				if(res.data.length > 0){
-			    					$scope.apiMe.city = res.data[0].url;
+			    				if(res.data.length === 1){
+			    					$scope.apiMe.province = res.data[0].url;
+						    		
+						    		vendabyteService.getCity($scope.apiMe.city).then(function (res){
+						    			if(res.status === 200){
+						    				if(res.data.length === 1){
+						    					$scope.apiMe.city = res.data[0].url;
+						    				}
+						    				else{
+						    					console.log("MANDAR A USUARIO A ELEGIR CIUDAD")
+						    				}
+					    				}
+						    		});
 			    				}
 			    				else{
 			    					console.log("MANDAR A USUARIO A ELEGIR PROVINCIA")
 			    				}
 		    				}
 			    		});
-			    		//$scope.apiMe.city = 'http://localhost:8000/api/cities/2/';
+			    		// 
 			    		delete $scope.apiMe.cover;
 			    		delete $scope.apiMe.id;
 			    		delete $scope.apiMe.gender;
@@ -76,21 +107,21 @@
 
 	            		console.log($scope.apiMe)
 
-			    		vendabyteService.vendabyteLogIn(formData).then(function (data){
-				    		if(data.status === 200){
+			    		vendabyteService.vendabyteLogIn(formData).then(function (res){
+				    		if(res.status === 200){
 				    			console.log("TE LOGEASTE PAPA PORQUE EXISTIA EL USUARIO")
-				    			window.location.href = data;
+				    			window.location.href = res.data;
 				    		}
-				    		else if(data.status === 404)
+				    		else if(res.status === 404)
 				    		{
-				    			vendabyteService.getFBImage($scope.apiMe.photo_url).then(function (data){
-    								console.log(data)
-    								var blob = new Blob([data.data],{type : "image/jpeg"})
+				    			vendabyteService.getFBImage($scope.apiMe.photo_url).then(function (res){
+    								console.log(res)
+    								var blob = new Blob([res.data],{type : "image/jpeg"})
     								var blobUrl = URL.createObjectURL(blob);
 					    			$scope.apiMe.photo = blob;
 
-					    			vendabyteService.getFBImage($scope.apiMe.cover_url).then(function (data){
-	    								var blob = new Blob([data.data],{type : "image/jpeg"})
+					    			vendabyteService.getFBImage($scope.apiMe.cover_url).then(function (res){
+	    								var blob = new Blob([res.data],{type : "image/jpeg"})
 	    								var blobUrl = URL.createObjectURL(blob);
 						    			$scope.apiMe.cover = blob;
 								    	
@@ -108,10 +139,10 @@
 					            		formData.append('username',$scope.apiMe.username);
 					            		//formData.append("csrfmiddlewaretoken",$http.defaults.headers.post['X-CSRFToken']);						    	
 						    			
-						    			vendabyteService.registerUser(formData).then(function (data){
-						    				if(data.status === 200){
+						    			vendabyteService.registerUser(formData).then(function (res){
+						    				if(res.status === 200){
 							    				console.log("USURAIO CREADO PAPA")
-												window.location.href = data.data;
+												window.location.href = res.data;
 						    				}
 										});
 						    		});
@@ -160,13 +191,13 @@
 
 			mainScope.articles = [];		
 
-			vendabyteService.getArticles(param).then(function (data){
+			vendabyteService.getArticles(param).then(function (res){
 				// mainScope.next = data.next;
 				// mainScope.previous = data.previous;
 				//$scope.busy = true;
-				$scope.next = data.next;
-				$scope.previous = data.previous;
-				$scope.articles = data.results;
+				$scope.next = res.data.next;
+				$scope.previous = res.data.previous;
+				$scope.articles = res.data.results;
 				angular.forEach($scope.articles,function (value,key){
 					$scope.modelUsers(value);
 				})				
@@ -200,10 +231,10 @@
 				}	
 			}
 			$scope.articlesPagin = function (url){
-				vendabyteService.getPageArticles(url).then(function (data){
-					$scope.next = data.next;
-					$scope.previous = data.previous;
-					$scope.articles=$scope.articles.concat(data.results);
+				vendabyteService.getPageArticles(url).then(function (res){
+					$scope.next = res.data.next;
+					$scope.previous = res.data.previous;
+					$scope.articles=$scope.articles.concat(res.data.results);
 				})
 			}
         }])
@@ -253,8 +284,8 @@
 				$scope.comment.article = product.url;
 				$scope.comment.date_posted = time.toISOString();
 								
-				vendabyteService.setComment($scope.comment).then(function (data){
-					product.comment_set.push(data);
+				vendabyteService.setComment($scope.comment).then(function (res){
+					product.comment_set.push(res.data);
 					$scope.hideCommentBox($scope.comment);
 					$scope.$parent.$parent.index +=1;	//articleScope		
 				});							

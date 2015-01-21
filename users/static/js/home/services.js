@@ -6,7 +6,7 @@
       function vendabyteLogIn(user) {
         var deferred = $q.defer();
 
-        $http.post('/api/login/',user,{
+        $http.post('/users/login/',user,{
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         })
@@ -35,13 +35,29 @@
 
         return deferred.promise;
       };
-      function getCity(city) {
+      function getProvince(province) {
         var deferred = $q.defer();
 
-        $http.get("/api/cities/?search="+city)
+        $http.get("/api/provinces/?province_name="+province)
           .success(function(data, status, headers, config) {
             deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
           })
+          .error(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          });
+
+        return deferred.promise;
+      };
+      function getCity(city) {
+        var deferred = $q.defer();
+
+        $http.get("/api/cities/?city_name="+city)
+          .success(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          })
+          .error(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          });
 
         return deferred.promise;
       };
@@ -54,6 +70,9 @@
           .success(function(data, status, headers, config) {
             deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
           })
+          .error(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          });
 
         return deferred.promise;
       };
@@ -61,8 +80,11 @@
         var deferred = $q.defer();
 
         $http.get('/api/article/?format=json&list='+param)
-          .success(function (data) {
-            deferred.resolve(data);
+          .success(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          })
+          .error(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
           });
 
         return deferred.promise;
@@ -71,8 +93,11 @@
         var deferred = $q.defer();
 
         $http.get(url)
-          .success(function (data) {
-            deferred.resolve(data);
+          .success(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          })
+          .error(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
           });
 
         return deferred.promise;
@@ -81,8 +106,11 @@
         var deferred = $q.defer();
 
         $http.get(url)
-          .success(function (data) {
-            deferred.resolve(data);
+          .success(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          })
+          .error(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
           });
 
         return deferred.promise;
@@ -91,8 +119,11 @@
         var deferred = $q.defer();
 
         $http.get(url)
-          .success(function (data) {
-            deferred.resolve(data);
+          .success(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          })
+          .error(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
           });
 
         return deferred.promise;
@@ -101,8 +132,11 @@
         var deferred = $q.defer();
 
         $http.get("/static/partials/"+directive)
-          .success(function (data) {
-            deferred.resolve(data);
+          .success(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          })
+          .error(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
           });
 
         return deferred.promise;
@@ -111,8 +145,11 @@
         var deferred = $q.defer();
 
         $http.get("/users/logout/")
-          .success(function (data) {
-            deferred.resolve(data);
+          .success(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
+          })
+          .error(function(data, status, headers, config) {
+            deferred.resolve({'data':data,'status':status,'headers':headers,'config':config}); 
           });
 
         return deferred.promise;
@@ -121,6 +158,7 @@
       return {
         vendabyteLogIn : vendabyteLogIn,
         registerUser : registerUser,
+        getProvince : getProvince,
         getCity : getCity,
         getFBImage : getFBImage,
         getArticles : getArticles,
