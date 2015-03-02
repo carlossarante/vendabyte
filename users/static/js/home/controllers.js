@@ -33,7 +33,6 @@
 			    ezfb.api('me?fields=id,first_name,last_name,email,username,location,cover,birthday,gender', function (res) {
 			    	$scope.apiMe = res;
 			    	$scope.apiMe.facebook_uid = res.id;
-			    	console.log("ESTE ES CARLOS",res)
 
 			    	ezfb.api('me/picture?width=400&height=400&redirect=0',function (res){
 			    		var item1;
@@ -42,7 +41,6 @@
 			    		$scope.apiMe.cover_url = $scope.apiMe.cover.source;
 			    		$scope.apiMe.sex = $scope.apiMe.gender;
 			    		$scope.apiMe.city = $scope.apiMe.location.name.split(',')[0].split(' ');
-			    		console.log($scope.apiMe.city)
 			    		if($scope.apiMe.city[0] === ""){
 			    				$scope.apiMe.city.splice(0,1);
 			    				$scope.apiMe.city=$scope.apiMe.city.join("+");
@@ -52,12 +50,10 @@
 			    		}
 
 			    		$scope.apiMe.province = $scope.apiMe.location.name.split(',')[1].split(' ');
-			    		console.log($scope.apiMe.province)
 			    		if($scope.apiMe.province[0] === ""){
 			    				$scope.apiMe.province.splice(0,1);
 			    				
 			    				$scope.apiMe.province=$scope.apiMe.province.join("+");
-			    				console.log($scope.apiMe.province);
 			    			}
 			    		else{
 			    			$scope.apiMe.province=$scope.apiMe.province.join("+");
@@ -76,13 +72,11 @@
 						    					$scope.apiMe.city = res.data[0].url;
 						    				}
 						    				else{
-						    					console.log("MANDAR A USUARIO A ELEGIR CIUDAD")
 						    				}
 					    				}
 						    		});
 			    				}
 			    				else{
-			    					console.log("MANDAR A USUARIO A ELEGIR PROVINCIA")
 			    				}
 		    				}
 			    		});
@@ -105,29 +99,23 @@
 	            		formData.append('facebook_uid',$scope.apiMe.facebook_uid);
 	            		formData.append('username',$scope.apiMe.username);
 
-	            		console.log($scope.apiMe)
 
 			    		vendabyteService.vendabyteLogIn(formData).then(function (res){
 				    		if(res.status === 200){
-				    			console.log("TE LOGEASTE PAPA PORQUE EXISTIA EL USUARIO")
-				    			//window.location.href = res.data;
+				    			window.location.href = res.data;
 				    		}
 				    		else if(res.status === 404)
 				    		{
 				    			vendabyteService.getFBImage($scope.apiMe.photo_url).then(function (res){
     								var photoHeaders = res.headers()['content-type'];
-    								console.log(photoHeaders)
     								var blob = new Blob([res.data],{type : photoHeaders})
     								var blobUrl = URL.createObjectURL(blob);
-    								console.log(blobUrl);
 					    			$scope.apiMe.photo = blob;
 
 					    			vendabyteService.getFBImage($scope.apiMe.cover_url).then(function (res){
 					    				var coverHeaders = res.headers()['content-type'];
-					    				console.log(coverHeaders);
 	    								var blob = new Blob([res.data],{type : coverHeaders })
 	    								var blobUrl = URL.createObjectURL(blob);
-	    								console.log(blobUrl);
 						    			$scope.apiMe.cover = blob;
 								    	
 								    	var formData = new FormData();
@@ -146,8 +134,7 @@
 						    			
 						    			vendabyteService.registerUser(formData).then(function (res){
 						    				if(res.status === 200){
-							    				console.log("USURAIO CREADO PAPA")
-												//window.location.href = res.data;
+												window.location.href = res.data;
 						    				}
 										});
 						    		});

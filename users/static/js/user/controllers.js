@@ -6,7 +6,8 @@
 			$scope.users = [];
 			$scope.followers = [];	
 			$scope.option = 0;	
-			$scope.configActive = false
+			$scope.configActive = false;
+			$scope.chatActive = true;
 			scrolled = true;
 			offset = 0;
 			
@@ -24,13 +25,19 @@
 			////////////////////////////////
 			//MENU HANDLER
 			$scope.configToggle = function ($event){
-				console.log($event);
 				$event.stopPropagation();
 				$scope.configActive = !$scope.configActive;
 
 			}
 			$scope.hideConfig = function (){
 				$scope.configActive = false;
+			}
+			//CHAT HANDLER
+			$scope.chatToggle = function(){
+				$scope.chatActive = !$scope.chatActive;
+			}
+			$scope.hideChat = function(){
+				$scope.chatActive = false;
 			}
 			//LOGOUT FUNCTIONS 
 			
@@ -39,7 +46,6 @@
 			      updateLoginStatus(updateApiMe);
 			    });
 				vendabyteService.logout().then(function (data){
-					console.log(data);
 					window.location.href = '/';
 				});
 			}
@@ -397,8 +403,6 @@
 				request.open("POST", "/api/article/");
 				request.onloadend = function(){	  
 					if(request.status === 201){
-						console.log(request)
-						console.log(request.response)
 						articulo = JSON.parse(request.response) ;
 						articulo.user = user;
 						$scope.sendPicture(articulo);

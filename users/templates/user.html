@@ -27,7 +27,7 @@
 <body ng-controller="MainController" onscroll="angular.element('body').scope().handleScroll(event)" ng-click="bodyClick()">
 	<header class="header fixed">		
 		<figure class="logo-cont" ng-click="navigate('users/{{user.username}}')">
-			<img src="/static/img/logo.jpg" alt="Vendabyte" class="logo">
+			<img src="/static/img/logo_vendabyte.png" alt="Vendabyte" class="logo">
 		</figure>
 		<input type="text" placeholder="Busca Articulos, Empresas, Personas" class="search">
 		<!--<div class="log-in">Iniciar Seción</div>-->
@@ -48,6 +48,7 @@
 	</header><!-- /header -->	
 	<section class="wrapper" infinite-scroll="articlesPagin(next)" infinite-scroll-disabled="busy" ng-view>			
 	</section>
+	<vendabyte-chat></vendabyte-chat> 
 
 	<script type="text/javascript" src="/static/js/user/app.js"></script>
     <script type="text/javascript" src="/static/js/user/controllers.js"></script>

@@ -36,6 +36,12 @@
 	        templateUrl: '/static/partials/user-profile.html'
 	      };
 	    })
+	    .directive('vendabyteChat', function () {
+	      return {
+	        restrict: 'E',
+	        templateUrl: '/static/partials/vendabyte-chat.html'
+	      };
+	    })
 
 		.directive('resize', function ($window) {
 	        return function (scope, element) {
