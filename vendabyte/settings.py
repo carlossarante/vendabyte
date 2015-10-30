@@ -42,7 +42,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'south',
     'users',
     'geographics',
     'articles',
@@ -93,7 +92,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'vendabyte
         'USER':'root',
-        'PASSWORD': 'vendeme',  
+        'PASSWORD': 'vendeme',
         'HOST': '',
         'PORT':3306,
     }
@@ -147,4 +146,3 @@ CACHES = {
 
 
 AUTH_USER_MODEL = 'users.User'
-

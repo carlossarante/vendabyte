@@ -6,7 +6,6 @@ from users.models import User
 from django.utils.encoding import smart_text
 
 
-
 class Device(models.Model):
 	device_detail = models.CharField(max_length=30)
 	def __unicode__(self):
@@ -37,12 +36,12 @@ class Article(models.Model):
 
 	def __unicode__(self):
 		return (('%s by %s') % (self.model.model_name,smart_text(self.user.email)))
-	
+
 	def like_count(self):
 		return self.like_set.all().count()
 
 	def interested_count(self):
-		return self.interested_set.all().count() 
+		return self.interested_set.all().count()
 
 class ArticlePicture(models.Model):
 	article = models.ForeignKey(Article)
@@ -51,7 +50,7 @@ class ArticlePicture(models.Model):
 
 class Comment(models.Model):
 	article = models.ForeignKey(Article)
-	date_posted = models.DateTimeField(default=timezone.now())
+	date_posted = models.DateTimeField(default=timezone.now)
 	user = models.ForeignKey(User)
 	comment = models.TextField()
 
@@ -60,8 +59,7 @@ class Like(models.Model):
 	user = models.ForeignKey(User)
 	def __unicode__(self):
 		return (('%s %s')% (self.article,smart_text(self.user)))
-			
+
 class Interested(models.Model):
 	article = models.ForeignKey(Article)
 	user = models.ForeignKey(User)
-	

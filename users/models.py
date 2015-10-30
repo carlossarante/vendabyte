@@ -16,7 +16,7 @@ class Badgets(models.Model):
 class User(AbstractBaseUser):
 	first_name = models.CharField(max_length=255)
 	last_name = models.CharField(max_length=255)
-	birthday = models.DateField(default=timezone.now(),null=True)
+	birthday = models.DateField(default=timezone.now,null=True)
 	email = models.EmailField(unique=True)
 	photo = models.ImageField(upload_to='users',blank=True)
 	cover = models.ImageField(upload_to='cover',blank=True)
@@ -33,10 +33,10 @@ class User(AbstractBaseUser):
 	is_admin = models.BooleanField(default=False)
 	is_superuser = models.BooleanField(default=False)
 	facebook_uid= models.PositiveIntegerField(blank=True,default=0)
-	
+
 	def __unicode__(self):
 		return (('%s %s (%s)') % (self.first_name,self.last_name,self.email))
-	
+
 	def get_absolute_url(self):
 		return ('/users/%s/') % self.id
 	def get_full_name(self):
