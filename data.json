@@ -1,0 +1,34 @@
+{
+   "articles" : [
+   	{
+   		"product": "Iphone5","cover": "img/ima3.jpg",
+   		"precio": "35,000","avatar" : "img/persona1.jpg",
+    	"description" : "Muy vacano",
+     	"user" : "Osiris Perez",
+ 	}
+ 	{
+   		"product": "Iphone4s","cover": "img/ima3.jpg",
+   		"precio": "50,000","avatar" : "img/persona1.jpg",
+    	"description" : "Tiene to y sin gripe",
+     	"user" : "Carlos Sarante",
+ 	}
+ 	{
+   		"product": "Galaxy s4","cover": "img/ima3.jpg",
+   		"precio": "60,000","avatar" : "img/persona1.jpg",
+    	"description" : "Para todos los que desean videojuegos ",
+     	"user" : "Nicolas Guillen",
+ 	}
+ 	{
+   		"product": "HTC EDVO","cover": "img/ima3.jpg",
+   		"precio": "40,000","avatar" : "img/persona1.jpg",
+    	"description" : "Tiene video hd",
+     	"user" : "Albania",
+ 	}
+ 	{
+   		"product": "Xperia M","cover": "img/ima3.jpg",
+   		"precio": "5,000","avatar" : "img/persona1.jpg",
+    	"description" : "De venta en las mejores tiendas",
+     	"user" : "Joan",
+ 	}
+   ]
+}
